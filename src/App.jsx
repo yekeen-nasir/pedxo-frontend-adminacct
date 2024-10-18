@@ -1,15 +1,27 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
-import { HomeLayout, Landing, Login, SignUp } from "./pages";
+import { ForgotPassword, HomeLayout, Landing, Login, SignUp } from "./pages";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to="/signup" replace />,
+  },
+  {
+    path: "/signup",
     element: <SignUp />,
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "/home",

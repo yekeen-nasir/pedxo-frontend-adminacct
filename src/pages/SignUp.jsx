@@ -73,7 +73,7 @@ const SignUp = () => {
             required={true}
           />
 
-          <div>
+          <div className="mt-6">
             <button
               type="submit"
               className="py-4 font-medium bg-clr text-white w-full mt-[6px] rounded-lg"
@@ -85,7 +85,7 @@ const SignUp = () => {
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>
           <div className="text-clr">
-            <Link to="">Login</Link>
+            <Link to="/login">Login</Link>
           </div>
         </div>
       </div>
