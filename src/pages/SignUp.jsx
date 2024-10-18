@@ -82,7 +82,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
-        <div className="flex gap-2 text-[15px] mt-[13px]">
+        <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>
           <div className="text-clr">
             <Link to="">Login</Link>
