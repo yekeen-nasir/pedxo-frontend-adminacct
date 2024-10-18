@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  font-family: "Poppins", "sana-serif";
+} */
+
+@layer components {
+  .line-with-text {
+    @apply flex items-center;
+  }
+
+  .line-with-text:before {
+    content: "";
+    @apply flex-grow border-t border-gray-300 mr-4;
+  }
+
+  .line-with-text:after {
+    content: "";
+    @apply flex-grow border-t border-gray-300 ml-4;
+  }
+}
+
+@layer utilities {
+  .text-clr {
+    color: #4195f1;
+  }
+  .bg-clr {
+    background-color: #4195f1;
+  }
+}
