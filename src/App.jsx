@@ -1,15 +1,27 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
-import { HomeLayout, Landing, Login, SignUp } from "./pages";
+import { ForgotPassword, HomeLayout, Landing, Login, SignUp } from "./pages";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to="/signup" replace />,
+  },
+  {
+    path: "/signup",
     element: <SignUp />,
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "/home",
@@ -25,7 +37,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="w-[390px] px-[25px]">
+    <div className="min-w-[390px] 2xl:max-w-[1512px] 2xl:mx-auto px-[25px]">
       <RouterProvider router={router}></RouterProvider>
     </div>
   );

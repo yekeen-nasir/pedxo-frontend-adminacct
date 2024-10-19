@@ -7,6 +7,10 @@ export default {
         poppins: ["Poppins", "sans-serif"],
       },
     },
+    backgroundImage: {
+      "custom-gradient":
+        "linear-gradient(rgba(0, 0, 0, 0.38), rgba(255, 255, 255, 0.38))",
+    },
   },
   plugins: [],
 };
