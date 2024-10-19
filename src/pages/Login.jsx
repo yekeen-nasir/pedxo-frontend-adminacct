@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
-import googleLogo from "../assets/google-logo.svg";
+import googleLogo from "../assets/svg/google-logo.svg";
+import girlBg from "../assets/png/girl.png";
 import FormInput from "../components/FormInput";
 
 const login = () => {
   return (
-    <section>
-      <div className="mt-[143px] mb-[59px]">
-        <h1 className="mb-[59px] text-2xl font-semibold leading-normal">
+    <section className="2xl:grid grid-cols-2 gap-[130px] items-center ">
+      <div className="image-wrapper hidden 2xl:block">
+        <img src={girlBg} alt="a lady drinking coffee" />
+        <div className="overlay"></div>
+        <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
+          pedxo
+        </div>
+      </div>
+      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:mx-0 2xl:py-0">
+        <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] ">
           Login
         </h1>
         <form>
@@ -38,7 +46,6 @@ const login = () => {
             // value=""
             // onChange={}
             required={true}
-           
           />
           <div className="text-clr font-medium">
             <Link to="/forgot-password">Forgot password?</Link>

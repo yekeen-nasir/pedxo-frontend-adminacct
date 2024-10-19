@@ -29,4 +29,35 @@
   .bg-clr {
     background-color: #4195f1;
   }
+
+  .image-wrapper {
+    position: relative;
+  }
+
+  .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.38);
+    z-index: 1;
+  }
+
+  .text {
+    position: absolute;
+    top: 83px;
+    left: 180px;
+    transform: translate(-50%, -50%);
+    color: white;
+    z-index: 2;
+    padding: 20px;
+  }
+
 }
