@@ -1,1 +1,1 @@
-Live link: https://pedxoo.netlify.app/
+Live link: https://pedxo-dashboard.netlify.app/
