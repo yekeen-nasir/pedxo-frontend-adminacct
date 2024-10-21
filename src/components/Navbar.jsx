@@ -8,7 +8,7 @@ import agreements from "../assets/svg/agreements.svg";
 import logout from "../assets/svg/logout.svg";
 import dropdown from "../assets/svg/dropdown.svg";
 import { useEffect, useRef, useState } from "react";
-import SideBarMenuItems from "./sideBarMenuItems";
+import SideBarMenuItems from "../components/SideBarMenuItems";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
