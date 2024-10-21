@@ -25,7 +25,7 @@ const Overview = () => {
               <h2 className="font-semibold leading-normal md:text-[27px]">
                 Total Expenses
               </h2>
-              <p className="text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
+              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
                 Total amount you've spent on your contractors
               </p>
 
@@ -41,10 +41,10 @@ const Overview = () => {
 
             <div>
               <h2 className="font-semibold leading-normal md:text-[27px]">
-                Total Expenses
+                Active Contractors
               </h2>
-              <p className="text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
-                Total amount you've spent on your contractors
+              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
+                Current contractors on your team
               </p>
 
               <div className="flex justify-between bg-white  rounded-lg py-3 px-[21px] md:py-10 md:px-16">
@@ -64,10 +64,10 @@ const Overview = () => {
 
             <div>
               <h2 className="font-semibold leading-normal md:text-[27px]">
-                Total Expenses
+                Onboarding
               </h2>
-              <p className="text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
-                Total amount you've spent on your contractors
+              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] md:text-[16px]">
+                Pending contracts on their way
               </p>
 
               <div className="flex justify-between bg-white  rounded-lg py-3 px-[21px] md:py-10 md:px-16">

@@ -61,15 +61,11 @@
     color: rgba(0, 0, 0, 0.4);
   }
 
-  .overview-expense-bg{
-    background-color: #F7F7F7;
+  .overview-expense-bg {
+    background-color: #f7f7f7;
   }
 
-  /* .navbar-svg-fill:hover{
-    stroke: var(--hover-clr);
-  } */
 
- 
   .image-wrapper {
     position: relative;
   }

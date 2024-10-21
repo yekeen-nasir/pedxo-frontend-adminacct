@@ -42,7 +42,7 @@ const SideBarMenuItems = ({ icon, title, to }) => {
             <img
               src={icon}
               alt={`${title} icon`}
-              className={`w-5 h-5 hover:pr-text-clr ${
+              className={`w-5 h-5 hover:pr-text-clr navbar-svg-clr hover:stroke-red-500 ${
                 isActive ? "filter-primary-color" : "black"
               } transition-all duration-500`}
             />
