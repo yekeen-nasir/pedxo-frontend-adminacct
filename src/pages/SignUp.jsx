@@ -5,15 +5,17 @@ import FormInput from "../components/FormInput";
 
 const SignUp = () => {
   return (
-    <section className="2xl:grid grid-cols-2 gap-[130px]">
+    <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px]">
       <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" />
+        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
         <div className="overlay"></div>
         <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
           pedxo
         </div>
       </div> 
       <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:pt-10 2xl:mx-0">
+        {/* temporary dashboard link */}
+        <Link to="/dashboard">dashboard</Link>
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           Create account
         </h1>
@@ -84,7 +86,7 @@ const SignUp = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className="py-4 font-medium bg-clr text-white w-full mt-[6px] rounded-lg"
+              className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
             >
               Continue
             </button>
@@ -92,7 +94,7 @@ const SignUp = () => {
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>
-          <div className="text-clr">
+          <div className="pr-text-clr">
             <Link to="/login">Login</Link>
           </div>
         </div>

@@ -3,9 +3,9 @@ import girlBg from "../assets/png/girl.png";
 
 const ForgotPassword = () => {
   return (
-    <section className="2xl:grid grid-cols-2 gap-[130px] items-center ">
+    <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px] items-center ">
       <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" />
+        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
         <div className="overlay"></div>
         <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
           pedxo

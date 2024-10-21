@@ -5,9 +5,9 @@ import FormInput from "../components/FormInput";
 
 const login = () => {
   return (
-    <section className="2xl:grid grid-cols-2 gap-[130px] items-center ">
+    <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px] items-center ">
       <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" />
+        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
         <div className="overlay"></div>
         <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
           pedxo
@@ -47,13 +47,13 @@ const login = () => {
             // onChange={}
             required={true}
           />
-          <div className="text-clr font-medium">
+          <div className="pr-text-clr font-medium">
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
           <div className="mt-6">
             <button
               type="submit"
-              className="py-4 font-medium bg-clr text-white w-full mt-[6px] rounded-lg"
+              className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
             >
               Continue
             </button>
@@ -61,7 +61,7 @@ const login = () => {
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Don't have an account?</span>
-          <div className="text-clr">
+          <div className="pr-text-clr">
             <Link to="/signup">Create account</Link>
           </div>
         </div>
