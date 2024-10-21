@@ -1,5 +1,11 @@
-export { default as HomeLayout } from "./HomeLayout";
-export { default as Landing } from "./Landing";
 export { default as Login } from "./Login";
 export { default as SignUp } from "./SignUp";
 export { default as ForgotPassword } from "./ForgotPassword";
+export { default as Dashboard } from "./Dashboard";
+export { default as Overview } from "./Overview";
+export { default as AddDeveloper } from "./AddDeveloper";
+export { default as CreateContract } from "./CreateContract";
+export { default as Teams } from "./Teams";
+export { default as Payroll } from "./Payroll";
+export { default as Expenses } from "./Expenses";
+export { default as Agreements } from "./Agreements";
