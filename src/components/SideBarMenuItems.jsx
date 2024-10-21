@@ -5,8 +5,6 @@ const SideBarMenuItems = ({ icon, title, to }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const navRef = useRef(null);
 
-  // const isMobile = () => window.innerWidth <= 768;
-
   const handleToggleMenu = () => {
     setToggleMenu(!toggleMenu);
   };

@@ -7,15 +7,18 @@ const SignUp = () => {
   return (
     <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px]">
       <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
+        <img
+          src={girlBg}
+          alt="a lady drinking coffee"
+          className="h-full object-cover"
+        />
         <div className="overlay"></div>
         <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
           pedxo
         </div>
-      </div> 
+      </div>
       <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:pt-10 2xl:mx-0">
-        {/* temporary dashboard link */}
-        <Link to="/dashboard">dashboard</Link>
+        <Link to="/dashboard">Temp. dashboard link.</Link>
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           Create account
         </h1>
