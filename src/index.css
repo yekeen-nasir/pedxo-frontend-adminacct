@@ -62,9 +62,14 @@
   }
 
   .overview-expense-bg{
-    background-color: #F7F7F7;;
+    background-color: #F7F7F7;
   }
 
+  /* .navbar-svg-fill:hover{
+    stroke: var(--hover-clr);
+  } */
+
+ 
   .image-wrapper {
     position: relative;
   }

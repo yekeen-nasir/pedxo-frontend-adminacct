@@ -14,11 +14,27 @@ const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const navRef = useRef(null);
-
-  // const isMobile = () => window.innerWidth <= 768;
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const handleToggleMenu = () => {
     setToggleMenu(!toggleMenu);
+  };
+
+  // Detect swipe direction (close on left swipe)
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX); // Get the initial touch position
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX); // Get the position while swiping
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 100) {
+      // If the swipe is more than 100px to the left, close the navbar
+      setToggleMenu(false);
+    }
   };
 
   const handleClickOutside = (e) => {
@@ -36,7 +52,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav >
+    <nav>
       <div
         className="absolute top-[64px] left-5 md:hidden"
         onClick={handleToggleMenu}
@@ -45,37 +61,44 @@ const Navbar = () => {
       </div>
       <div
         ref={navRef}
-        className={`absolute z-10 h-screen sec-bg-clr max-w-[228px] flex flex-col justify-between  ${
+        className={`absolute z-10 h-[844px] flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
-        } md:relative md:translate-x-0`}
+        } md:relative md:translate-x-0 md:h-full`}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
-        <div className="pt-[44px] pl-[40px] ">
-          <h1 onClick={handleToggleMenu} className="uppercase text-[35px] font-extrabold leading-normal mb-[50px]">
-            pedxo
+        <div className="pt-[44px] pl-[40px]">
+          <h1 className=" text-[35px] font-extrabold leading-normal mb-[50px]">
+            Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
             <SideBarMenuItems
               to="/dashboard/overview"
+              // iconId="icon-overview"
               icon={overview}
               title="Overview"
             />
 
-            <div className="flex flex-col gap-6 ">
+            <div className="flex flex-col gap-8 ">
               <div className="grey-text text-sm font-semibold leading-normal">
                 Hiring
               </div>
               <SideBarMenuItems
                 to="/dashboard/add-developer"
+                // iconId="icon-add-developer"
                 icon={adddeveloper}
                 title="add developer"
               />
               <SideBarMenuItems
                 to="/dashboard/create-contract"
+                // iconId="icon-create-contract"
                 icon={createcontract}
-                title="create contract "
+                title="create contract"
               />
               <SideBarMenuItems
                 to="/dashboard/teams"
+                // iconId="icon-teams"
                 icon={teams}
                 title="teams"
               />
@@ -87,11 +110,13 @@ const Navbar = () => {
               </div>
               <SideBarMenuItems
                 to="/dashboard/payroll"
+                // iconId="icon-payroll"
                 icon={payroll}
-                title=" payroll  "
+                title=" payroll"
               />
               <SideBarMenuItems
                 to="/dashboard/expenses"
+                // iconId="icon-expenses"
                 icon={expenses}
                 title="expenses "
               />
@@ -103,6 +128,7 @@ const Navbar = () => {
               </div>
               <SideBarMenuItems
                 to="/dashboard/agreements"
+                // iconId="icon-agreements"
                 icon={agreements}
                 title="agreements "
               />

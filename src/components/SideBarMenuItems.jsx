@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+// import SvgSprite from "../assets/svg/sprite";
 
 const SideBarMenuItems = ({ icon, title, to }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -24,39 +25,56 @@ const SideBarMenuItems = ({ icon, title, to }) => {
   }, []);
 
   return (
-    <NavLink
-      to={to}
-      onClick={handleToggleMenu}
-      className="flex items-center gap-3"
-    >
-      <img src={icon} alt="overview" />
-      <div className="font-semibold leading-normal hover:pr-text-clr active:pr-text-clr">{title}</div>
-    </NavLink>
+    <>
+      <NavLink
+        to={to}
+        onClick={handleToggleMenu}
+        className={({ isActive }) =>
+          `flex items-center gap-3 group transition-colors duration-300 ${
+            isActive
+              ? "bg-primary text-primary-foreground"
+              : "text-gray-700 hover:bg-primary/10 hover:text-primary"
+          }`
+        }
+      >
+        {({ isActive }) => (
+          <>
+            <img
+              src={icon}
+              alt={`${title} icon`}
+              className={`w-5 h-5 hover:pr-text-clr ${
+                isActive ? "filter-primary-color" : "black"
+              } transition-all duration-500`}
+            />
+            <div
+              className={`font-semibold leading-normal hover:pr-text-clr ${
+                isActive ? "pr-text-clr" : "black"
+              } transition-colors duration-500`}
+            >
+              {title}
+            </div>
+          </>
+        )}
+      </NavLink>
+    </>
   );
 };
 export default SideBarMenuItems;
 
-// To change the color of an SVG icon when the NavLink is clicked (active), you can manipulate the SVG directly by changing its fill or stroke attribute based on the active state. In React Router, the NavLink component provides an isActive prop to determine if the link is currently active.
-
-// Here's an example of how you can use isActive to change the color of the SVG:
-// <NavLink
-//   to={to}
-//   onClick={handleToggleMenu}
-//   className={({ isActive }) =>
-//     `flex items-center gap-3 group ${isActive ? "active" : ""}`
-//   }
-// >
-//   <img
-//     src={icon}
-//     alt="overview"
-//     className="group-hover:pr-text-clr"
-//     style={{ fill: isActive ? "var(--your-active-color)" : "currentColor" }}
-//   />
-//   <div
-//     className={`font-semibold leading-normal ${
-//       isActive ? "active-text" : ""
-//     }`}
-//   >
-//     {title}
-//   </div>
-// </NavLink>
+{
+  /*
+  <SvgSprite />
+  <NavLink
+        to={to}
+        onClick={handleToggleMenu}
+        className="flex items-center gap-3 group"
+      >
+        <svg className="icon w-4 h-4 fill-current group-hover:pr-text-clr transition-colors duration-300">
+          <use xlinkHref={`#${iconId}`}></use>
+        </svg>
+       
+        <div className="font-semibold leading-normal group-hover:pr-text-clr transition-colors duration-300">
+          {title}
+        </div>
+      </NavLink> */
+}
