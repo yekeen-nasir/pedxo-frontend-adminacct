@@ -14,8 +14,7 @@ const SignUp = () => {
         </div>
       </div> 
       <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:pt-10 2xl:mx-0">
-        {/* temporary dashboard link */}
-        <Link to="/dashboard">dashboard</Link>
+        <Link to="/dashboard">Temp. dashboard link.</Link>
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           Create account
         </h1>
