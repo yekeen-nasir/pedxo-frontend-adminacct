@@ -36,7 +36,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav>
+    <nav >
       <div
         className="absolute top-[64px] left-5 md:hidden"
         onClick={handleToggleMenu}
@@ -45,12 +45,12 @@ const Navbar = () => {
       </div>
       <div
         ref={navRef}
-        className={`absolute z-10 h-full sec-bg-clr max-w-[228px] flex flex-col justify-between transform  transition-transform duration-300 ease-in-out ${
+        className={`absolute z-10 h-screen sec-bg-clr max-w-[228px] flex flex-col justify-between  ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0`}
       >
         <div className="pt-[44px] pl-[40px] ">
-          <h1 className="uppercase text-[35px] font-extrabold leading-normal mb-[50px]">
+          <h1 onClick={handleToggleMenu} className="uppercase text-[35px] font-extrabold leading-normal mb-[50px]">
             pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
