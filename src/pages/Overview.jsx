@@ -56,7 +56,7 @@ const Overview = () => {
                 </div>
                 <div className="text-[0.8rem] text-white px-3 py-[10px] sm:px-5 sm:py-[14px] pr-bg-clr rounded-lg font-semibold md:text-[16px]">
                   <NavLink to="/dashboard/create-contract">
-                    +create contract
+                    +Create Contract
                   </NavLink>
                 </div>
               </div>

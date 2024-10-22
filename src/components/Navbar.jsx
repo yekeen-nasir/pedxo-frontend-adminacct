@@ -14,27 +14,9 @@ const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const navRef = useRef(null);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
 
   const handleToggleMenu = () => {
     setToggleMenu(!toggleMenu);
-  };
-
-  // Detect swipe direction (close on left swipe)
-  const handleTouchStart = (e) => {
-    setTouchStart(e.targetTouches[0].clientX); // Get the initial touch position
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX); // Get the position while swiping
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 100) {
-      // If the swipe is more than 100px to the left, close the navbar
-      setToggleMenu(false);
-    }
   };
 
   const handleClickOutside = (e) => {
@@ -42,6 +24,37 @@ const Navbar = () => {
       setToggleMenu(false);
     }
   };
+
+  useEffect(() => {
+    let startX = 0;
+    let endX = 0;
+
+    const handleTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+      endX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      const swipeDistance = startX - endX;
+      if (swipeDistance > 30) {
+        // If swipe left by more than 30px, close the navbar
+        setToggleMenu(false);
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -64,9 +77,6 @@ const Navbar = () => {
         className={`absolute z-10 h-[844px] flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0 md:h-full`}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         <div className="pt-[44px] pl-[40px]">
           <h1 className=" text-[35px] font-extrabold leading-normal mb-[50px]">
