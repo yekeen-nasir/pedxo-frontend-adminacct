@@ -22,7 +22,7 @@ const SearchingDoc = ({
               <div className="text-[20px] font-medium lg:text-[30px] lg:font-semibold">
                 {heading}
               </div>
-              <div className="font-semibold">{subHead}</div>
+              <div className="font-semibold md:hidden">{subHead}</div>
             </div>
             <div className="hidden lg:flex gap-2">
               <AddDeveloperBtn />

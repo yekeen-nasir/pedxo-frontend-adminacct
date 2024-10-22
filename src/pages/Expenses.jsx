@@ -19,6 +19,7 @@ const Expenses = () => {
     <div>
       <SearchingDoc
         heading="Expenses"
+        subHead="August/2024"
         noticeText="Add devs and pay them to see their records here."
         searchingdocTitle="No Payroll Yet"
         searchingdocText="They would be generated when you start
