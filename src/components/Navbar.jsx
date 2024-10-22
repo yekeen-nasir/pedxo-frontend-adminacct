@@ -79,7 +79,7 @@ const Navbar = () => {
         } md:relative md:translate-x-0 md:h-[1024px]`}
       >
         <div className="pt-[44px] pl-[40px] lg:pt-[73px]">
-          <h1 className=" text-[35px] font-extrabold leading-normal mb-[50px]">
+          <h1 onClick={handleToggleMenu} className=" text-[35px] font-extrabold leading-normal mb-[50px]">
             Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">

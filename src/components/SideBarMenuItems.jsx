@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-// import SvgSprite from "../assets/svg/sprite";
 
 const SideBarMenuItems = ({ icon, title, to }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
