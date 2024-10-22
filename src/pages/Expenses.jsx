@@ -1,36 +1,31 @@
-import { NavLink } from "react-router-dom";
-import searchingdoc from "../assets/png/searchingdoc.png";
-import adddeveloper from "../assets/svg/adddeveloper.svg";
+import { nanoid } from "nanoid";
+import SearchingDoc from "../components/SearchingDoc";
 
 const Expenses = () => {
-  return (
-    <section>
-      <div className="mx-5">
-        <div className="mt-[104px]">
-          <div className="text-[20px] font-medium">Expenses</div>
-          <div className="font-semibold">August/2024</div>
-        </div>
+  const onBoarding = [
+    {
+      id: nanoid(),
+      title: "Manage expense requests",
+      desp: "Any payment history for your team will appear and be stored here for future reference",
+    },
+    {
+      id: nanoid(),
+      title: "Review expenses requests",
+      desp: "Review pending and successful expense requests for your team. Ensure all pending requests are addressed and processed immediately",
+    },
+  ];
 
-        <div className="flex flex-col items-center justify-center h-screen">
-          <div className="mb-[18px]">
-            <img src={searchingdoc} alt="searching icon" />
-          </div>
-          <div className="text-[20px] font-medium">No Expenses Yet</div>
-          <p className="grey-text text-[12px] text-center font-normal leading-normal mx-[50px]">
-            They would be generated when you start making payments
-          </p>
-          <div className="py-[14px] px-5 font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
-            <NavLink
-              to="/dashboard/add-developer"
-              className="flex items-center gap-[10px]"
-            >
-              <img src={adddeveloper} alt="a user icon" />
-              Add Developer
-            </NavLink>
-          </div>
-        </div>
-      </div>
-    </section>
+  return (
+    <div>
+      <SearchingDoc
+        heading="Expenses"
+        noticeText="Add devs and pay them to see their records here."
+        searchingdocTitle="No Payroll Yet"
+        searchingdocText="They would be generated when you start
+ making payment"
+        onBoarding={onBoarding}
+      />
+    </div>
   );
 };
 export default Expenses;

@@ -76,16 +76,15 @@ const Navbar = () => {
         ref={navRef}
         className={`absolute z-10 h-[844px] flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
-        } md:relative md:translate-x-0 md:h-full`}
+        } md:relative md:translate-x-0 md:h-[1024px]`}
       >
-        <div className="pt-[44px] pl-[40px]">
+        <div className="pt-[44px] pl-[40px] lg:pt-[73px]">
           <h1 className=" text-[35px] font-extrabold leading-normal mb-[50px]">
             Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
             <SideBarMenuItems
               to="/dashboard/overview"
-              // iconId="icon-overview"
               icon={overview}
               title="Overview"
             />
@@ -96,19 +95,16 @@ const Navbar = () => {
               </div>
               <SideBarMenuItems
                 to="/dashboard/add-developer"
-                // iconId="icon-add-developer"
                 icon={adddeveloper}
                 title="add developer"
               />
               <SideBarMenuItems
                 to="/dashboard/create-contract"
-                // iconId="icon-create-contract"
                 icon={createcontract}
                 title="create contract"
               />
               <SideBarMenuItems
                 to="/dashboard/teams"
-                // iconId="icon-teams"
                 icon={teams}
                 title="teams"
               />
@@ -120,13 +116,11 @@ const Navbar = () => {
               </div>
               <SideBarMenuItems
                 to="/dashboard/payroll"
-                // iconId="icon-payroll"
                 icon={payroll}
                 title=" payroll"
               />
               <SideBarMenuItems
                 to="/dashboard/expenses"
-                // iconId="icon-expenses"
                 icon={expenses}
                 title="expenses "
               />
@@ -138,7 +132,6 @@ const Navbar = () => {
               </div>
               <SideBarMenuItems
                 to="/dashboard/agreements"
-                // iconId="icon-agreements"
                 icon={agreements}
                 title="agreements "
               />
