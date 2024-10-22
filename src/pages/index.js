@@ -9,3 +9,4 @@ export { default as Teams } from "./Teams";
 export { default as Payroll } from "./Payroll";
 export { default as Expenses } from "./Expenses";
 export { default as Agreements } from "./Agreements";
+export { default as Error } from "./Error";

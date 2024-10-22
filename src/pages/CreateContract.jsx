@@ -1,6 +1,10 @@
+import Contracts from "../components/Contracts"
+
 const CreateContract = () => {
   return (
-    <div>CreateContract</div>
+    <div>
+      <Contracts/>
+    </div>
   )
 }
 export default CreateContract

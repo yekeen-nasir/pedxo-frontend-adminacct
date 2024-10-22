@@ -9,11 +9,12 @@ import {
   Agreements,
   CreateContract,
   Dashboard,
+  Error,
   Expenses,
   ForgotPassword,
   Login,
   Overview,
-  Payroll, 
+  Payroll,
   SignUp,
   Teams,
 } from "./pages";
@@ -22,54 +23,67 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Navigate to="/signup" replace />,
+    errorElement: <Error />,
   },
   {
     path: "/signup",
     element: <SignUp />,
+    errorElement: <Error />,
   },
   {
     path: "/login",
     element: <Login />,
+    errorElement: <Error />,
   },
   {
     path: "/forgot-password",
     element: <ForgotPassword />,
+    errorElement: <Error />,
   },
   {
     path: "/dashboard",
     element: <Dashboard />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
         element: <Overview />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/overview",
         element: <Overview />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/add-developer",
         element: <AddDeveloper />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/create-contract",
         element: <CreateContract />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/teams",
         element: <Teams />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/payroll",
         element: <Payroll />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/expenses",
         element: <Expenses />,
+        errorElement: <Error />,
       },
       {
         path: "/dashboard/agreements",
         element: <Agreements />,
+        errorElement: <Error />,
       },
     ],
   },

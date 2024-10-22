@@ -65,14 +65,13 @@
     background-color: #f7f7f7;
   }
 
-  .icon{
+  .icon {
     fill: red;
   }
 
-  .border-clr{
+  .border-clr {
     border: 1px solid #4195f1;
   }
-
 
   .image-wrapper {
     position: relative;
