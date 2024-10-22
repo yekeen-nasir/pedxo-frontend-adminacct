@@ -23,11 +23,11 @@ const Contracts = () => {
               <div className="flex gap-[13px]">
                 <img src={fulltimeicon} alt="target icon" />
                 <div>
-                  <div className="text-sm font-semibold xl:text-2xl">
+                  <div className="text-sm font-semibold md:text-xl xl:text-2xl">
                     Full-Time
                   </div>
                   <p
-                    className="text-[10px] font-normal xl:text-xl"
+                    className="text-[10px] font-normal md:text-[16px] xl:text-xl"
                     style={{ color: "rgba(0, 0, 0, 0.50)" }}
                   >
                     For client that has a fixed rate each payment
@@ -43,11 +43,11 @@ const Contracts = () => {
               <div className="flex gap-[13px]">
                 <img src={gigbased} alt="target icon" />
                 <div>
-                  <div className="text-sm font-semibold xl:text-2xl">
+                  <div className="text-sm font-semibold md:text-xl xl:text-2xl">
                     Gig Based
                   </div>
                   <p
-                    className="text-[10px] font-normal xl:text-xl"
+                    className="text-[10px] font-normal md:text-[16px]  xl:text-xl"
                     style={{ color: "rgba(0, 0, 0, 0.50)" }}
                   >
                     Suitable for temporal or milestone contracts
