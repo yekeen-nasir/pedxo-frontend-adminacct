@@ -12,12 +12,15 @@ import {
   Error,
   Expenses,
   ForgotPassword,
+  FullTimeContract,
+  GigBasedContract,
   Login,
   Overview,
   Payroll,
   SignUp,
   Teams,
 } from "./pages";
+import { FormOne } from "./components";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +43,26 @@ const router = createBrowserRouter([
     element: <ForgotPassword />,
     errorElement: <Error />,
   },
+
+  {
+    path: "/full-time-form",
+    element: <FullTimeContract />,
+    errorElement: <Error />,
+    children: [
+      // {
+      //   path: "/form-one",
+      //   element: <FormOne />,
+      //   errorElement: <Error />,
+      // },
+    ],
+  },
+
+  {
+    path: "/gig-based-form",
+    element: <GigBasedContract />,
+    errorElement: <Error />,
+  },
+
   {
     path: "/dashboard",
     element: <Dashboard />,

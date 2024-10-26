@@ -11,28 +11,29 @@ const SearchingDoc = ({
   searchingdocTitle,
   searchingdocText,
   onBoarding,
-  children
+  children,
 }) => {
   return (
     <section>
-      <div className="max-w-[1137px] mx-5 mt-[104px] pb-[62px] absolute font-poppins md:mt-[59px] lg:ml-[98px] lg:mr-[68px]">
-        <div>
-          <div className="flex items-center justify-between mb-[61px]">
-            <div>
-              <div className="text-[20px] font-medium lg:text-[30px] lg:font-semibold">
-                {heading}
-              </div>
-              <div className="font-semibold md:hidden">{subHead}</div>
+      <div className="max-w-[1137px] mx-5 mt-[104px] pb-[62px] absolute xl:relative  font-poppins md:mt-[59px] lg:ml-[98px] lg:mr-[68px]">
+        <div className="flex items-center justify-between mb-[61px]">
+          <div>
+            <div className="text-[20px] font-medium lg:text-[30px] lg:font-semibold">
+              {heading}
             </div>
-            <div className="hidden lg:flex gap-2">
-              <AddDeveloperBtn />
-              <CreateContractBtn />
-            </div>
+            <div className="font-semibold md:hidden">{subHead}</div>
           </div>
+          <div className="hidden lg:flex gap-2">
+            <AddDeveloperBtn />
+            <CreateContractBtn />
+          </div>
+        </div>
+   
 
+        <div>
           <div
             id="hi"
-            className="px-[15px] py-4 overview-expense-bg mt-[30px] rounded-lg xl:px-[35px] xl:py-[31px]"
+            className=" px-[15px] py-4 overview-expense-bg mt-[30px] rounded-lg xl:px-[35px] xl:py-[31px]"
           >
             <div className="flex items-center gap-3 mb-5">
               <img src={notice} alt="notice" />
@@ -41,11 +42,11 @@ const SearchingDoc = ({
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-3 w-full">
+            <div className="flex flex-col gap-3 xl:flex-row">
               {onBoarding.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-[15px] bg-white py-[17px] px-[18px] rounded-lg"
+                  className="flex items-start flex-1 gap-[15px]  bg-white py-[17px] px-[18px] rounded-lg xl:max-w-[342px]"
                 >
                   <img src={docpin} alt="docpin icon" />
                   <div>
@@ -71,7 +72,7 @@ const SearchingDoc = ({
           </div>
           <div className="text-[20px] font-medium lg:text-[29px] text-center">
             {searchingdocTitle}
-            <p className="grey-text text-[12px] text-center font-normal leading-normal mx-[35px] xl:mx-auto xl:w-[60 %] lg:text-[20px]">
+            <p className="max-w-[550px] grey-text text-[12px] text-center font-normal leading-normal mx-[35px] xl:mx-auto xl:w-[60 %] lg:text-[20px]">
               {searchingdocText}
             </p>
 
@@ -85,3 +86,4 @@ const SearchingDoc = ({
   );
 };
 export default SearchingDoc;
+

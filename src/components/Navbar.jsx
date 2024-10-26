@@ -9,6 +9,7 @@ import logout from "../assets/svg/logout.svg";
 import dropdown from "../assets/svg/dropdown.svg";
 import { useEffect, useRef, useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
@@ -79,7 +80,10 @@ const Navbar = () => {
         } md:relative md:translate-x-0 md:h-[1024px]`}
       >
         <div className="pt-[44px] pl-[40px] lg:pt-[73px]">
-          <h1 onClick={handleToggleMenu} className=" text-[35px] font-extrabold leading-normal mb-[50px]">
+          <h1
+            onClick={handleToggleMenu}
+            className=" text-[35px] font-extrabold leading-normal mb-[50px]"
+          >
             Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
@@ -140,7 +144,10 @@ const Navbar = () => {
         </div>
 
         <div
-          onClick={() => setToggleLogout(!toggleLogout)}
+          onClick={() => {
+            setToggleMenu(!toggleMenu);
+            setToggleLogout(!toggleLogout);
+          }}
           className="user-bg-clr px-[22px] py-[20px]"
         >
           <div className="flex items-center gap-2">
@@ -158,7 +165,7 @@ const Navbar = () => {
             {toggleLogout && (
               <button className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
                 <img src={logout} alt="logout icon" />
-                Log Out
+                <NavLink to="">Log Out</NavLink>
               </button>
             )}
           </div>

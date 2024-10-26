@@ -23,7 +23,7 @@ const FormInput = ({
           value={value}
           onChange={onChange}
           required={required}
-          className="border border-gray-400 outline-gray-400 outline-offset-4 rounded-lg p-3 "
+          className="border border-gray-400 outline-gray-400 rounded-lg p-3 "
         />
       </div>
     </div>

@@ -73,11 +73,19 @@
     border: 1px solid #4195f1;
   }
 
+  .stepper-clr {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  option:disabled {
+    color: rgba(0, 0, 0, 0.2);
+  }
+
   .image-wrapper {
     position: relative;
   }
 
-  .image {
+  /* .image {
     display: block;
     width: 100%;
     height: auto;
@@ -101,5 +109,5 @@
     color: white;
     z-index: 2;
     padding: 20px;
-  }
+  } */
 }

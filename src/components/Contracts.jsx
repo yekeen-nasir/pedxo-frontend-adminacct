@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const Contracts = () => {
   return (
     <section>
-      <div className=" mt-[190px] absolute w-full max-w-[1155px] xl:px-[157px] xl:mx-[157px]">
+      <div className=" mt-[190px] absolute w-full max-w-[1155px] xl:ml-[101px] xl:px-[157px]">
         <div className="text-center">
           <div className="text-[20px] font-bold xl:text-[31px] xl:mb-6">
             Creating a Contract
@@ -17,7 +17,7 @@ const Contracts = () => {
         </div>
 
         <div className="flex flex-col gap-3 mt-[31px] mx-[21px] xl:mt-10">
-          <NavLink to="">
+          <NavLink to="/full-time-form">
 
             <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
               <div className="flex gap-[13px]">
@@ -38,7 +38,7 @@ const Contracts = () => {
             </div>
           </NavLink>
 
-          <NavLink to="">
+          <NavLink to="/gig-based-form">
             <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
               <div className="flex gap-[13px]">
                 <img src={gigbased} alt="target icon" />
