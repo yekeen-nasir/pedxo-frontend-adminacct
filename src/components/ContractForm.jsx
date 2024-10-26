@@ -64,7 +64,7 @@ const ContractForm = () => {
       <div className=" mt-[50px] mb-[61px]">
         <div className="mx-[21px] xl:mx-0">
           <div
-            className="flex items-center gap-1 font-medium leading-normal pr-text-clr xl:gap-3 xl:text-2xl xl:ml-20"
+            className="flex items-center gap-1 font-medium leading-normal pr-text-clr md:ml-24 xl:gap-3 xl:text-2xl "
             onClick={handlePrevious}
           >
             <img src={leftarrorw} alt="arrow" className="xl:w-[33px]" />
@@ -103,7 +103,7 @@ const ContractForm = () => {
                 }`}
               >
                 <div className="step">{i + 1}</div>
-                <p className="text-center text-[10px] font-medium leading-normal  xl:text-2xl">
+                <p className="text-center text-[10px] font-medium leading-normal xl:text-2xl px-4 xl:px-0">
                   {step}
                 </p>
               </div>
