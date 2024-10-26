@@ -81,10 +81,10 @@ const FormFour = ({ onChange, value }) => {
           required={true}
         />
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1  xl:gap-4">
           <label
             htmlFor="location"
-            className="text-[12px] font-semibold leading-normal"
+            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Location *
           </label>
@@ -111,10 +111,10 @@ const FormFour = ({ onChange, value }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 xl:gap-4">
           <label
             htmlFor="location"
-            className="text-[12px] font-semibold leading-normal"
+            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Region/Province/State *
           </label>

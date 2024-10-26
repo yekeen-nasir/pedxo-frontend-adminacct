@@ -115,9 +115,9 @@ const ContractForm = () => {
             <form>
               <div>{renderStep()}</div>
 
-              <div className="flex justify-center">
+              <div className="lg:flex lg:justify-center">
                 <button
-                  className="pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[12px] py-[14px] xl:w-auto xl:mx-auto xl:px-[60px] "
+                  className="pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[12px] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px]"
                   onClick={() => {
                     currentStep === steps.length
                       ? setComplete(true)
