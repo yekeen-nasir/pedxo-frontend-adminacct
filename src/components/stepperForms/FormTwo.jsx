@@ -1,6 +1,7 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 import { useEffect, useRef, useState } from "react";
+import ContractFormInput from "../ContractFormInput";
 
 const FormTwo = ({ onChange, value }) => {
   // Dropdown 1
@@ -13,10 +14,10 @@ const FormTwo = ({ onChange, value }) => {
   const [selectedSeniority, setSelectedSeniority] = useState("");
   const seniorityRef = useRef(null);
 
-   // Dropdown 3
-   const [isOpenScope, setIsOpenScope] = useState(false);
-   const [selectedScope, setSelectedScope] = useState("");
-   const scopeRef = useRef(null);
+  // Dropdown 3
+  const [isOpenScope, setIsOpenScope] = useState(false);
+  const [selectedScope, setSelectedScope] = useState("");
+  const scopeRef = useRef(null);
 
   // Toggle Dropdown 1
   const toggleRoleDropdown = () => {
@@ -28,8 +29,8 @@ const FormTwo = ({ onChange, value }) => {
     setIsOpenSeniority((prev) => !prev);
   };
 
-   // Toggle Dropdown 3
-   const toggleScopeDropdown = () => {
+  // Toggle Dropdown 3
+  const toggleScopeDropdown = () => {
     setIsOpenScope((prev) => !prev);
   };
 
@@ -39,7 +40,7 @@ const FormTwo = ({ onChange, value }) => {
     setIsOpenRole(false);
   };
 
-   // Option selection handlers 2
+  // Option selection handlers 2
   const handleSeniorityOptionClick = (option) => {
     setSelectedSeniority(option);
     setIsOpenSeniority(false);
@@ -57,7 +58,10 @@ const FormTwo = ({ onChange, value }) => {
       if (roleRef.current && !roleRef.current.contains(event.target)) {
         setIsOpenRole(false);
       }
-      if (seniorityRef.current && !seniorityRef.current.contains(event.target)) {
+      if (
+        seniorityRef.current &&
+        !seniorityRef.current.contains(event.target)
+      ) {
         setIsOpenSeniority(false);
       }
       if (scopeRef.current && !scopeRef.current.contains(event.target)) {
@@ -123,7 +127,7 @@ const FormTwo = ({ onChange, value }) => {
             htmlFor="Seniority Level"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-           Seniority Level (Optional)
+            Seniority Level (Optional)
           </label>
           <div className="select-container" ref={seniorityRef}>
             <div
@@ -161,7 +165,7 @@ const FormTwo = ({ onChange, value }) => {
           <div className="select-container" ref={scopeRef}>
             <div
               className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleScopeDropdown }
+              onClick={toggleScopeDropdown}
             >
               {selectedScope}
               <span className="custom-arrow">
@@ -184,52 +188,29 @@ const FormTwo = ({ onChange, value }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
-          <label
-            htmlFor="start date"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Start Date *
-          </label>
-          <input
-            // type="date"
-            name="startDate"
-            id="start date"
-            placeholder="Time frame    MM/DD/YYYY"
-            required
-            value={value}
-            onChange={onChange}
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-            style={{
-              borderColor: "rgba(0, 0, 0, 0.20)",
-            }}
-          />
-        </div>
+        <ContractFormInput
+          htmlFor="startDate"
+          label="Start Date *"
+          type="date"
+          name="startDate"
+          id="startDate"
+          placeholder=""
+          value={value}
+          onChange={onChange}
+          required={true}
+        />
 
-        <div className="flex flex-col gap-1 xl:gap-4">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="endDate"
-              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-            >
-              End Date *
-            </label>
-            <div>hi</div>
-          </div>
-          <input
-            type="date"
-            name="endDate"
-            id="endDate"
-            placeholder="MM/DD/YYYY"
-            required
-            value={value}
-            onChange={onChange}
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-            style={{
-              borderColor: "rgba(0, 0, 0, 0.20)",
-            }}
-          />
-        </div>
+        <ContractFormInput
+          htmlFor="endDate"
+          label="End Date *"
+          type="date"
+          name="endDate"
+          id="endDate"
+          placeholder=""
+          value={value}
+          onChange={onChange}
+          required={true}
+        />
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label
