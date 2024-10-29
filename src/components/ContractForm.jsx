@@ -7,7 +7,7 @@ import FormThree from "./stepperForms/FormThree";
 import FormFour from "./stepperForms/FormFour";
 import { Link } from "react-router-dom";
 
-const ContractForm = () => {
+const ContractForm = ({subHead}) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
   const [formData, setFormData] = useState();
@@ -39,7 +39,7 @@ const ContractForm = () => {
       case 2:
         return (
           <div>
-            <FormTwo value={formData} onChange={handleInputChange} />
+            <FormTwo value={formData} onChange={handleInputChange} subHead={subHead} />
           </div>
         );
 
