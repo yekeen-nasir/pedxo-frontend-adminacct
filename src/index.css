@@ -65,6 +65,10 @@
     background-color: #f7f7f7;
   }
 
+  .overview-text{
+    color: rgba(0, 0, 0, 0.70);
+  }
+
   .icon {
     fill: red;
   }

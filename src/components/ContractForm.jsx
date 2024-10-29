@@ -89,7 +89,6 @@ const ContractForm = () => {
           </div>
         </div>
 
-        {/* md:mx-[143px] xl:grid xl:grid-cols-2 */}
         <div className="md:mx-[143px] xl:flex xl:gap-[39px]">
           <div
             className="flex  mt-4 mb-9 mr-[45px] px-2 xl:m-0 
@@ -98,7 +97,7 @@ const ContractForm = () => {
             {steps.map((step, i) => (
               <div
                 key={i}
-                className={`step-item ${currentStep === i + 1 && "active"} ${
+                className={`step-item  ${currentStep === i + 1 && "active"} ${
                   (i + 1 < currentStep || complete) && "complete"
                 }`}
               >

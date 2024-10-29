@@ -3,14 +3,15 @@
 }
 
 .step-item:not(:first-child):before {
-  @apply content-[""] absolute w-full h-[1px] right-2/4 top-[30%] -translate-y-2/4 xl:w-[2px] xl:h-[50px] xl:-top-5 xl:left-5 xl:-translate-x-1/2 ;
+  @apply content-[""] absolute w-full h-[1px] right-2/4 top-[30%] -translate-y-2/4 xl:w-[2px] xl:h-[50px] xl:-top-5 xl:left-5 xl:-translate-x-1/2;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .step {
-  @apply w-10 h-10 bg-white text-[12px] font-semibold leading-normal rounded-full flex justify-center items-center z-10 ;
+  @apply w-10 h-10 text-[12px] font-semibold leading-normal rounded-full flex justify-center items-center z-10 xl:text-xl;
   border: 1px solid rgba(0, 0, 0, 0.3);
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.4);
+  background-color: #F2F3EE;
 }
 
 .active .step {
@@ -24,7 +25,7 @@
 }
 
 .step-item > p {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .complete p {
@@ -33,5 +34,5 @@
 
 .complete:not(:first-child):before,
 .active:not(:first-child):before {
-  @apply bg-green-600;
+  background-color: #008000;
 }

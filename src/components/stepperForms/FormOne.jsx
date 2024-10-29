@@ -6,12 +6,12 @@ import { useEffect, useRef, useState } from "react";
 const FormOne = ({ onChange, value }) => {
   // Dropdown 1
   const [isOpenLocation, setIsOpenLocation] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("Select a location");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const locationRef = useRef(null);
 
   // Dropdown 2
   const [isOpenRegion, setIsOpenRegion] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("Select a region");
+  const [selectedRegion, setSelectedRegion] = useState("");
   const regionRef = useRef(null);
 
   // Toggle Dropdown 1
@@ -58,11 +58,11 @@ const FormOne = ({ onChange, value }) => {
           Personal Information
         </div>
         <ContractInputForm
-          htmlFor="client name"
+          htmlFor="clientName"
           label="Client Name *"
           type="text"
           name="clientName"
-          id="client name"
+          id="clientName"
           placeholder="John Doe"
           value={value}
           onChange={onChange}
@@ -83,10 +83,10 @@ const FormOne = ({ onChange, value }) => {
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="location"
+            htmlFor="Country"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Location *
+            Country *
           </label>
           <div className="select-container" ref={locationRef}>
             <div className="select-display h-10 p-3 xl:h-[60px]" onClick={toggleLocationDropdown}>
@@ -96,7 +96,7 @@ const FormOne = ({ onChange, value }) => {
               </span>
             </div>
             {isOpenLocation && (
-              <div className="dropdown-menu">
+              <div className="dropdown-menu xl:text-[16px]">
                 <div onClick={() => handleLocationOptionClick("Option 1")}>
                   Option 1
                 </div>
@@ -126,7 +126,7 @@ const FormOne = ({ onChange, value }) => {
               </span>
             </div>
             {isOpenRegion && (
-              <div className="dropdown-menu">
+              <div className="dropdown-menu xl:text-[16px]">
                 <div onClick={() => handleRegionOptionClick("Option 1")}>
                   Option 1
                 </div>

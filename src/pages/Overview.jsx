@@ -13,26 +13,29 @@ const Overview = () => {
         </header>
 
         <div className="mx-[19px] mt-10">
-          <h1 className="text-[20px] font-semibold leading-normal  xl:text-[30px]">
-            Welcome Victor
+          <h1
+            className="text-[20px] font-Inter font-bold  leading-normal  xl:text-[30px]"
+            style={{ color: "rgba(0, 0, 0, 0.90)" }}
+          >
+            Welcome, <span className="overview-text">Victor</span>
           </h1>
-          <p className="text-sm font-medium leading-normal grey-text xl:text-[16px]">
+          <p className="text-sm font-Inter font-medium leading-normal grey-text xl:text-[16px]">
             We hope you’re having a good day!
           </p>
 
-          <div className="px-[22px] pt-[21px] pb-[39px] mt-[62px] overview-expense-bg flex flex-col gap-6 2xl:px-[92px]">
+          <div className="px-[22px] pt-[21px] pb-[39px] mt-[62px] overview-expense-bg flex flex-col gap-6 xl:px-[92px]">
             <div>
-              <h2 className="font-semibold leading-normal xl:text-[27px]">
+              <h2 className="font-semibold leading-normal xl:text-[27px] overview-text">
                 Total Expenses
               </h2>
-              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
+              <p className="mb-2 text-sm font-Inter font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
                 Total amount you've spent on your contractors
               </p>
 
               <div className="flex justify-between bg-white rounded-lg py-3 px-[21px] xl:py-10 xl:px-16">
                 <div className="flex items-center gap-4">
                   <img src={moneybag} alt="" />
-                  <span className="text-2xl font-semibold leading-normal">
+                  <span className="text-2xl font-semibold leading-normal xl:text-[40px] overview-text">
                     $0
                   </span>
                 </div>
@@ -40,17 +43,17 @@ const Overview = () => {
             </div>
 
             <div>
-              <h2 className="font-semibold leading-normal xl:text-[27px]">
+              <h2 className="font-semibold leading-normal xl:text-[27px] overview-text">
                 Active Contractors
               </h2>
-              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
+              <p className="mb-2 text-sm font-Inter font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
                 Current contractors on your team
               </p>
 
               <div className="flex justify-between bg-white  rounded-lg py-3 px-[21px] xl:py-10 xl:px-16">
                 <div className="flex items-center gap-4">
                   <img src={people} alt="" />
-                  <span className="text-2xl font-semibold leading-normal">
+                  <span className="text-2xl font-semibold leading-normal xl:text-[40px] overview-text">
                     0
                   </span>
                 </div>
@@ -67,24 +70,21 @@ const Overview = () => {
             </div>
 
             <div>
-              <h2 className="font-semibold leading-normal xl:text-[27px]">
+              <h2 className="font-semibold leading-normal xl:text-[27px] overview-text">
                 Onboarding
               </h2>
-              <p className="mb-2 text-sm font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
+              <p className="mb-2 text-sm font-Inter font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
                 Pending contracts on their way
               </p>
 
-              <div className="flex justify-between bg-white  rounded-lg py-3 px-[21px] xl:py-10 xl:px-16">
+              <div className="flex justify-between bg-white  rounded-lg py-3 px-[21px] xl:py-10 xl:px-16 overview-text">
                 <div className="flex items-center gap-4">
                   <img src={telegram} alt="" />
-                  <span className="text-2xl font-semibold leading-normal">
+                  <span className="text-2xl font-semibold leading-normal xl:text-[40px]">
                     0
                   </span>
                 </div>
-                <div
-                  className="text-[14px] pl-5 py-[14px] rounded-lg font-medium xl:text-[16px]"
-                  style={{ color: "rgba(0, 0, 0, 0.70)" }}
-                >
+                <div className="text-[14px] pl-5 py-[14px] rounded-lg font-medium xl:text-[16px]">
                   Pending
                 </div>
               </div>

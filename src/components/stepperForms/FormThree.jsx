@@ -1,48 +1,29 @@
-import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 import { useEffect, useRef, useState } from "react";
 
-const FormThree = ({ onChange, value }) => {
-  // Dropdown 1
-  const [isOpenLocation, setIsOpenLocation] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("Select a location");
-  const locationRef = useRef(null);
+const FormTwo = ({ onChange, value }) => {
+  // Dropdown
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const dropdownRef = useRef(null);
 
-  // Dropdown 2
-  const [isOpenRegion, setIsOpenRegion] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("Select a region");
-  const regionRef = useRef(null);
-
-  // Toggle Dropdown 1
-  const toggleLocationDropdown = () => {
-    setIsOpenLocation((prev) => !prev);
+  // Toggle Dropdown
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
   };
 
-  // Toggle Dropdown 2
-  const toggleRegionDropdown = () => {
-    setIsOpenRegion((prev) => !prev);
-  };
-
-  // Option selection handlers
+  // Option selection handler
   const handleLocationOptionClick = (option) => {
-    setSelectedLocation(option);
-    setIsOpenLocation(false);
-  };
-
-  const handleRegionOptionClick = (option) => {
-    setSelectedRegion(option);
-    setIsOpenRegion(false);
+    setSelectedOption(option);
+    setIsOpen(false);
   };
 
   // Close dropdowns if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (locationRef.current && !locationRef.current.contains(event.target)) {
-        setIsOpenLocation(false);
-      }
-      if (regionRef.current && !regionRef.current.contains(event.target)) {
-        setIsOpenRegion(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -55,93 +36,139 @@ const FormThree = ({ onChange, value }) => {
     <div>
       <div className="flex flex-col gap-[18px]">
         <div className="text-lg font-semibold leading-normal">
-          Personal Information
+          Compensation and Budget
         </div>
-        <ContractInputForm
-          htmlFor="client name"
-          label="Client Name *"
-          type="text"
-          name="clientName"
-          id="client name"
-          placeholder="John Doe"
-          value={value}
-          onChange={onChange}
-          required={true}
-        />
 
-        <ContractInputForm
-          htmlFor="email"
-          label="Email *"
-          type="email"
-          name="email"
-          id="email"
-          placeholder="John@gmail.com"
-          value={value}
-          onChange={onChange}
-          required={true}
-        />
+        <div className="flex flex-col gap-1 xl:gap-4 relative">
+          <label
+            htmlFor="paymentRate"
+            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+          >
+            Payment Rate *
+          </label>
+          <div className="relative">
+            <div
+              className="py-[15px] pl-[19px] h-full rounded-lg pointer-events-none absolute inset-y-0 left-0  flex items-center pr-[14px]  xl:pl-[37px] xl:w-[115px]"
+              style={{
+                backgroundColor: "rgba(217, 217, 217, 0.87)",
+                border: "1px solid rgba(0, 0, 0, 0.30",
+              }}
+            >
+              <span className="text-[12px] font-semibold xl:text-xl">$USD</span>
+            </div>
+            <input
+              type="number"
+              name="paymentRate "
+              id="paymentRate "
+              required
+              value={value}
+              onChange={onChange}
+              className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 pl-20 text-[12px] xl:pl-40 xl:h-[60px] xl:text-[16px]"
+              style={{
+                borderColor: "rgba(0, 0, 0, 0.20)",
+              }}
+            />
+          </div>
+        </div>
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="location"
+            htmlFor="paymentFrequency"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Location *
+            Payment Frequency *
           </label>
-          <div className="select-container" ref={locationRef}>
-            <div className="select-display" onClick={toggleLocationDropdown}>
-              {selectedLocation}
+          <div className="select-container" ref={dropdownRef}>
+            <div
+              className="select-display h-10 p-3 xl:h-[60px]"
+              onClick={toggleDropdown}
+            >
+              {selectedOption}
               <span className="custom-arrow">
                 <img src={dropdownarrow} alt="" />
               </span>
             </div>
-            {isOpenLocation && (
-              <div className="dropdown-menu">
-                <div onClick={() => handleLocationOptionClick("Option 1")}>
-                  Option 1
+
+            {isOpen && (
+              <div className="dropdown-menu xl:text-[16px]">
+                <div onClick={() => handleLocationOptionClick("Monthly")}>
+                  Monthly
                 </div>
-                <div onClick={() => handleLocationOptionClick("Option 2")}>
-                  Option 2
+                <div onClick={() => handleLocationOptionClick("Bi-weekly")}>
+                  Bi-weekly
                 </div>
-                <div onClick={() => handleLocationOptionClick("Option 3")}>
-                  Option 3
+                <div onClick={() => handleLocationOptionClick("Weekly")}>
+                  Weekly
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
+        {/* <div className="relative flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="location"
+            htmlFor="paymentFrequency"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Region/Province/State *
+            Payment Frequency *
           </label>
-          <div className="select-container" ref={regionRef}>
-            <div className="select-display" onClick={toggleRegionDropdown}>
-              {selectedRegion}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-            {isOpenRegion && (
-              <div className="dropdown-menu">
-                <div onClick={() => handleRegionOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleRegionOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleRegionOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
+          <select
+            name="paymentFrequency"
+            id="paymentFrequency"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          >
+            <option value=""></option>
+            <option className="w-full max-w-full" value="Monthly">
+              Monthly
+            </option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Weekly">Weekly</option>
+          </select>
+          <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+            <img src={dropdownarrow} alt="" />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
-export default FormThree;
+export default FormTwo;
+
+{
+  /* <div className="flex flex-col gap-1 xl:gap-4">
+          <label
+            htmlFor="paymentFrequency"
+            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+          >
+            Payment Frequency *
+          </label>
+          <div className="select-container" ref={dropdownRef}>
+            <div
+              className="select-display h-10 p-3 xl:h-[60px]"
+              onClick={toggleDropdown}
+            >
+              {selectedOption}
+              <span className="custom-arrow">
+                <img src={dropdownarrow} alt="" />
+              </span>
+            </div>
+
+            {isOpen && (
+              <div className="dropdown-menu xl:text-[16px]">
+                <div onClick={() => handleLocationOptionClick("Monthly")}>
+                  Monthly
+                </div>
+                <div onClick={() => handleLocationOptionClick("Bi-weekly")}>
+                  Bi-weekly
+                </div>
+                <div onClick={() => handleLocationOptionClick("Weekly")}>
+                  Weekly
+                </div>
+              </div>
+            )}
+          </div>
+        </div> */
+}
