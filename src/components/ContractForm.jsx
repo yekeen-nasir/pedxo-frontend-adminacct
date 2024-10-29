@@ -32,7 +32,7 @@ const ContractForm = () => {
       case 1:
         return (
           <div>
-            <FormOne value={formData} onChange={handleInputChange} />
+            <FormOne value={formData} onChange={handleInputChange}   />
           </div>
         );
 
@@ -77,7 +77,7 @@ const ContractForm = () => {
 
           <div className="mt-[45px] md:mx-[143px] xl:mb-[30px] xl:mt-[75px]">
             <h3 className="text-xl leading-normal font-bold xl:text-[29px]">
-              Preparing a contract
+              Preparing a contract 
             </h3>
             <p
               className="text-[12px] font-medium leading-normal xl:w-[428px] xl:text-[16px]"

@@ -3,7 +3,7 @@ import { ContractForm } from "../components";
 const FullTimeContract = () => {
   return (
     <div className="font-poppins ">
-      <ContractForm />
+      <ContractForm subHead="Full-time Role"/>
     </div>
   );
 };

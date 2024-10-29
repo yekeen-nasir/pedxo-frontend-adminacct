@@ -3,7 +3,7 @@ import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 import { useEffect, useRef, useState } from "react";
 import ContractFormInput from "../ContractFormInput";
 
-const FormTwo = ({ onChange, value }) => {
+const FormTwo = ({ onChange, value, subHead }) => {
   // Dropdown 1
   const [isOpenRole, setIsOpenRole] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
@@ -85,7 +85,7 @@ const FormTwo = ({ onChange, value }) => {
             className="text-[12px] font-medium leading-normal xl:text-[16px]"
             style={{ color: "rgba(0, 0, 0, 0.50)" }}
           >
-            Full-time Role
+            {subHead}
           </div>
         </div>
 

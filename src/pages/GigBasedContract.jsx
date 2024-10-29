@@ -1,6 +1,10 @@
+import { ContractForm } from "../components";
+
 const GigBasedContract = () => {
   return (
-    <div>GigBasedContract</div>
-  )
-}
-export default GigBasedContract
+    <div className="font-poppins ">
+      <ContractForm subHead="Gig-Based Role" />
+    </div>
+  );
+};
+export default GigBasedContract;
