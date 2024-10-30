@@ -1,78 +1,22 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import { useEffect, useRef, useState } from "react";
 import ContractFormInput from "../ContractFormInput";
+import { Switch } from "antd";
+import { useState } from "react";
 
-const FormTwo = ({ onChange, value, subHead }) => {
-  // Dropdown 1
-  const [isOpenRole, setIsOpenRole] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
-  const roleRef = useRef(null);
+const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
+  const [hasEndDate, setHasEndDate] = useState(false);
 
-  // Dropdown 2
-  const [isOpenSeniority, setIsOpenSeniority] = useState(false);
-  const [selectedSeniority, setSelectedSeniority] = useState("");
-  const seniorityRef = useRef(null);
-
-  // Dropdown 3
-  const [isOpenScope, setIsOpenScope] = useState(false);
-  const [selectedScope, setSelectedScope] = useState("");
-  const scopeRef = useRef(null);
-
-  // Toggle Dropdown 1
-  const toggleRoleDropdown = () => {
-    setIsOpenRole((prev) => !prev);
+  const toggleEndDate = (e) => {
+    if (!hasEndDate) {
+      e.preventDefault();
+    }
+    return;
   };
 
-  // Toggle Dropdown 2
-  const toggleSeniorityDropdown = () => {
-    setIsOpenSeniority((prev) => !prev);
+  const handleSwitch = (checked) => {
+    setHasEndDate(checked);
   };
-
-  // Toggle Dropdown 3
-  const toggleScopeDropdown = () => {
-    setIsOpenScope((prev) => !prev);
-  };
-
-  // Option selection handlers 1
-  const handleRoleOptionClick = (option) => {
-    setSelectedRole(option);
-    setIsOpenRole(false);
-  };
-
-  // Option selection handlers 2
-  const handleSeniorityOptionClick = (option) => {
-    setSelectedSeniority(option);
-    setIsOpenSeniority(false);
-  };
-
-  // Option selection handlers 3
-  const handleScopeOptionClick = (option) => {
-    setSelectedScope(option);
-    setIsOpenScope(false);
-  };
-
-  // Close dropdowns if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (roleRef.current && !roleRef.current.contains(event.target)) {
-        setIsOpenRole(false);
-      }
-      if (
-        seniorityRef.current &&
-        !seniorityRef.current.contains(event.target)
-      ) {
-        setIsOpenSeniority(false);
-      }
-      if (scopeRef.current && !scopeRef.current.contains(event.target)) {
-        setIsOpenScope(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div>
@@ -89,102 +33,84 @@ const FormTwo = ({ onChange, value, subHead }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
+        <div className="relative flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="Role Title"
+            htmlFor="roleTitle"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Role Title (Optional)
+            Role Title(Optional)
           </label>
-          <div className="select-container" ref={roleRef}>
-            <div
-              className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleRoleDropdown}
-            >
-              {selectedRole}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-            {isOpenRole && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleRoleOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleRoleOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleRoleOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
+          <select
+            name="roleTitle"
+            id="roleTitle"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          >
+            <option value=""></option>
+            <option className="w-full max-w-full" value="Monthly">
+              Monthly
+            </option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Weekly">Weekly</option>
+          </select>
+          <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+            <img src={dropdownarrow} alt="" />
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
+        <div className="relative flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="Seniority Level"
+            htmlFor="seniorityLevel"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Seniority Level (Optional)
           </label>
-          <div className="select-container" ref={seniorityRef}>
-            <div
-              className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleSeniorityDropdown}
-            >
-              {selectedSeniority}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-            {isOpenSeniority && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleSeniorityOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleSeniorityOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleSeniorityOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
+          <select
+            name="seniorityLevel"
+            id="seniorityLevel"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          >
+            <option value=""></option>
+            <option className="w-full max-w-full" value="Monthly">
+              Monthly
+            </option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Weekly">Weekly</option>
+          </select>
+          <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+            <img src={dropdownarrow} alt="" />
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
+        <div className="relative flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="scope of work"
+            htmlFor="scopeOfWorkTemplate"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Scope of Work *
+            Scope of Work template
           </label>
-          <div className="select-container" ref={scopeRef}>
-            <div
-              className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleScopeDropdown}
-            >
-              {selectedScope}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-            {isOpenScope && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleScopeOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleScopeOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleScopeOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
+          <select
+            name="scopeOfWorkTemplate"
+            id="scopeOfWorkTemplate"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          >
+            <option value=""></option>
+            <option className="w-full max-w-full" value="Monthly">
+              Monthly
+            </option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Weekly">Weekly</option>
+          </select>
+          <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+            <img src={dropdownarrow} alt="" />
           </div>
         </div>
 
@@ -200,17 +126,40 @@ const FormTwo = ({ onChange, value, subHead }) => {
           required={true}
         />
 
-        <ContractFormInput
-          htmlFor="endDate"
-          label="End Date *"
-          type="date"
-          name="endDate"
-          id="endDate"
-          placeholder=""
-          value={value}
-          onChange={onChange}
-          required={true}
-        />
+        <div className="relative flex flex-col gap-1 xl:gap-4  ">
+          <div className="flex justify-between">
+            <label
+              htmlFor="endDate"
+              className={`text-[12px] font-semibold leading-normal xl:text-[16px]  ${
+                hasEndDate ? "opacity-100" : "opacity-[0.2]"
+              } ${
+                showSwitch ? "opacity-[0.2]" :  "opacity-100"
+              }`}
+            >
+              {endDate}
+            </label>
+           {showSwitch &&  <Switch size="small" onChange={handleSwitch} />}
+          </div>
+          <input
+            type="date"
+            name="endDate"
+            id="endDate"
+            value={value}
+            onChange={onChange}
+            required={true}
+            onClick={showSwitch && toggleEndDate}
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] appearance-none opacity-[0.2] ${
+              hasEndDate ? "opacity-100" : "opacity-[0.2]"
+            }
+            ${
+             showSwitch ? "opacity-[0.2]" :  "opacity-100"
+            }
+            `}
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          />
+        </div>
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label

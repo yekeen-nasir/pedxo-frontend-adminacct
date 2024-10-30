@@ -1,55 +1,9 @@
 import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import { useEffect, useRef, useState } from "react";
 
 const FormOne = ({ onChange, value }) => {
-  // Dropdown 1
-  const [isOpenLocation, setIsOpenLocation] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const locationRef = useRef(null);
-
-  // Dropdown 2
-  const [isOpenRegion, setIsOpenRegion] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const regionRef = useRef(null);
-
-  // Toggle Dropdown 1
-  const toggleLocationDropdown = () => {
-    setIsOpenLocation((prev) => !prev);
-  };
-
-  // Toggle Dropdown 2
-  const toggleRegionDropdown = () => {
-    setIsOpenRegion((prev) => !prev);
-  };
-
-  // Option selection handlers
-  const handleLocationOptionClick = (option) => {
-    setSelectedLocation(option);
-    setIsOpenLocation(false);
-  };
-
-  const handleRegionOptionClick = (option) => {
-    setSelectedRegion(option);
-    setIsOpenRegion(false);
-  };
-
-  // Close dropdowns if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (locationRef.current && !locationRef.current.contains(event.target)) {
-        setIsOpenLocation(false);
-      }
-      if (regionRef.current && !regionRef.current.contains(event.target)) {
-        setIsOpenRegion(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  
 
   return (
     <div>
@@ -83,61 +37,51 @@ const FormOne = ({ onChange, value }) => {
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="Country"
+            htmlFor="country"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Country *
           </label>
-          <div className="select-container" ref={locationRef}>
-            <div className="select-display h-10 p-3 xl:h-[60px]" onClick={toggleLocationDropdown}>
-              {selectedLocation}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
+          <div className="relative ">
+            <select
+              name="country"
+              id="country"
+              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
+            >
+              <option value=""></option>
+              <option value="Monthly">Monthly</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+            <div className="absolute top-[50%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+              <img src={dropdownarrow} alt="" />
             </div>
-            {isOpenLocation && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleLocationOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleLocationOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleLocationOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         <div className="flex flex-col gap-1 xl:gap-4">
           <label
-            htmlFor="location"
+            htmlFor="state"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Region/Province/State *
           </label>
-          <div className="select-container" ref={regionRef}>
-            <div className="select-display h-10 p-3 xl:h-[60px]" onClick={toggleRegionDropdown}>
-              {selectedRegion}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
+          <div className="relative ">
+            <select
+              name="state"
+              id="state"
+              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
+            >
+              <option value=""></option>
+              <option value="Monthly">Monthly</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+            <div className="absolute top-[50%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
+              <img src={dropdownarrow} alt="" />
             </div>
-            {isOpenRegion && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleRegionOptionClick("Option 1")}>
-                  Option 1
-                </div>
-                <div onClick={() => handleRegionOptionClick("Option 2")}>
-                  Option 2
-                </div>
-                <div onClick={() => handleRegionOptionClick("Option 3")}>
-                  Option 3
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

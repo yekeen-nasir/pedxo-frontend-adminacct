@@ -9,7 +9,7 @@ const Overview = () => {
     <section>
       <div>
         <header className="text-center py-2 overflow-banner text-sm font-medium px-[17px] xl:text-[18px]">
-          Hire Nigerian 🇳🇬 Devs by recommendation and Pay them as you go
+          Hire Nigerian 🇳🇬 Devs by recommendation and pay them as you go
         </header>
 
         <div className="mx-[19px] mt-10">

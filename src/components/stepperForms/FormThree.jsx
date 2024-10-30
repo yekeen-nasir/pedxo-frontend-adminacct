@@ -1,36 +1,8 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import { useEffect, useRef, useState } from "react";
 
 const FormTwo = ({ onChange, value }) => {
-  // Dropdown
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  const dropdownRef = useRef(null);
 
-  // Toggle Dropdown
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  // Option selection handler
-  const handleLocationOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-  };
-
-  // Close dropdowns if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div>
@@ -71,41 +43,8 @@ const FormTwo = ({ onChange, value }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
-          <label
-            htmlFor="paymentFrequency"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Payment Frequency *
-          </label>
-          <div className="select-container" ref={dropdownRef}>
-            <div
-              className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleDropdown}
-            >
-              {selectedOption}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-
-            {isOpen && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleLocationOptionClick("Monthly")}>
-                  Monthly
-                </div>
-                <div onClick={() => handleLocationOptionClick("Bi-weekly")}>
-                  Bi-weekly
-                </div>
-                <div onClick={() => handleLocationOptionClick("Weekly")}>
-                  Weekly
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* <div className="relative flex flex-col gap-1 xl:gap-4">
+        
+        <div className="relative flex flex-col gap-1 xl:gap-4">
           <label
             htmlFor="paymentFrequency"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
@@ -130,7 +69,7 @@ const FormTwo = ({ onChange, value }) => {
           <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
             <img src={dropdownarrow} alt="" />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

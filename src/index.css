@@ -28,6 +28,7 @@
 }
 
 @layer utilities {
+  
   .pr-text-clr {
     color: var(--pr-text-clr);
   }
