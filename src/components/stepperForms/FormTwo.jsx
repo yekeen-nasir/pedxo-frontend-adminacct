@@ -148,7 +148,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             onChange={onChange}
             required={true}
             onClick={showSwitch && toggleEndDate}
-            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] appearance-none opacity-[0.2] ${
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] opacity-[0.2] ${
               hasEndDate ? "opacity-100" : "opacity-[0.2]"
             }
             ${
