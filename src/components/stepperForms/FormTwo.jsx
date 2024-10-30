@@ -131,8 +131,10 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             <label
               htmlFor="endDate"
               className={`text-[12px] font-semibold leading-normal xl:text-[16px]  ${
-                hasEndDate ? "opacity-100" : "opacity-[0.2]"
-              } `}
+                hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"
+              }
+           
+              `}
             >
               {endDate}
             </label>
@@ -145,10 +147,11 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             value={value}
             onChange={onChange}
             required={true}
-            onClick={toggleEndDate}
+            onClick={showSwitch && toggleEndDate}
             className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${
-              hasEndDate ? "opacity-100" : "opacity-[0.2]"
-            }
+              hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"
+            } 
+   
         
             `}
             style={{
