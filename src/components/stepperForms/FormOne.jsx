@@ -1,9 +1,16 @@
 import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
+import { useQuery } from "@tanstack/react-query";
+import customFetch from "../utils";
 
 const FormOne = ({ onChange, value }) => {
-  
+  const result = useQuery({
+    queryKey: ["tasks"],
+    queryFn: () => customFetch.get("/"),
+  });
+
+  console.log(result);
 
   return (
     <div>
@@ -50,9 +57,13 @@ const FormOne = ({ onChange, value }) => {
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
-              <option value="Monthly">Monthly</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Monthly">Monthly</option>
+              {result.data.data.map((country, i) => {
+                return (
+                  <option key={i} value={country.name.common}>
+                    {country.name.common}
+                  </option>
+                );
+              })}
             </select>
             <div className="absolute top-[50%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
               <img src={dropdownarrow} alt="" />
