@@ -132,13 +132,11 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
               htmlFor="endDate"
               className={`text-[12px] font-semibold leading-normal xl:text-[16px]  ${
                 hasEndDate ? "opacity-100" : "opacity-[0.2]"
-              } ${
-                showSwitch ? "opacity-[0.2]" :  "opacity-100"
-              }`}
+              } `}
             >
               {endDate}
             </label>
-           {showSwitch &&  <Switch size="small" onChange={handleSwitch} />}
+            {showSwitch && <Switch size="small" onChange={handleSwitch} />}
           </div>
           <input
             type="date"
@@ -147,13 +145,11 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             value={value}
             onChange={onChange}
             required={true}
-            onClick={showSwitch && toggleEndDate}
-            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] opacity-[0.2] ${
+            onClick={toggleEndDate}
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${
               hasEndDate ? "opacity-100" : "opacity-[0.2]"
             }
-            ${
-             showSwitch ? "opacity-[0.2]" :  "opacity-100"
-            }
+        
             `}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
