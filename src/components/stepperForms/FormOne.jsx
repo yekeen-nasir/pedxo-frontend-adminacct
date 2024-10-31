@@ -111,7 +111,7 @@ const FormOne = ({ onChange, value }) => {
                 setStates([]);
               }}
               value={selectedCountry}
-              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
@@ -140,7 +140,7 @@ const FormOne = ({ onChange, value }) => {
             <select
               name="state"
               id="state"
-              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
