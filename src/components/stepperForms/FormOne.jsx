@@ -1,16 +1,69 @@
 import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import { useQuery } from "@tanstack/react-query";
-import customFetch from "../utils";
+import { useEffect, useState } from "react";
+import axios from "axios";
+// import { useQuery } from "@tanstack/react-query";
+// import customFetch from "../utils";
+
+const countriesUrl = "https://api.countrystatecity.in/v1/countries";
+const statesUrl = "https://api.countrystatecity.in/v1/countries";
 
 const FormOne = ({ onChange, value }) => {
-  const result = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => customFetch.get("/"),
-  });
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
-  console.log(result);
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(countriesUrl, {
+          headers: {
+            "X-CSCAPI-KEY":
+              "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
+          },
+        });
+        const data = response.data;
+        setCountries(data);
+        console.log(countries);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCountry) return;
+
+    const fetchStates = async () => {
+      try {
+        const response = await axios.get(
+          `${statesUrl}/${selectedCountry}/states`,
+          {
+            headers: {
+              "X-CSCAPI-KEY":
+                "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
+            },
+          }
+        );
+        const data = response.data;
+        setStates(data);
+        console.log(states);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchStates();
+  }, [selectedCountry]);
+  // const { data } = useQuery({
+  //   queryKey: ["country"],
+  //   queryFn: () => customFetch.get("/"),
+  // });
+
+  // console.log(data);
 
   return (
     <div>
@@ -53,14 +106,19 @@ const FormOne = ({ onChange, value }) => {
             <select
               name="country"
               id="country"
+              onChange={(e) => {
+                setSelectedCountry(e.target.value);
+                setStates([]);
+              }}
+              value={selectedCountry}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
-              {result.data.data.map((country, i) => {
+              {countries.map((country) => {
                 return (
-                  <option key={i} value={country.name.common}>
-                    {country.name.common}
+                  <option key={country.id} value={country.iso2}>
+                    {country.name}
                   </option>
                 );
               })}
@@ -86,9 +144,13 @@ const FormOne = ({ onChange, value }) => {
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
-              <option value="Monthly">Monthly</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Monthly">Monthly</option>
+              {states.map((state) => {
+                return (
+                  <option key={state.id} value={state.id}>
+                    {state.name}
+                  </option>
+                );
+              })}
             </select>
             <div className="absolute top-[50%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
               <img src={dropdownarrow} alt="" />
