@@ -1,11 +1,11 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import ContractFormInput from "../ContractFormInput";
 import { Switch } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
   const [hasEndDate, setHasEndDate] = useState(false);
+  const [minDate, setMinDate] = useState("");
 
   const toggleEndDate = (e) => {
     if (!hasEndDate) {
@@ -18,6 +18,11 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     setHasEndDate(checked);
   };
 
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+
+    setMinDate(today);
+  }, []);
 
   return (
     <div>
@@ -115,17 +120,28 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           </div>
         </div>
 
-        <ContractFormInput
-          htmlFor="startDate"
-          label="Start Date *"
-          type="date"
-          name="startDate"
-          id="startDate"
-          placeholder=""
-          value={value}
-          onChange={onChange}
-          required={true}
-        />
+        <div className="relative flex flex-col gap-1 xl:gap-4  ">
+          <div className="flex justify-between">
+            <label
+              htmlFor="startDate"
+              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+            >
+              Start Date
+            </label>
+          </div>
+          <input
+            type="date"
+            name="startDate"
+            id="startDate"
+            // value={value}
+            // onChange={onChange}
+            min={minDate}
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] "
+            style={{
+              borderColor: "rgba(0, 0, 0, 0.20)",
+            }}
+          />
+        </div>
 
         <div className="relative flex flex-col gap-1 xl:gap-4  ">
           <div className="flex justify-between">
@@ -148,6 +164,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             value={value}
             onChange={onChange}
             required={true}
+            min={minDate}
             onClick={showSwitch && toggleEndDate}
             className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${
               hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"

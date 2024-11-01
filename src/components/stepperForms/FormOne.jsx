@@ -25,7 +25,6 @@ const FormOne = ({ onChange, value }) => {
         });
         const data = response.data;
         setCountries(data);
-        console.log(countries);
       } catch (error) {
         console.log(error.message);
       }
@@ -50,7 +49,6 @@ const FormOne = ({ onChange, value }) => {
         );
         const data = response.data;
         setStates(data);
-        console.log(states);
       } catch (error) {
         console.log(error.message);
       }
