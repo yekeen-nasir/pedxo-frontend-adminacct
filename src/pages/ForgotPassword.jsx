@@ -33,7 +33,7 @@ const ForgotPassword = () => {
           <div className="mt-[46px]">
             <button
               type="submit"
-              className="py-4 font-medium bg-clr text-white w-full mt-[6px] rounded-lg"
+              className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
             >
               Continue
             </button>

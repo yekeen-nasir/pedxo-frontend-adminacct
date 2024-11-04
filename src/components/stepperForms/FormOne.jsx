@@ -23,6 +23,8 @@ const FormOne = ({ onChange, value }) => {
               "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
           },
         });
+       
+        console.log(response);
         const data = response.data;
         setCountries(data);
       } catch (error) {

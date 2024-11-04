@@ -26,7 +26,7 @@ const ContractFormInput = ({
           required={required}
           value={value}
           onChange={onChange}
-          className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+          className="w-full bg-transparent border outline-gray-400 pl-3 rounded-lg h-10 text-[12px] xl:h-[60px] xl:text-[16px]"
           style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
         />
       </div>

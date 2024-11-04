@@ -66,7 +66,6 @@ const FormFour = ({ onChange, value }) => {
           placeholder="John Doe"
           value={value}
           onChange={onChange}
-          required={true}
         />
 
         <ContractInputForm
@@ -78,7 +77,6 @@ const FormFour = ({ onChange, value }) => {
           placeholder="John@gmail.com"
           value={value}
           onChange={onChange}
-          required={true}
         />
 
         <div className="flex flex-col gap-1  xl:gap-4">

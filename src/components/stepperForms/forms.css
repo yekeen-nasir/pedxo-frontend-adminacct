@@ -47,8 +47,31 @@
   background-color: #f0f0f0;
 }
 
-
 .placeholder-clr {
   color: rgba(0, 0, 0, 0.2);
 }
 
+.loading {
+  margin: 0 auto;
+  width: 20px;
+  height: 20px;
+  border: 1px solid white;
+  border-top: 1px solid #4195f1;
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}

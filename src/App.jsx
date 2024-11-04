@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import {
+  AccountVerification,
   AddDeveloper,
   Agreements,
   CreateContract,
@@ -20,7 +21,7 @@ import {
   SignUp,
   Teams,
 } from "./pages";
-import { FormOne } from "./components";
+
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/account-verification",
+    element: <AccountVerification />,
     errorElement: <Error />,
   },
   {
@@ -48,13 +54,6 @@ const router = createBrowserRouter([
     path: "/full-time-form",
     element: <FullTimeContract />,
     errorElement: <Error />,
-    children: [
-      // {
-      //   path: "/form-one",
-      //   element: <FormOne />,
-      //   errorElement: <Error />,
-      // },
-    ],
   },
 
   {

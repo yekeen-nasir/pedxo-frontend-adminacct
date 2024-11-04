@@ -2,10 +2,14 @@ import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 import { Switch } from "antd";
 import { useEffect, useState } from "react";
+import Dropdown from "../../Dropdown.json";
+
+console.log(Dropdown.scopeOfWork.description);
 
 const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
   const [hasEndDate, setHasEndDate] = useState(false);
   const [minDate, setMinDate] = useState("");
+
 
   const toggleEndDate = (e) => {
     if (!hasEndDate) {
@@ -20,7 +24,6 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-
     setMinDate(today);
   }, []);
 
@@ -49,17 +52,19 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           <select
             name="roleTitle"
             id="roleTitle"
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
           >
-            <option value=""></option>
-            <option className="w-full max-w-full" value="Monthly">
-              Monthly
+            <option value="select an option" className="text-gray-500">
+              select an option
             </option>
-            <option value="Bi-weekly">Bi-weekly</option>
-            <option value="Weekly">Weekly</option>
+            {Dropdown.roleTitle.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
           <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
             <img src={dropdownarrow} alt="" />
@@ -76,17 +81,17 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           <select
             name="seniorityLevel"
             id="seniorityLevel"
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
           >
-            <option value=""></option>
-            <option className="w-full max-w-full" value="Monthly">
-              Monthly
-            </option>
-            <option value="Bi-weekly">Bi-weekly</option>
-            <option value="Weekly">Weekly</option>
+            <option value="select an option" className="text-gray-500"> select an option</option>
+            {Dropdown.seniorityLevels.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
           <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
             <img src={dropdownarrow} alt="" />
@@ -103,17 +108,17 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           <select
             name="scopeOfWorkTemplate"
             id="scopeOfWorkTemplate"
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
           >
-            <option value=""></option>
-            <option className="w-full max-w-full" value="Monthly">
-              Monthly
-            </option>
-            <option value="Bi-weekly">Bi-weekly</option>
-            <option value="Weekly">Weekly</option>
+            <option value="select an option" className="text-gray-500"> select an option</option>
+            {Dropdown.scopeOfWork.options.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
           <div className="absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl ">
             <img src={dropdownarrow} alt="" />

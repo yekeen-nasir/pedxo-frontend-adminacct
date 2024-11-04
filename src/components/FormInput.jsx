@@ -6,7 +6,7 @@ const FormInput = ({
   id,
   placeholder,
   value,
-  onChange,
+  onChange, 
   required = false,
 }) => {
   return (

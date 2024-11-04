@@ -76,38 +76,3 @@ const FormTwo = ({ onChange, value }) => {
 };
 export default FormTwo;
 
-{
-  /* <div className="flex flex-col gap-1 xl:gap-4">
-          <label
-            htmlFor="paymentFrequency"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Payment Frequency *
-          </label>
-          <div className="select-container" ref={dropdownRef}>
-            <div
-              className="select-display h-10 p-3 xl:h-[60px]"
-              onClick={toggleDropdown}
-            >
-              {selectedOption}
-              <span className="custom-arrow">
-                <img src={dropdownarrow} alt="" />
-              </span>
-            </div>
-
-            {isOpen && (
-              <div className="dropdown-menu xl:text-[16px]">
-                <div onClick={() => handleLocationOptionClick("Monthly")}>
-                  Monthly
-                </div>
-                <div onClick={() => handleLocationOptionClick("Bi-weekly")}>
-                  Bi-weekly
-                </div>
-                <div onClick={() => handleLocationOptionClick("Weekly")}>
-                  Weekly
-                </div>
-              </div>
-            )}
-          </div>
-        </div> */
-}
