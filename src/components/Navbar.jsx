@@ -9,13 +9,12 @@ import logout from "../assets/svg/logout.svg";
 import dropdown from "../assets/svg/dropdown.svg";
 import { useEffect, useRef, useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const navRef = useRef(null);
-
-  // const isMobile = () => window.innerWidth <= 768;
 
   const handleToggleMenu = () => {
     setToggleMenu(!toggleMenu);
@@ -26,6 +25,37 @@ const Navbar = () => {
       setToggleMenu(false);
     }
   };
+
+  useEffect(() => {
+    let startX = 0;
+    let endX = 0;
+
+    const handleTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+      endX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      const swipeDistance = startX - endX;
+      if (swipeDistance > 30) {
+        // If swipe left by more than 30px, close the navbar
+        setToggleMenu(false);
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -45,13 +75,16 @@ const Navbar = () => {
       </div>
       <div
         ref={navRef}
-        className={`absolute z-10 h-full sec-bg-clr max-w-[228px] flex flex-col justify-between transform  transition-transform duration-300 ease-in-out ${
+        className={`absolute z-10 h-[844px] flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
-        } md:relative md:translate-x-0`}
+        } md:relative md:translate-x-0 md:h-[1024px]`}
       >
-        <div className="pt-[44px] pl-[40px] ">
-          <h1 className="uppercase text-[35px] font-extrabold leading-normal mb-[50px]">
-            pedxo
+        <div className="pt-[44px] pl-[40px] lg:pt-[73px]">
+          <h1
+            onClick={handleToggleMenu}
+            className=" text-[35px] font-extrabold leading-normal mb-[50px]"
+          >
+            Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
             <SideBarMenuItems
@@ -60,7 +93,7 @@ const Navbar = () => {
               title="Overview"
             />
 
-            <div className="flex flex-col gap-6 ">
+            <div className="flex flex-col gap-8 ">
               <div className="grey-text text-sm font-semibold leading-normal">
                 Hiring
               </div>
@@ -72,7 +105,7 @@ const Navbar = () => {
               <SideBarMenuItems
                 to="/dashboard/create-contract"
                 icon={createcontract}
-                title="create contract "
+                title="create contract"
               />
               <SideBarMenuItems
                 to="/dashboard/teams"
@@ -88,7 +121,7 @@ const Navbar = () => {
               <SideBarMenuItems
                 to="/dashboard/payroll"
                 icon={payroll}
-                title=" payroll  "
+                title=" payroll"
               />
               <SideBarMenuItems
                 to="/dashboard/expenses"
@@ -111,7 +144,10 @@ const Navbar = () => {
         </div>
 
         <div
-          onClick={() => setToggleLogout(!toggleLogout)}
+          onClick={() => {
+            setToggleMenu(!toggleMenu);
+            setToggleLogout(!toggleLogout);
+          }}
           className="user-bg-clr px-[22px] py-[20px]"
         >
           <div className="flex items-center gap-2">
@@ -129,7 +165,7 @@ const Navbar = () => {
             {toggleLogout && (
               <button className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
                 <img src={logout} alt="logout icon" />
-                Log Out
+                <NavLink to="">Log Out</NavLink>
               </button>
             )}
           </div>

@@ -1,6 +1,10 @@
+import Contracts from "../components/Contracts";
+
 const AddDeveloper = () => {
   return (
-    <div>AddDeveloper</div>
-  )
-}
-export default AddDeveloper
+    <div>
+      <Contracts />
+    </div>
+  );
+};
+export default AddDeveloper;

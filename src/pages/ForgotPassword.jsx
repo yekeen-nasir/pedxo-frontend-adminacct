@@ -1,17 +1,9 @@
 import FormInput from "../components/FormInput";
-import girlBg from "../assets/png/girl.png";
 
 const ForgotPassword = () => {
   return (
-    <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px] items-center ">
-      <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
-        <div className="overlay"></div>
-        <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
-          pedxo
-        </div>
-      </div>
-      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:mx-0 2xl:py-0">
+    <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
+      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           Reset Password
         </h1>
@@ -41,7 +33,7 @@ const ForgotPassword = () => {
           <div className="mt-[46px]">
             <button
               type="submit"
-              className="py-4 font-medium bg-clr text-white w-full mt-[6px] rounded-lg"
+              className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
             >
               Continue
             </button>

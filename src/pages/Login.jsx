@@ -1,27 +1,24 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import googleLogo from "../assets/svg/google-logo.svg";
-import girlBg from "../assets/png/girl.png";
 import FormInput from "../components/FormInput";
+import eyesolid from "../assets/svg/eyesolid.svg";
+import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
 
 const login = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   return (
-    <section className="min-w-[390px] 2xl:max-w-[1512px] min-h-[844px] 2xl:max-h-[1024px] 2xl:mx-auto px-[25px] 2xl:grid grid-cols-2 gap-[130px] items-center ">
-      <div className="image-wrapper hidden 2xl:block">
-        <img src={girlBg} alt="a lady drinking coffee" className="h-full object-cover" />
-        <div className="overlay"></div>
-        <div className="text uppercase text-[50px] font-bold text-white top-[83px] left-[112px]">
-          pedxo
-        </div>
-      </div>
-      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto 2xl:mx-0 2xl:py-0">
+    <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
+      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] ">
           Login
         </h1>
         <form>
-          <div className="flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
+          <button className="w-full flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
             <img src={googleLogo} alt="google logo" />
             <span className="font-medium">Continue with Google</span>
-          </div>
+          </button>
           <div className="text-lg font-medium line-with-text">Or</div>
 
           <FormInput
@@ -36,17 +33,36 @@ const login = () => {
             required={true}
           />
 
-          <FormInput
-            htmlFor="password"
-            label="Password"
-            type="password"
-            name="password"
-            id="password"
-            placeholder="password"
-            // value=""
-            // onChange={}
-            required={true}
-          />
+          <div className="relative">
+            <FormInput
+              htmlFor="password"
+              label="Password"
+              type={isPasswordVisible ? "text" : "password"}
+              name="password"
+              id="password"
+              placeholder="password"
+              // value=""
+              // onChange={}
+              required={true}
+            />
+
+            <div className="w-4 absolute top-[60%] right-0 mr-3">
+              {isPasswordVisible ? (
+                <img
+                  src={eyesolid}
+                  alt="password visible icon"
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                />
+              ) : (
+                <img
+                  src={eyeslashsolid}
+                  alt="password invisible icon"
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                />
+              )}
+            </div>
+          </div>
+
           <div className="pr-text-clr font-medium">
             <Link to="/forgot-password">Forgot password?</Link>
           </div>

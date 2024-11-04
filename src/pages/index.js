@@ -9,3 +9,7 @@ export { default as Teams } from "./Teams";
 export { default as Payroll } from "./Payroll";
 export { default as Expenses } from "./Expenses";
 export { default as Agreements } from "./Agreements";
+export { default as Error } from "./Error";
+export { default as FullTimeContract } from "./FullTimeContract";
+export { default as GigBasedContract } from "./GigBasedContract";
+export { default as AccountVerification } from "./AccountVerification";
