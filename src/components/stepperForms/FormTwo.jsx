@@ -1,5 +1,6 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
+import close from "../../assets/svg/close.svg";
 import { Switch } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../../Dropdown.json";
@@ -11,11 +12,13 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
   const [minDate, setMinDate] = useState("");
   const [responsibility, setResponsibility] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [isTemplateUsed, setIsTemplateUsed] = useState(false);
   const [isOpen, setIsOpen] = useState({
     roleTitle: false,
     seniorityLevel: false,
     scopeOfWork: false,
   });
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleDropdown = (dropdown) => {
     setIsOpen((prevState) => {
@@ -63,6 +66,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
         .join("\n");
 
       setResponsibility(responsibilitiesList);
+      setIsTemplateUsed(true);
 
       setSelectedOption((prevState) => ({
         ...prevState,
@@ -76,6 +80,22 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     } else {
       console.log("No matching role found.");
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSelection = (dropdown) => {
+    if (dropdown === "scopeOfWork" && isTemplateUsed) {
+      setResponsibility(""); // Clear the text area
+      setIsTemplateUsed(false); // Reset the flag
+    }
+
+    setSelectedOption((prevState) => ({
+      ...prevState,
+      [dropdown]: "",
+    }));
   };
 
   useEffect(() => {
@@ -198,20 +218,32 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           >
             Scope of Work template
           </label>
-          <div>
+          <div className="">
             <input
               type="text"
               placeholder={selectedOption.scopeOfWork || "Select an option"}
+              value={searchQuery}
+              onChange={handleSearchChange}
               onClick={() => toggleDropdown("scopeOfWork")}
-              className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 xl:h-[60px] mt-1 xl:text-[16px]"
+              className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
               style={{
-                borderColor: "rgba(0, 0, 0, 0.20)"
+                borderColor: "rgba(0, 0, 0, 0.20)",
               }}
             />
+            {selectedOption.scopeOfWork && (
+              <img
+                src={close}
+                alt="Cancel"
+                onClick={() => clearSelection("scopeOfWork")}
+                className="absolute top-[55%] right-12 cursor-pointer w-4"
+              />
+            )}
+
             <img
               src={dropdownarrow}
               alt=""
-              className={`absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl transition-transform ${
+              onClick={() => toggleDropdown("scopeOfWork")}
+              className={`absolute top-[70%] right-4 transform -translate-y-1/2 cursor-pointer text-blue-600 text-2xl transition-transform ${
                 isOpen.scopeOfWork ? "rotate-180" : ""
               }`}
             />
@@ -244,25 +276,32 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
                   </div>
                 </div>
               </div>
-              {Dropdown.scopeOfWork.options.map((dropdown, index) => (
-                <div key={index} className="">
-                  <div className="flex flex-col gap-2 px-4 py-2 cursor-pointer md:flex-row md:justify-between">
-                    <li
-                      onClick={() => handleOptionClick("scopeOfWork", dropdown)}
-                    >
-                      {dropdown}
-                    </li>
-                    {index !== 0 && (
+
+              {Dropdown.scopeOfWork.options
+                .filter((option) =>
+                  option.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((dropdown, index) => (
+                  <div key={index} className="">
+                    <div className="flex flex-col gap-2 px-4 py-2 cursor-pointer option-bg md:flex-row md:justify-between">
                       <li
-                        onClick={() => handleTemplateClick(dropdown)}
-                        className="rounded-[20px] bg-red-500 px-[21px] py-[2px] user-bg-clr max-w-max"
+                        onClick={() =>
+                          handleOptionClick("scopeOfWork", dropdown)
+                        }
                       >
-                        Use Template
+                        {dropdown}
                       </li>
-                    )}
+                      {index !== 0 && (
+                        <li
+                          onClick={() => handleTemplateClick(dropdown)}
+                          className="rounded-[20px] bg-red-500 user-bg-clr px-[21px] py-[2px]  max-w-max"
+                        >
+                          Use Template
+                        </li>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </ul>
           )}
         </div>
@@ -345,22 +384,3 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
   );
 };
 export default FormTwo;
-
-{
-  /* <button
-            onClick={() => toggleDropdown("scopeOfWork")}
-            className="w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 xl:h-[60px] mt-1 xl:text-[16px]"
-            style={{
-              borderColor: "rgba(0, 0, 0, 0.20)",
-            }}
-          >
-            {selectedOption.scopeOfWork || "Select an option"}
-            <img
-              src={dropdownarrow}
-              alt=""
-              className={`absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl transition-transform ${
-                isOpen.scopeOfWork ? "rotate-180" : ""
-              }`}
-            />
-          </button> */
-}
