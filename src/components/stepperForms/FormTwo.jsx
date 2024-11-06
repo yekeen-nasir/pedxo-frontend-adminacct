@@ -416,7 +416,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             rows="7"
             value={responsibility}
             onChange={(e) => setResponsibility(e.target.value)}
-            className="bg-transparent border outline-gray-400 rounded-lg p-3 text-[12px] xl:text-[16px]"
+            className="bg-transparent border outline-gray-400 rounded-lg px-4 py-2 text-[12px] xl:text-[16px]"
             style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
           ></textarea>
         </div>
