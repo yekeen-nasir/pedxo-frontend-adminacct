@@ -59,6 +59,10 @@ const ContractForm = ({subHead, endDate, showSwitch}) => {
     }
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <section className="xl:flex xl:justify-center">
       <div className=" mt-[50px] mb-[61px]">
@@ -91,8 +95,8 @@ const ContractForm = ({subHead, endDate, showSwitch}) => {
 
         <div className="md:mx-[143px] xl:flex xl:gap-[39px]">
           <div
-            className="flex  mt-4 mb-9 mr-[45px] px-2 xl:m-0 
-          xl:user-bg-clr xl:rounded-lg xl:w-[456px] xl:max-h-max xl:px-[45px] xl:py-[45px] xl:flex-col xl:gap-[45px] xl:order-1"
+            className="flex mt-4 mb-9 mr-[45px] px-2 xl:m-0 
+          xl:user-bg-clr xl:rounded-lg xl:w-[456px] xl:px-[45px] xl:py-[45px] xl:flex-col xl:gap-[45px] xl:order-1"
           >
             {steps.map((step, i) => (
               <div
@@ -111,11 +115,12 @@ const ContractForm = ({subHead, endDate, showSwitch}) => {
 
           {/* xl:w-[731px] */}
           <div className="xl:w-[731px] user-bg-clr mx-[21px] p-5 pb-[25px] rounded-lg lg:px-[70px] lg:pt-[51px] lg:pb-[29px] xl:order-0 xl:mx-0">
-            <form>
+            <form onSubmit={handleFormSubmit}>
               <div>{renderStep()}</div>
 
               <div className="lg:flex lg:justify-center">
                 <button
+                type="submit"
                   className="pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[12px] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px]"
                   onClick={() => {
                     currentStep === steps.length

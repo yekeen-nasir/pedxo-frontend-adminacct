@@ -80,3 +80,17 @@ input[type="number"]::-webkit-outer-spin-button {
 .option-bg:focus {
   background-color: rgba(129, 125, 125, 0.1);
 }
+
+/* input[type="date"]::-webkit-datetime-edit {
+  color: rgba(0, 0, 0, 0.5); 
+} */
+
+/* Default placeholder color */
+input[type="date"] {
+  color: rgba(0, 0, 0, 0.5); /* Placeholder color */
+}
+
+/* Change color when a date is entered */
+input[type="date"].date-selected {
+  color: #000; /* Color after selecting a date */
+}

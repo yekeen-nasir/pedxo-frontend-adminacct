@@ -19,6 +19,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     scopeOfWork: false,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDateSelected, setIsDateSelected] = useState(false);
 
   const toggleDropdown = (dropdown) => {
     setIsOpen((prevState) => {
@@ -98,6 +99,14 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     }));
   };
 
+  const handleDateChange = (event) => {
+    setIsDateSelected(!!event.target.value);
+  };
+
+  // const handleFormSubmit = (e) =>{
+  //   e.preventDefault()
+  // }
+
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     setMinDate(today);
@@ -122,6 +131,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
   return (
     <div ref={dropdownRef}>
+      {/* <form onSubmit={handleFormSubmit}> */}
       <div className="flex flex-col gap-[18px]">
         <div>
           <div className="text-lg font-semibold leading-normal xl:text-2xl">
@@ -142,29 +152,43 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           >
             Role Title(Optional)
           </label>
-          <button
-            onClick={() => toggleDropdown("roleTitle")}
-            className="w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 xl:h-[60px] mt-1"
-            style={{
-              borderColor: "rgba(0, 0, 0, 0.20)",
-            }}
-          >
-            {selectedOption.roleTitle || "Select an option"}
+          <div className="">
+            <input
+              type="text"
+              placeholder={selectedOption.roleTitle || "Select an option"}
+              value={selectedOption.roleTitle}
+              // onChange={}
+              onClick={() => toggleDropdown("roleTitle")}
+              className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
+              style={{
+                borderColor: "rgba(0, 0, 0, 0.20)",
+              }}
+            />
+            {selectedOption.roleTitle && (
+              <img
+                src={close}
+                alt="Cancel"
+                onClick={() => clearSelection("roleTitle")}
+                className="absolute top-[60%] right-12 cursor-pointer w-4"
+              />
+            )}
+
             <img
               src={dropdownarrow}
               alt=""
-              className={`absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl transition-transform ${
+              onClick={() => toggleDropdown("roleTitle")}
+              className={`absolute top-[70%] right-4 transform -translate-y-1/2 cursor-pointer text-blue-600 text-2xl transition-transform ${
                 isOpen.roleTitle ? "rotate-180" : ""
               }`}
             />
-          </button>
+          </div>
+
           {isOpen.roleTitle && (
             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
               {Dropdown.roleTitle.map((dropdown, index) => (
                 <li
                   key={index}
                   onClick={() => handleOptionClick("roleTitle", dropdown)}
-                  className="px-4 py-2 cursor-pointer option-bg"
                 >
                   {dropdown}
                 </li>
@@ -175,34 +199,48 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
         <div className="relative text-[12px] xl:text-base" ref={dropdownRef}>
           <label
-            htmlFor="roleTitle"
+            htmlFor="seniorityLevel"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Seniority Level (Optional)
           </label>
-          <button
-            onClick={() => toggleDropdown("seniorityLevel")}
-            className="w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 xl:h-[60px] mt-1 "
-            style={{
-              borderColor: "rgba(0, 0, 0, 0.20)",
-            }}
-          >
-            {selectedOption.seniorityLevel || "Select an option"}
+          <div className="">
+            <input
+              type="text"
+              placeholder={selectedOption.seniorityLevel || "Select an option"}
+              value={selectedOption.seniorityLevel}
+              // onChange={}
+              onClick={() => toggleDropdown("seniorityLevel")}
+              className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
+              style={{
+                borderColor: "rgba(0, 0, 0, 0.20)",
+              }}
+            />
+            {selectedOption.seniorityLevel && (
+              <img
+                src={close}
+                alt="Cancel"
+                onClick={() => clearSelection("seniorityLevel")}
+                className="absolute top-[60%] right-12 cursor-pointer w-4"
+              />
+            )}
+
             <img
               src={dropdownarrow}
               alt=""
-              className={`absolute top-[70%] right-4 transform -translate-y-1/2 pointer-events-none text-blue-600 text-2xl transition-transform ${
+              onClick={() => toggleDropdown("seniorityLevel")}
+              className={`absolute top-[70%] right-4 transform -translate-y-1/2 cursor-pointer text-blue-600 text-2xl transition-transform ${
                 isOpen.seniorityLevel ? "rotate-180" : ""
               }`}
             />
-          </button>
+          </div>
+
           {isOpen.seniorityLevel && (
             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
               {Dropdown.seniorityLevels.map((dropdown, index) => (
                 <li
                   key={index}
                   onClick={() => handleOptionClick("seniorityLevel", dropdown)}
-                  className="px-4 py-2 cursor-pointer option-bg"
                 >
                   {dropdown}
                 </li>
@@ -213,7 +251,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
         <div className="relative text-[12px] xl:text-base" ref={dropdownRef}>
           <label
-            htmlFor="roleTitle"
+            htmlFor="scopOfWork"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
             Scope of Work template
@@ -222,7 +260,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             <input
               type="text"
               placeholder={selectedOption.scopeOfWork || "Select an option"}
-              value={searchQuery}
+              value={searchQuery || selectedOption.scopeOfWork}
               onChange={handleSearchChange}
               onClick={() => toggleDropdown("scopeOfWork")}
               className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
@@ -235,7 +273,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
                 src={close}
                 alt="Cancel"
                 onClick={() => clearSelection("scopeOfWork")}
-                className="absolute top-[55%] right-12 cursor-pointer w-4"
+                className="absolute top-[60%] right-12 cursor-pointer w-4"
               />
             )}
 
@@ -255,7 +293,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
                 <div>
                   <div>USE AUTOMATED SCOPE OF WORK TEMPLATES</div>
                   <div className="" style={{ color: "rgba(0, 0, 0, 0.70)" }}>
-                    Select, create and manage work scopes
+                    Select, create and edit work scopes
                   </div>
                 </div>
                 <div>
@@ -306,7 +344,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           )}
         </div>
 
-        <div className="relative flex flex-col gap-1 xl:gap-4  ">
+        <div className="relative flex flex-col gap-1 xl:gap-4 ">
           <div className="flex justify-between">
             <label
               htmlFor="startDate"
@@ -320,10 +358,10 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             name="startDate"
             id="startDate"
             // value={value}
-            // onChange={onChange}
+            onChange={handleDateChange}
+            onFocus={(e) => e.target.showPicker()}
             min={minDate}
-            required
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] "
+             className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] ${isDateSelected ? 'date-selected' : " "}`}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
@@ -348,11 +386,12 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             type="date"
             name="endDate"
             id="endDate"
-            value={value}
-            onChange={onChange}
+            // value={value}
+            onChange={handleDateChange}
+            onFocus={(e) => hasEndDate && e.target.showPicker()}
             min={minDate}
             onClick={showSwitch && toggleEndDate}
-            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${isDateSelected ? 'date-selected' : " "}  ${
               hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"
             } 
             `}
@@ -380,6 +419,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           ></textarea>
         </div>
       </div>
+      {/* </form> */}
     </div>
   );
 };
