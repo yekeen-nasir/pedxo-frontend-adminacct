@@ -9,7 +9,6 @@ import FormFive from "./stepperForms/FormFive";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import sendcontract from "../assets/svg/sendcontract.svg";
-import sign from "../assets/svg/sign.svg";
 
 // const countriesUrl = "https://api.countrystatecity.in/v1/countries";
 // const statesUrl = "https://api.countrystatecity.in/v1/countries";
@@ -18,7 +17,6 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
   const [formData, setFormData] = useState();
-  const [isFormFour, setIsFormFour] = useState(false);
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -127,7 +125,13 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
       case 4:
         return (
           <div>
-            <FormFour value={formData} onChange={handleInputChange} />
+            <FormFour
+              value={formData}
+              onChange={handleInputChange}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              setComplete={setComplete}
+            />
           </div>
         );
 
@@ -199,49 +203,25 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               <div>{renderStep()}</div>
 
               <div className="lg:flex lg:justify-center">
-                {currentStep === 4 ? (
-                  <div
-                    className="flex items-center justify-between px-[15px] py-[10px] bg rounded-lg cursor-pointer xl:px-[30px] xl:py-[19px]"
-                    style={{
-                      backgroundColor: "rgba(217, 217, 217, 0.50)",
-                      border: "1px solid rgba(0, 0, 0, 0.20)",
-                    }}
-                    onClick={() => {
-                      currentStep === 6
-                        ? setComplete(true)
-                        : setCurrentStep((prev) => prev + 1);
-                    }}
-                  >
-                    <div
-                      className="font-medium text-[0.6875rem] xl:text-[1.125rem]"
-                      style={{ color: "rgba(0, 0, 0, 0.60)" }}
-                    >
-                      Sign Contract
+                <button
+                  type="submit"
+                  className={`pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px] ${
+                    currentStep === 4 || currentStep === 5 ? "hidden" : "block"
+                  } `}
+                  onClick={() => {
+                    currentStep === 6
+                      ? setComplete(true)
+                      : setCurrentStep((prev) => prev + 1);
+                  }}
+                >
+                  {currentStep === 6 ? (
+                    <div className="flex items-center">
+                      Send Contract <img src={sendcontract} alt="send icon" />
                     </div>
-
-                    <div>
-                      <img src={sign} alt="sign icon" />
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    type="submit"
-                    className={`pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px] ${currentStep === 5 ? "hidden" : "block"} `}
-                    onClick={() => {
-                      currentStep === 6
-                        ? setComplete(true)
-                        : setCurrentStep((prev) => prev + 1);
-                    }}
-                  >
-                    {currentStep === 6 ? (
-                      <div className="flex items-center">
-                        Send Contract <img src={sendcontract} alt="send icon" />
-                      </div>
-                    ) : (
-                      "Save and Continue"
-                    )}
-                  </button>
-                )}
+                  ) : (
+                    "Save and Continue"
+                  )}
+                </button>
               </div>
             </form>
           </div>
@@ -251,23 +231,3 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
   );
 };
 export default ContractForm;
-
-// <button
-//                   type="submit"
-//                   className={`pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px] ${
-//                     currentStep === 4 ? "hidden" : "block"
-//                   } `}
-//                   onClick={() => {
-//                     currentStep === 6
-//                       ? setComplete(true)
-//                       : setCurrentStep((prev) => prev + 1);
-//                   }}
-//                 >
-//                   {currentStep === 6 ? (
-//                     <div className="flex items-center">
-//                       Send Contract <img src={sendcontract} alt="send icon" />
-//                     </div>
-//                   ) : (
-//                     "Save and Continue"
-//                   )}
-//                 </button>
