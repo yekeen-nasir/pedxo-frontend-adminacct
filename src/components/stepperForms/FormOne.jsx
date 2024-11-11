@@ -1,69 +1,16 @@
 import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
-import { useEffect, useState } from "react";
-import axios from "axios";
-// import { useQuery } from "@tanstack/react-query";
-// import customFetch from "../utils";
 
 const countriesUrl = "https://api.countrystatecity.in/v1/countries";
 const statesUrl = "https://api.countrystatecity.in/v1/countries";
 
-const FormOne = ({ onChange, value }) => {
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("");
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get(countriesUrl, {
-          headers: {
-            "X-CSCAPI-KEY":
-              "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
-          },
-        });
-       
-        console.log(response);
-        const data = response.data;
-        setCountries(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchCountries();
-  }, []);
-
-  useEffect(() => {
-    if (!selectedCountry) return;
-
-    const fetchStates = async () => {
-      try {
-        const response = await axios.get(
-          `${statesUrl}/${selectedCountry}/states`,
-          {
-            headers: {
-              "X-CSCAPI-KEY":
-                "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
-            },
-          }
-        );
-        const data = response.data;
-        setStates(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchStates();
-  }, [selectedCountry]);
-  // const { data } = useQuery({
-  //   queryKey: ["country"],
-  //   queryFn: () => customFetch.get("/"),
-  // });
-
-  // console.log(data);
+const FormOne = ({ onChange, value, states, setStates, selectedCountry, setSelectedCountry, countries }) => {
+  
+  const handleChange = (e) => {
+    setSelectedCountry(e.target.value)
+    setStates([])
+  }
 
   return (
     <div>
@@ -106,10 +53,7 @@ const FormOne = ({ onChange, value }) => {
             <select
               name="country"
               id="country"
-              onChange={(e) => {
-                setSelectedCountry(e.target.value);
-                setStates([]);
-              }}
+              onChange={(e) => handleChange(e)}
               value={selectedCountry}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}

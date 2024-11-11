@@ -103,9 +103,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     setIsDateSelected(!!event.target.value);
   };
 
-  // const handleFormSubmit = (e) =>{
-  //   e.preventDefault()
-  // }
+  
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -131,7 +129,6 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
   return (
     <div ref={dropdownRef}>
-      {/* <form onSubmit={handleFormSubmit}> */}
       <div className="flex flex-col gap-[18px]">
         <div>
           <div className="text-lg font-semibold leading-normal xl:text-2xl">
@@ -421,7 +418,6 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
           ></textarea>
         </div>
       </div>
-      {/* </form> */}
     </div>
   );
 };

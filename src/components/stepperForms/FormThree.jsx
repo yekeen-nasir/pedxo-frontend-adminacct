@@ -1,7 +1,13 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormTwo = ({ onChange, value }) => {
+const FormTwo = ({ onChange, value, selectedCountry }) => {
+
+  // if (selectedCountry === "NG") {
+  //   setCurrency("NG")
+  // } else{
+  //   setCurrency("USD")
+  // }
 
 
   return (
@@ -26,13 +32,12 @@ const FormTwo = ({ onChange, value }) => {
                 border: "1px solid rgba(0, 0, 0, 0.30",
               }}
             >
-              <span className="text-[12px] font-semibold xl:text-xl">$USD</span>
+              <span className="text-[12px] font-semibold xl:text-xl">{selectedCountry === "NG" ? "NGN" : "USD"}</span>
             </div>
             <input
               type="number"
               name="paymentRate "
               id="paymentRate "
-              required
               value={value}
               onChange={onChange}
               className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 pl-20 text-[12px] xl:pl-40 xl:h-[60px] xl:text-[16px]"

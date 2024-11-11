@@ -21,6 +21,7 @@ import {
   SignUp,
   Teams,
 } from "./pages";
+import { FormFive } from "./components";
 
 
 const router = createBrowserRouter([
