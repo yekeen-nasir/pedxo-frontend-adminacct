@@ -1,13 +1,17 @@
 import SignatureCanvas from "react-signature-canvas";
 import usesignature from "../../assets/svg/usesignature.svg";
 import { useRef } from "react";
+import { useGlobalContext } from "../../Context";
 
 const FormFive = () => {
   const sigCanvas = useRef(null);
+  const { setSignature } = useGlobalContext();
 
   const saveSignature = () => {
     const dataUrl = sigCanvas.current.toDataURL();
     console.log(dataUrl);
+
+    setSignature(dataUrl);
   };
 
   const clearSignature = () => {

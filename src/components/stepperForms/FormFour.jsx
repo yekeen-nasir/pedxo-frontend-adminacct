@@ -1,14 +1,17 @@
 import { useState } from "react";
 import sign from "../../assets/svg/sign.svg";
 import FormFive from "./FormFive";
+import { useGlobalContext } from "../../Context";
 
 const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
   const [isSignModalOpen, setIsSignModalOpen] = useState(false);
 
+  const { signature } = useGlobalContext();
+
   const handleClick = () => {
     () => setIsSignModalOpen(true);
 
-    currentStep === 6 ? setComplete(true) : setCurrentStep((prev) => prev + 1)
+    currentStep === 6 ? setComplete(true) : setCurrentStep((prev) => prev + 1);
   };
 
   return (
@@ -23,35 +26,47 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
             </div>
 
             <div
-              className="flex justify-between bg-white rounded-lg px-10 pt-[53px] pb-[45px] text-[0.625rem] xl:text-[1.125rem]"
+              className="bg-white rounded-lg px-10 pt-[53px] text-[0.625rem] xl:text-[1.125rem]"
               style={{
                 border: "1px solid rgba(0, 0, 0, 0.20)",
               }}
             >
-              <div
-                className="flex flex-col gap-10 font-normal"
-                style={{
-                  color: "rgba(0, 0, 0, 0.50)",
-                }}
-              >
-                <div>Contract Type</div>
-                <div>Start Date</div>
-                <div>End Date</div>
-                <div>Job Title</div>
-                <div>Seniority Level</div>
-                <div>Scope of work</div>
-                <div>Payment Rate</div>
-                <div>Payment Frequency</div>
+              <div className="flex justify-between mb-[45px]">
+                <div
+                  className="flex flex-col gap-10 font-normal"
+                  style={{
+                    color: "rgba(0, 0, 0, 0.50)",
+                  }}
+                >
+                  <div>Contract Type</div>
+                  <div>Start Date</div>
+                  <div>End Date</div>
+                  <div>Job Title</div>
+                  <div>Seniority Level</div>
+                  <div>Scope of work</div>
+                  <div>Payment Rate</div>
+                  <div>Payment Frequency</div>
+                </div>
+                <div className=" flex flex-col gap-10 font-medium">
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                  <div>Contract Type</div>
+                </div>
               </div>
-              <div className=" flex flex-col gap-10 font-medium">
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
-                <div>Contract Type</div>
+
+              <div className={`mb-[39px] ${signature ? "block" : "hidden"} `}>
+                <div
+                  className="w-full h-[0.5px] bg-red-500"
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.30)" }}
+                ></div>
+                <div className="mt-[39px] max-w-[100px] mx-auto">
+                {signature && <img src={signature} alt="user signature" />}
+                </div>
               </div>
             </div>
 
@@ -81,23 +96,3 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
   );
 };
 export default FormFour;
-
-{
-  /* <button
-  type="submit"
-  className={`pr-bg-clr mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px] ${
-    currentStep === 4 ? "hidden" : "block"
-  } `}
-  onClick={() => {
-    currentStep === 6 ? setComplete(true) : setCurrentStep((prev) => prev + 1);
-  }}
->
-  {currentStep === 6 ? (
-    <div className="flex items-center">
-      Send Contract <img src={sendcontract} alt="send icon" />
-    </div>
-  ) : (
-    "Save and Continue"
-  )}
-</button>; */
-}
