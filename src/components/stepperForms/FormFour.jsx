@@ -69,9 +69,9 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
                 border: "1px solid rgba(0, 0, 0, 0.20)",
               }}
             >
-              {userInfo.map((item) => (
+              {userInfo.map((item, index) => (
                 <>
-                  <div className="flex justify-between mb-[45px] ">
+                  <div className="flex justify-between mb-[45px]" key={index}>
                     <p
                       style={{
                         color: "rgba(0, 0, 0, 0.50)",

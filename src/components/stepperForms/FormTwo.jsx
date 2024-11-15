@@ -70,6 +70,8 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
       ...selectedOption,
       responsibility: newResponsibility,
     });
+
+    console.log(responsibility)
   };
 
   const toggleEndDate = (e) => {
@@ -129,11 +131,11 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
   const handleDateChange = (e, dateType) => {
     const newDate = e.target.value;
     setIsDateSelected(!!newDate);
-  
+
     if (dateType === "start") {
       setContractStartDate(newDate);
       console.log("Start Date:", newDate);
-  
+
       onOptionSelect((prevState) => ({
         ...prevState,
         contractStartDate: newDate,
@@ -141,14 +143,13 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
     } else if (dateType === "end") {
       setContractEndDate(newDate);
       console.log("End Date:", newDate);
-  
+
       onOptionSelect((prevState) => ({
         ...prevState,
         contractEndDate: newDate,
       }));
     }
   };
-  
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -399,7 +400,7 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
             type="date"
             name="startDate"
             id="startDate"
-            value={contractStartDate || formStepperData.contractStartDate}
+            value={contractStartDate}
             onChange={(e) => handleDateChange(e, "start")}
             onFocus={(e) => e.target.showPicker()}
             min={minDate}
@@ -430,7 +431,7 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
             type="date"
             name="endDate"
             id="endDate"
-            value={contractEndDate || formStepperData.contractEndDate}
+            value={contractEndDate}
             onChange={(e) => handleDateChange(e, "end")}
             onFocus={(e) => hasEndDate && e.target.showPicker()}
             min={minDate}

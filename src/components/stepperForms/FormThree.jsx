@@ -1,9 +1,9 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormTwo = ({ onChange, value, selectedCountry, onOptionSelect }) => {
+const FormTwo = ({ onChange, value, selectedCountry}) => {
 
-  
+
 
   return (
     <div>
