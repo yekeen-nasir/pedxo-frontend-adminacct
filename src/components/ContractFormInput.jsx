@@ -1,13 +1,7 @@
 const ContractFormInput = ({
   htmlFor,
-  label,
-  type,
-  name,
-  id,
-  placeholder,
-  value,
-  onChange,
-  required = false,
+   label,
+  ...props
 }) => {
   return (
     <div>
@@ -19,13 +13,8 @@ const ContractFormInput = ({
           {label}
         </label>
         <input
-          type={type}
-          name={name}
-          id={id}
-          placeholder={placeholder}
-          required={required}
-          value={value}
-          onChange={onChange}
+         
+          {...props}
           className="w-full bg-transparent border outline-gray-400 pl-3 rounded-lg h-10 text-[12px] xl:h-[60px] xl:text-[16px]"
           style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
         />

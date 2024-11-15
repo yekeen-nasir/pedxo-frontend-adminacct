@@ -59,21 +59,3 @@ const SideBarMenuItems = ({ icon, title, to }) => {
   );
 };
 export default SideBarMenuItems;
-
-{
-  /*
-  <SvgSprite />
-  <NavLink
-        to={to}
-        onClick={handleToggleMenu}
-        className="flex items-center gap-3 group"
-      >
-        <svg className="icon w-4 h-4 fill-current group-hover:pr-text-clr transition-colors duration-300">
-          <use xlinkHref={`#${iconId}`}></use>
-        </svg>
-       
-        <div className="font-semibold leading-normal group-hover:pr-text-clr transition-colors duration-300">
-          {title}
-        </div>
-      </NavLink> */
-}

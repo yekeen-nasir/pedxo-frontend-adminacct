@@ -9,9 +9,10 @@ import FormFive from "./stepperForms/FormFive";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import sendcontract from "../assets/svg/sendcontract.svg";
+import { useGlobalContext } from "../Context";
 
-// const countriesUrl = "https://api.countrystatecity.in/v1/countries";
-// const statesUrl = "https://api.countrystatecity.in/v1/countries";
+const countriesUrl = "https://api.countrystatecity.in/v1/countries";
+const statesUrl = "https://api.countrystatecity.in/v1/countries";
 
 const ContractForm = ({ subHead, endDate, showSwitch }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -21,6 +22,13 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
+  // const [selectedOption, setSelectedOption] = useState({});
+  const {setFormStepperData} = useGlobalContext()
+
+  const handleOptionSelect = (option) => {
+    setFormStepperData(option);
+  };
+
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -31,7 +39,6 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
           },
         });
-        console.log(response);
         const data = response.data;
         setCountries(data);
       } catch (error) {
@@ -102,11 +109,12 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
         return (
           <div>
             <FormTwo
-              value={formData}
-              onChange={handleInputChange}
+              // value={formData}
+              // onChange={handleInputChange}
               subHead={subHead}
               endDate={endDate}
               showSwitch={showSwitch}
+              onOptionSelect={handleOptionSelect} 
             />
           </div>
         );
@@ -118,6 +126,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               value={formData}
               onChange={handleInputChange}
               selectedCountry={selectedCountry}
+              onOptionSelect={handleOptionSelect} 
             />
           </div>
         );

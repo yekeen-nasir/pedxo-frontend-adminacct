@@ -2,15 +2,24 @@ import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const countriesUrl = "https://api.countrystatecity.in/v1/countries";
-const statesUrl = "https://api.countrystatecity.in/v1/countries";
+const FormOne = ({
+  onChange,
+  value,
+  states,
+  setStates,
+  selectedCountry,
+  setSelectedCountry,
+  countries,
+}) => {
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+    setStates([]);
+  };
 
-const FormOne = ({ onChange, value, states, setStates, selectedCountry, setSelectedCountry, countries }) => {
-  
   const handleChange = (e) => {
-    setSelectedCountry(e.target.value)
-    setStates([])
-  }
+    const target = e.target.value;
+    console.log(target);
+  };
 
   return (
     <div>
@@ -26,7 +35,7 @@ const FormOne = ({ onChange, value, states, setStates, selectedCountry, setSelec
           id="clientName"
           placeholder="John Doe"
           value={value}
-          onChange={onChange}
+          onChange={(onChange, handleChange)}
           required={true}
         />
 
@@ -53,7 +62,7 @@ const FormOne = ({ onChange, value, states, setStates, selectedCountry, setSelec
             <select
               name="country"
               id="country"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleCountryChange(e)}
               value={selectedCountry}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}

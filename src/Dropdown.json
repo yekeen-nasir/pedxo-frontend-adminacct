@@ -8,15 +8,19 @@
   "paymentFrequency": ["Monthly", "Bi-weekly", "Weekly"],
   "roleTitle": [
     "Not applicable",
+    "Data Labeling",
     ".Net developer",
-    "Product designer (Figma, Sketch, Adobe XD)",
-    "UI/UX Designer (Figma, Sketch)",
-    "React.js (Bootstrap, Tailwind CSS)",
-    "Vue.js (Tailwind CSS)",
-    "React TypeScript (Tailwind, Next.js)",
-    "Node.js with Nest.js, Express.js",
-    "PHP with Laravel",
-    "Python Django"
+    "Product designer",
+    "UI/UX Designer",
+    "Frontend Developer",
+    "Backend Developer",
+    "DevOps Engineer",
+    "Full-stack Developer",
+    "Data Scientist",
+    "Virtual Assistant",
+    "Content Marketer",
+    "Content Writer",
+    "Mobile Developer"
   ],
   "seniorityLevels": [
     "Not applicable",
@@ -41,6 +45,7 @@
     ],
     "options": [
       "Not applicable",
+      "Data Annotation",
       "Junior DevOps Engineer",
       "Mid DevOps Engineer",
       "Senior DevOps Engineer",
@@ -64,6 +69,17 @@
       "Virtual Assistant"
     ],
     "explanation": [
+      {
+        "title": "Data Annotation",
+        "responsibilities": [
+          "Accurately label and annotate images, text, audio, or video data according to detailed project guidelines.",
+          "Ensure consistent, high-quality labeling that meets predefined standards for accuracy and completeness.",
+          "Review and validate completed annotations to identify and correct errors, enhancing data integrity.",
+          "Adhere to annotation guidelines and participate in calibration sessions to implement updates as needed.",
+          "Collaborate with data scientists, machine learning engineers, and project managers to align on project objectives and improve annotation workflows.",
+          "Document annotation procedures, maintain reports on project progress, and highlight challenges and insights for stakeholders."
+        ]
+      },
       {
         "title": "Junior DevOps Engineer",
         "responsibilities": [

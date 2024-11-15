@@ -5,8 +5,9 @@ import { Switch } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../../Dropdown.json";
 import { templateBenefits } from "../../data";
+import { useGlobalContext } from "../../Context";
 
-const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
+const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
   const dropdownRef = useRef();
   const [hasEndDate, setHasEndDate] = useState(false);
   const [minDate, setMinDate] = useState("");
@@ -20,6 +21,9 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [isDateSelected, setIsDateSelected] = useState(false);
+  const [contractStartDate, setContractStartDate] = useState("");
+  const [contractEndDate, setContractEndDate] = useState("");
+  const { formStepperData } = useGlobalContext();
 
   const toggleDropdown = (dropdown) => {
     setIsOpen((prevState) => {
@@ -39,10 +43,33 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
       ...prevState,
       [dropdown]: option,
     }));
+
+    onOptionSelect({
+      roleTitle: dropdown === "roleTitle" ? option : selectedOption.roleTitle,
+      seniorityLevel:
+        dropdown === "seniorityLevel" ? option : selectedOption.seniorityLevel,
+      scopeOfWork:
+        dropdown === "scopeOfWork" ? option : selectedOption.scopeOfWork,
+      responsibility,
+      contractStartDate,
+      contractEndDate,
+    });
+
     setIsOpen((prevState) => ({
       ...prevState,
       [dropdown]: false,
     }));
+  };
+
+  const handleResponsibilityChange = (e) => {
+    const newResponsibility = e.target.value;
+    setResponsibility(newResponsibility);
+
+    // Pass the updated responsibility to onOptionSelect
+    onOptionSelect({
+      ...selectedOption,
+      responsibility: newResponsibility,
+    });
   };
 
   const toggleEndDate = (e) => {
@@ -89,8 +116,8 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
 
   const clearSelection = (dropdown) => {
     if (dropdown === "scopeOfWork" && isTemplateUsed) {
-      setResponsibility(""); // Clear the text area
-      setIsTemplateUsed(false); // Reset the flag
+      setResponsibility("");
+      setIsTemplateUsed(false);
     }
 
     setSelectedOption((prevState) => ({
@@ -99,10 +126,28 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
     }));
   };
 
-  const handleDateChange = (event) => {
-    setIsDateSelected(!!event.target.value);
+  const handleDateChange = (e, dateType) => {
+    const newDate = e.target.value;
+    setIsDateSelected(!!newDate);
+  
+    if (dateType === "start") {
+      setContractStartDate(newDate);
+      console.log("Start Date:", newDate);
+  
+      onOptionSelect((prevState) => ({
+        ...prevState,
+        contractStartDate: newDate,
+      }));
+    } else if (dateType === "end") {
+      setContractEndDate(newDate);
+      console.log("End Date:", newDate);
+  
+      onOptionSelect((prevState) => ({
+        ...prevState,
+        contractEndDate: newDate,
+      }));
+    }
   };
-
   
 
   useEffect(() => {
@@ -154,7 +199,6 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
               type="text"
               placeholder={selectedOption.roleTitle || "Select an option"}
               value={selectedOption.roleTitle}
-              // onChange={}
               onClick={() => toggleDropdown("roleTitle")}
               className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
               style={{
@@ -186,7 +230,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
                 <li
                   key={index}
                   onClick={() => handleOptionClick("roleTitle", dropdown)}
-                   className="px-4 py-2"
+                  className="px-4 py-2"
                 >
                   {dropdown}
                 </li>
@@ -207,7 +251,6 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
               type="text"
               placeholder={selectedOption.seniorityLevel || "Select an option"}
               value={selectedOption.seniorityLevel}
-              // onChange={}
               onClick={() => toggleDropdown("seniorityLevel")}
               className="relative w-full bg-transparent border text-left outline-gray-400 rounded-lg h-10 px-3 cursor-pointer xl:h-[60px] mt-1 xl:text-[16px]"
               style={{
@@ -239,7 +282,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
                 <li
                   key={index}
                   onClick={() => handleOptionClick("seniorityLevel", dropdown)}
-                   className="px-4 py-2"
+                  className="px-4 py-2"
                 >
                   {dropdown}
                 </li>
@@ -356,11 +399,13 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             type="date"
             name="startDate"
             id="startDate"
-            // value={value}
-            onChange={handleDateChange}
+            value={contractStartDate || formStepperData.contractStartDate}
+            onChange={(e) => handleDateChange(e, "start")}
             onFocus={(e) => e.target.showPicker()}
             min={minDate}
-             className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] ${isDateSelected ? 'date-selected' : " "}`}
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] ${
+              isDateSelected ? "date-selected" : " "
+            }`}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
@@ -385,14 +430,14 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             type="date"
             name="endDate"
             id="endDate"
-            // value={value}
-            onChange={handleDateChange}
+            value={contractEndDate || formStepperData.contractEndDate}
+            onChange={(e) => handleDateChange(e, "end")}
             onFocus={(e) => hasEndDate && e.target.showPicker()}
             min={minDate}
             onClick={showSwitch && toggleEndDate}
-            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${isDateSelected ? 'date-selected' : " "}  ${
-              hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"
-            } 
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]  ${
+              isDateSelected ? "date-selected" : " "
+            }  ${hasEndDate || !showSwitch ? "opacity-100" : "opacity-[0.2]"} 
             `}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
@@ -412,7 +457,7 @@ const FormTwo = ({ onChange, value, subHead, endDate, showSwitch }) => {
             id="scope of work"
             rows="7"
             value={responsibility}
-            onChange={(e) => setResponsibility(e.target.value)}
+            onChange={handleResponsibilityChange}
             className="bg-transparent border outline-gray-400 rounded-lg px-4 py-2 text-[12px] xl:text-[16px]"
             style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
           ></textarea>

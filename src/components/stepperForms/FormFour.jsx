@@ -7,6 +7,44 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
   const [isSignModalOpen, setIsSignModalOpen] = useState(false);
 
   const { signature } = useGlobalContext();
+  const { formStepperData } = useGlobalContext();
+
+  const userInfo = [
+    {
+      title: "Contract Type",
+      data: "Contract type",
+    },
+    {
+      title: "Start Date",
+      data: formStepperData.contractStartDate,
+    },
+    {
+      title: "End Date",
+      data: formStepperData.contractEndDate,
+    },
+    {
+      title: "Role Title",
+      data: formStepperData.roleTitle,
+    },
+    {
+      title: "Seniority Level",
+      data: formStepperData.seniorityLevel,
+    },
+    {
+      title: "Scope of work",
+      data: formStepperData.responsibility,
+    },
+    {
+      title: "Payment Rate",
+      data: "Contract type",
+    },
+    {
+      title: "Payment Frequency",
+      data: "Contract type",
+    },
+  ];
+
+  console.log(formStepperData);
 
   const handleClick = () => {
     () => setIsSignModalOpen(true);
@@ -31,33 +69,20 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
                 border: "1px solid rgba(0, 0, 0, 0.20)",
               }}
             >
-              <div className="flex justify-between mb-[45px]">
-                <div
-                  className="flex flex-col gap-10 font-normal"
-                  style={{
-                    color: "rgba(0, 0, 0, 0.50)",
-                  }}
-                >
-                  <div>Contract Type</div>
-                  <div>Start Date</div>
-                  <div>End Date</div>
-                  <div>Job Title</div>
-                  <div>Seniority Level</div>
-                  <div>Scope of work</div>
-                  <div>Payment Rate</div>
-                  <div>Payment Frequency</div>
-                </div>
-                <div className=" flex flex-col gap-10 font-medium">
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                  <div>Contract Type</div>
-                </div>
-              </div>
+              {userInfo.map((item) => (
+                <>
+                  <div className="flex justify-between mb-[45px] ">
+                    <p
+                      style={{
+                        color: "rgba(0, 0, 0, 0.50)",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                    <p className="text-right">{item.data}</p>
+                  </div>
+                </>
+              ))}
 
               <div className={`mb-[39px] ${signature ? "block" : "hidden"} `}>
                 <div
@@ -65,7 +90,7 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
                   style={{ backgroundColor: "rgba(0, 0, 0, 0.30)" }}
                 ></div>
                 <div className="mt-[39px] max-w-[100px] mx-auto">
-                {signature && <img src={signature} alt="user signature" />}
+                  {signature && <img src={signature} alt="user signature" />}
                 </div>
               </div>
             </div>

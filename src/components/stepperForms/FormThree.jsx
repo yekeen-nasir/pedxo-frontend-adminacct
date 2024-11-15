@@ -1,14 +1,9 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormTwo = ({ onChange, value, selectedCountry }) => {
+const FormTwo = ({ onChange, value, selectedCountry, onOptionSelect }) => {
 
-  // if (selectedCountry === "NG") {
-  //   setCurrency("NG")
-  // } else{
-  //   setCurrency("USD")
-  // }
-
+  
 
   return (
     <div>

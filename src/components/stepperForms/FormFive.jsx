@@ -3,15 +3,18 @@ import usesignature from "../../assets/svg/usesignature.svg";
 import { useRef } from "react";
 import { useGlobalContext } from "../../Context";
 
-const FormFive = () => {
+const FormFive = ({ currentStep, setCurrentStep, setComplete }) => {
   const sigCanvas = useRef(null);
   const { setSignature } = useGlobalContext();
+
 
   const saveSignature = () => {
     const dataUrl = sigCanvas.current.toDataURL();
     console.log(dataUrl);
 
     setSignature(dataUrl);
+
+    currentStep === 6 ? setComplete(true) : setCurrentStep((prev) => prev + 1);
   };
 
   const clearSignature = () => {

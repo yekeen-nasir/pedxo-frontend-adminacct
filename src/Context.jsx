@@ -5,10 +5,11 @@ const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const AppContext = ({ children }) => {
-  const [data, setData] = useState(null);
+  const [formStepperData, setFormStepperData] = useState(null);
   const [signature, setSignature] = useState(null);
+
   return (
-    <GlobalContext.Provider value={{ data, setData, signature, setSignature }}>
+    <GlobalContext.Provider value={{ formStepperData, setFormStepperData, signature, setSignature }}>
       {children}
     </GlobalContext.Provider>
   );
