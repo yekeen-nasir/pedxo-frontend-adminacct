@@ -10,36 +10,72 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
   const { formStepperData } = useGlobalContext();
 
   const userInfo = [
+    // {
+    //   title: "Contract Type",
+    //   data: "Contract type",
+    // },
+    // {
+    //   title: "Start Date",
+    //   data: formStepperData.contractStartDate,
+    // },
+    // {
+    //   title: "End Date",
+    //   data: formStepperData.contractEndDate,
+    // },
+    // {
+    //   title: "Role Title",
+    //   data: formStepperData.roleTitle,
+    // },
+    // {
+    //   title: "Seniority Level",
+    //   data: formStepperData.seniorityLevel,
+    // },
+    // {
+    //   title: "Scope of work",
+    //   data: formStepperData.responsibility,
+    // },
+    // {
+    //   title: "Payment Rate",
+    //   data: "Contract type",
+    // },
+    // {
+    //   title: "Payment Frequency",
+    //   data: "Contract type",
+    // },
+
     {
       title: "Contract Type",
       data: "Contract type",
     },
-    {
-      title: "Start Date",
-      data: formStepperData.contractStartDate,
-    },
-    {
-      title: "End Date",
-      data: formStepperData.contractEndDate,
-    },
-    {
-      title: "Role Title",
-      data: formStepperData.roleTitle,
-    },
-    {
-      title: "Seniority Level",
-      data: formStepperData.seniorityLevel,
-    },
-    {
-      title: "Scope of work",
-      data: formStepperData.responsibility,
-    },
+
     {
       title: "Payment Rate",
       data: "Contract type",
     },
     {
       title: "Payment Frequency",
+      data: "Contract type",
+    },
+    {
+      title: "Contract Type",
+      data: "Contract type",
+    },
+
+    {
+      title: "Payment Rate",
+      data: "Contract type",
+    },
+    {
+      title: "Payment Frequency",
+      data: "Contract type",
+    },
+    {
+      title: "Contract Type",
+      data: "Contract type",
+    },
+
+    {
+      title: "Payment Rate",
       data: "Contract type",
     },
   ];

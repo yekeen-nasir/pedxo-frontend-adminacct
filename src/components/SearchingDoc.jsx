@@ -1,12 +1,9 @@
 import searchingdoc from "../assets/png/searchingdoc.png";
 import notice from "../assets/svg/notice.svg";
 import AddDeveloperBtn from "./AddDeveloperBtn";
-import CreateContractBtn from "./CreateContractBtn";
 import docpin from "../assets/svg/docpin.svg";
 
 const SearchingDoc = ({
-  heading,
-  subHead,
   noticeText,
   searchingdocTitle,
   searchingdocText,
@@ -15,21 +12,7 @@ const SearchingDoc = ({
 }) => {
   return (
     <section>
-      <div className="max-w-[1137px] mx-5 mt-[104px] pb-[62px] absolute xl:relative  font-poppins md:mt-[59px] lg:ml-[98px] lg:mr-[68px]">
-        <div className="flex items-center justify-between mb-[61px]">
-          <div>
-            <div className="text-[20px] font-medium lg:text-[30px] lg:font-semibold">
-              {heading}
-            </div>
-            <div className="font-semibold md:hidden">{subHead}</div>
-          </div>
-          <div className="hidden lg:flex gap-2">
-            <AddDeveloperBtn />
-            <CreateContractBtn />
-          </div>
-        </div>
-   
-
+      <div >
         <div>
           <div
             id="hi"
@@ -86,4 +69,3 @@ const SearchingDoc = ({
   );
 };
 export default SearchingDoc;
-

@@ -5,7 +5,7 @@ import { Switch } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../../Dropdown.json";
 import { templateBenefits } from "../../data";
-import { useGlobalContext } from "../../Context";
+// import { useGlobalContext } from "../../Context";
 
 const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
   const dropdownRef = useRef();
@@ -21,9 +21,9 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [isDateSelected, setIsDateSelected] = useState(false);
-  const [contractStartDate, setContractStartDate] = useState("");
-  const [contractEndDate, setContractEndDate] = useState("");
-  const { formStepperData } = useGlobalContext();
+  // const [contractStartDate, setContractStartDate] = useState("");
+  // const [contractEndDate, setContractEndDate] = useState("");
+  // const { formStepperData } = useGlobalContext();
 
   const toggleDropdown = (dropdown) => {
     setIsOpen((prevState) => {
@@ -66,12 +66,12 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
     setResponsibility(newResponsibility);
 
     // Pass the updated responsibility to onOptionSelect
-    onOptionSelect({
-      ...selectedOption,
+    onOptionSelect((prevState) => ({
+      ...prevState,
       responsibility: newResponsibility,
-    });
+    }));
 
-    console.log(responsibility)
+    console.log(responsibility);
   };
 
   const toggleEndDate = (e) => {
@@ -132,23 +132,23 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
     const newDate = e.target.value;
     setIsDateSelected(!!newDate);
 
-    if (dateType === "start") {
-      setContractStartDate(newDate);
-      console.log("Start Date:", newDate);
+    // if (dateType === "start") {
+    //   setContractStartDate(newDate);
+    //   console.log("Start Date:", newDate);
 
-      onOptionSelect((prevState) => ({
-        ...prevState,
-        contractStartDate: newDate,
-      }));
-    } else if (dateType === "end") {
-      setContractEndDate(newDate);
-      console.log("End Date:", newDate);
+    //   onOptionSelect((prevState) => ({
+    //     ...prevState,
+    //     contractStartDate: newDate,
+    //   }));
+    // } else if (dateType === "end") {
+    //   setContractEndDate(newDate);
+    //   console.log("End Date:", newDate);
 
-      onOptionSelect((prevState) => ({
-        ...prevState,
-        contractEndDate: newDate,
-      }));
-    }
+    //   onOptionSelect((prevState) => ({
+    //     ...prevState,
+    //     contractEndDate: newDate,
+    //   }));
+    // }
   };
 
   useEffect(() => {
@@ -400,7 +400,7 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
             type="date"
             name="startDate"
             id="startDate"
-            value={contractStartDate}
+            // value={contractStartDate}
             onChange={(e) => handleDateChange(e, "start")}
             onFocus={(e) => e.target.showPicker()}
             min={minDate}
@@ -431,7 +431,7 @@ const FormTwo = ({ subHead, endDate, showSwitch, onOptionSelect }) => {
             type="date"
             name="endDate"
             id="endDate"
-            value={contractEndDate}
+            // value={contractEndDate}
             onChange={(e) => handleDateChange(e, "end")}
             onFocus={(e) => hasEndDate && e.target.showPicker()}
             min={minDate}

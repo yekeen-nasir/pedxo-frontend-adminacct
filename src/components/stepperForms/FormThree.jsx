@@ -3,8 +3,6 @@ import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
 const FormTwo = ({ onChange, value, selectedCountry}) => {
 
-
-
   return (
     <div>
       <div className="flex flex-col gap-[18px]">
