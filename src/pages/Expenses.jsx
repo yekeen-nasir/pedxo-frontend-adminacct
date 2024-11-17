@@ -4,9 +4,19 @@ import DashboardHeading from "../components/DashboardHeading";
 import expenseavatar from "../assets/svg/expenseavatar.svg";
 
 const Expenses = () => {
+  const employees = [
+    {
+      name: "Mike Santos",
+      country: "India",
+      position: "Backend Developer",
+      amount: "$5000",
+    },
+    // Add more employees here as needed
+  ];
+
   return (
     <section>
-      <div className="relative top-[128px] mx-5 xl:top-[61px] xl:ml-[86px] xl:mr-[65px]">
+      <div className="relative top-[128px] mx-5 md:top-[61px] xl:ml-[86px] xl:mr-[65px]">
         <DashboardHeading heading="Expenses" subHead="August/2024" />
         <div className="xl:flex xl:flex-row-reverse xl:gap-5 xl:mt-[46px]">
           <div
@@ -31,29 +41,82 @@ const Expenses = () => {
               $15,000
             </div>
           </div>
-          <div className="flex flex-col gap-4 mt-[21px] xl:w-full xl:gap-[10px]">
-            <div
-              className="flex justify-between gap-[13px] font-medium px-[18px] py-[22px] rounded-lg xl:flex-row xl:py-[20px] xl:pl-[40px] xl:pr-[70px] xl:items-center "
-              style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
-            >
-              <div className="xl:flex xl:items-center ">
-                <div className="flex gap-[10px] mb-[13px] xl:mb-0 xl:items-center">
-                  <img src={expenseavatar} alt="profile photo" />
-                  <div className="xl:flex">
-                    <div className="text-sm  xl:text-sm">
-                      Mike Santos
-                    </div>
-                    <div className="text-[0.75rem] xl:text-sm xl:ml-[73px]">
-                      India
+
+          <div className="flex flex-col gap-4 mt-[21px] xl:w-full xl:gap-[10px] lg:hidden">
+            {employees.map((employee, index) => (
+              <div
+                key={index}
+                className="flex justify-between gap-[13px] font-medium px-[18px] py-[22px] rounded-lg xl:flex-row xl:py-[20px] xl:pl-[40px] xl:pr-[70px] xl:items-center "
+                style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
+              >
+                <div className="xl:flex xl:items-center ">
+                  <div className="flex gap-[10px] mb-[13px] xl:mb-0 xl:items-center">
+                    <img src={expenseavatar} alt="profile photo" />
+                    <div className="xl:flex">
+                      <div className="text-sm xl:text-sm">{employee.name}</div>
+                      <div className="text-[0.75rem] xl:text-sm xl:ml-[73px]">
+                        {employee.country}
+                      </div>
                     </div>
                   </div>
+                  <div className="text-[0.75rem] xl:text-sm xl:ml-[124px]">
+                    {employee.position}
+                  </div>
                 </div>
-                <div className="text-[0.75rem]  xl:text-sm xl:ml-[124px]">
-                  Backend Developer
-                </div>
+                <div className="text-sm ">{employee.amount}</div>
               </div>
-              <div className="text-sm ">$5000</div>
-            </div>
+            ))}
+          </div>
+
+          <div className="mt-[21px] hidden xl:w-full lg:block">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr
+                  className="text-left"
+                  style={{ color: "rgba(0, 0, 0, 0.60)" }}
+                >
+                  <th className="font-medium pl-[40px] pb-4">Name</th>
+                  <th className="font-medium pb-4">Country</th>
+                  <th className="font-medium pb-4 m">Position</th>
+                  <th className="font-medium pb-4">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((employee, index) => (
+                  <tr
+                    key={index}
+                    className="rounded-lg"
+                    style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
+                  >
+                    <td className="py-[22px] pl-[40px] xl:py-[20px]">
+                      <div className="flex items-center gap-[10px]">
+                        <img src={expenseavatar} alt="profile photo" />
+                        <div>
+                          <div className="text-sm xl:text-sm font-medium">
+                            {employee.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-[0.75rem] xl:text-sm py-[22px] xl:py-[20px]">
+                      <div className="text-[0.75rem] xl:text-sm">
+                        {employee.country}
+                      </div>
+                    </td>
+                    <td className="py-[22px] xl:py-[20px]">
+                      <div className="text-[0.75rem] xl:text-sm">
+                        {employee.position}
+                      </div>
+                    </td>
+                    <td className="py-[22px] xl:py-[20px]">
+                      <div className="text-sm font-medium">
+                        {employee.amount}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -61,34 +124,6 @@ const Expenses = () => {
   );
 };
 export default Expenses;
-
-{
-  /* <div className="flex flex-col gap-4 mt-[21px] xl:w-full">
-            <div
-              className="flex flex-col gap-[13px] px-[18px] py-[22px] rounded-lg xl:flex-row"
-              style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
-            >
-              <div className="flex justify-between">
-                <div className="flex gap-[10px]">
-                  <img src={expenseavatar} alt="profile photo" />
-                  <>
-                    <div className="text-sm font-medium">Mike Santos</div>
-                    <div
-                      className="text-[0.75rem] font-normal"
-                      style={{ color: "rgba(0, 0, 0, 0.50)" }}
-                    >
-                      India
-                    </div>
-                  </>
-                </div>
-                <div className="text-sm font-medium">$5000</div>
-              </div>
-              <div className="text-[0.75rem] font-medium">
-                Backend Developer(Director)
-              </div>
-            </div>
-          </div> */
-}
 
 // import { nanoid } from "nanoid";
 // import SearchingDoc from "../components/SearchingDoc";
