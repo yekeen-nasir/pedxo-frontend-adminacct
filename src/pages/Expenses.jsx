@@ -11,6 +11,7 @@ const Expenses = () => {
       position: "Backend Developer",
       amount: "$5000",
     },
+   
     // Add more employees here as needed
   ];
 
