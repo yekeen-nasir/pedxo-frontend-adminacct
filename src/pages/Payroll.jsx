@@ -18,7 +18,7 @@ const Payroll = () => {
 
   return (
     <section>
-      <div className="relative top-[128px] mx-5 md:top-[61px] flex flex-col justify-between h-screen xl:ml-[86px] xl:mr-[65px]">
+      <div className="relative top-[128px] mx-5 md:top-[61px] flex flex-col justify-between h-screen xl:ml-[86px] xl:mr-[65px] max-h-[1024px]">
         <div className="flex flex-col">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div>
