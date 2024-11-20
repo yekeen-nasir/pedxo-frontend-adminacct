@@ -3,7 +3,6 @@ import { nanoid } from "nanoid";
 import AddDeveloperBtn from "../components/AddDeveloperBtn";
 import CreateContractBtn from "../components/CreateContractBtn";
 import TeamsTable from "../components/teams/TeamsTable";
-import SearchInput from "../components/SearchInput";
 
 const Teams = () => {
   const onBoarding = [
@@ -38,19 +37,6 @@ const Teams = () => {
         </div>
 
         <div>
-          <div className="flex items-center justify-between font-semibold mt-2 lg:justify-self-start xl:text-2xl ">
-            <div className="flex items-center gap-1 md:mr-[21px]">
-              Active Developers
-              <div
-                className="w-3 h-3 rounded-full "
-                style={{ backgroundColor: "#008000" }}
-              ></div>
-            </div>
-            <div>
-              <SearchInput />
-            </div>
-          </div>
-
           <div>
             <TeamsTable />
           </div>

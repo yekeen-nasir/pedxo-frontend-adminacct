@@ -1,9 +1,10 @@
 import { nanoid } from "nanoid";
-import SearchingDoc from "../components/SearchingDoc";
+// import SearchingDoc from "../components/SearchingDoc";
 import AddDeveloperBtn from "../components/AddDeveloperBtn";
 import CreateContractBtn from "../components/CreateContractBtn";
-import { NavLink } from "react-router-dom";
-import add from "../assets/svg/add.svg";
+import AgreementTable from "../components/agreements/AgreementTable";
+// import { NavLink } from "react-router-dom";
+// import add from "../assets/svg/add.svg";
 
 const Agreements = () => {
   const onBoarding = [
@@ -23,7 +24,7 @@ const Agreements = () => {
     <div>
       <div className="mt-[62px] mx-5 flex flex-col xl:ml-[86px] xl:mr-[65px] ">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-xl font-medium lg:text-[30px] lg:font-semibold xl:mb-[11px]">
+          <div className="text-xl font-medium lg:text-[30px] lg:font-semibold xl:mb-5">
             Agreements
           </div>
           <div className="hidden md:flex gap-2">
@@ -31,8 +32,11 @@ const Agreements = () => {
             <CreateContractBtn />
           </div>
         </div>
-
         <div>
+          <div>
+            <AgreementTable />
+          </div>
+          {/* <div>
           <SearchingDoc
             noticeText="Add devs and pay them to see their 
 records here."
@@ -51,6 +55,7 @@ created a contract"
               </NavLink>
             </div>
           </SearchingDoc>
+        </div> */}
         </div>
       </div>
     </div>

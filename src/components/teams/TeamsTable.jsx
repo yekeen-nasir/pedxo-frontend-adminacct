@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import expenseavatar from "../../assets/svg/expenseavatar.svg";
+import SearchInput from "../../components/SearchInput";
 
 const TeamsTable = () => {
   const employees = [
@@ -16,7 +17,20 @@ const TeamsTable = () => {
   ];
   return (
     <section>
-      <div className="xl:mt-[46px] flex flex-col">
+      <div>
+        <div className="flex items-center justify-between font-medium mt-2 lg:justify-self-start xl:text-xl">
+          <div className="flex items-center gap-1 md:mr-[21px]">
+            Active Developers
+            <div
+              className="w-3 h-3 rounded-full "
+              style={{ backgroundColor: "#008000" }}
+            ></div>
+          </div>
+          <div>
+            <SearchInput />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 mt-[21px] xl:flex-col-reverse xl:gap-[10px] xl:w-full lg:hidden">
           {employees.map((employee, index) => (
             <div
