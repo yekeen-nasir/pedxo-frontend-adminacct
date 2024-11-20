@@ -68,16 +68,17 @@ const Navbar = () => {
   return (
     <nav>
       <div
-        className="absolute top-[64px] left-5 md:hidden"
+      className="absolute top-[32px] left-5 md:hidden"
         onClick={handleToggleMenu}
       >
         <img src={dropdown} alt="menu icon" />
       </div>
+
       <div
         ref={navRef}
-        className={`absolute z-10 h-[844px] flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
+        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
-        } md:relative md:translate-x-0 md:h-[1024px]`}
+        }  md:translate-x-0 `}
       >
         <div className="pt-[44px] pl-[40px] lg:pt-[73px]">
           <h1

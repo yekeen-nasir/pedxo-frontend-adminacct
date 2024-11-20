@@ -1,5 +1,9 @@
 import { nanoid } from "nanoid";
-import SearchingDoc from "../components/SearchingDoc";
+// import SearchingDoc from "../components/SearchingDoc";
+import AddDeveloperBtn from "../components/AddDeveloperBtn";
+import CreateContractBtn from "../components/CreateContractBtn";
+import TeamsTable from "../components/teams/TeamsTable";
+import SearchInput from "../components/SearchInput";
 
 const Teams = () => {
   const onBoarding = [
@@ -22,14 +26,45 @@ const Teams = () => {
 
   return (
     <div>
-      <SearchingDoc
-        heading="Teams"
-        noticeText="How onboarding works?"
-        searchingdocTitle="Create Contract"
-        searchingdocText=" Start creating contract will refer you to your team members. Once
+      <div className="mt-[62px] mx-5 flex flex-col xl:ml-[86px] xl:mr-[65px] ">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+          <div className="text-xl font-medium lg:text-[30px] lg:font-semibold xl:mb-[11px]">
+            Teams
+          </div>
+          <div className="hidden md:flex gap-2">
+            <AddDeveloperBtn />
+            <CreateContractBtn />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between font-semibold mt-2 lg:justify-self-start xl:text-2xl ">
+            <div className="flex items-center gap-1 md:mr-[21px]">
+              Active Developers
+              <div
+                className="w-3 h-3 rounded-full "
+                style={{ backgroundColor: "#008000" }}
+              ></div>
+            </div>
+            <div>
+              <SearchInput />
+            </div>
+          </div>
+
+          <div>
+            <TeamsTable />
+          </div>
+          {/* <div>
+            <SearchingDoc
+              noticeText="How onboarding works?"
+              searchingdocTitle="Create Contract"
+              searchingdocText=" Start creating contract will refer you to your team members. Once
             they are added, you'll see them here"
-        onBoarding={onBoarding}
-      />
+              onBoarding={onBoarding}
+            />
+          </div> */}
+        </div>
+      </div>
     </div>
   );
 };

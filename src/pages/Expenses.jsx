@@ -17,7 +17,7 @@ const Expenses = () => {
 
   return (
     <section>
-      <div className="relative top-[128px] mx-5 md:top-[61px] xl:ml-[86px] xl:mr-[65px]">
+      <div className="mt-[62px] mx-5 xl:ml-[86px] xl:mr-[65px]">
         <DashboardHeading heading="Expenses" subHead="August/2024" />
         <div className="xl:flex xl:flex-row-reverse xl:gap-5 xl:mt-[46px]">
           <div

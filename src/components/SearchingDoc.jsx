@@ -12,40 +12,35 @@ const SearchingDoc = ({
 }) => {
   return (
     <section>
-      <div >
-        <div>
-          <div
-            id="hi"
-            className=" px-[15px] py-4 overview-expense-bg mt-[30px] rounded-lg xl:px-[35px] xl:py-[31px]"
-          >
-            <div className="flex items-center gap-3 mb-5">
-              <img src={notice} alt="notice" />
-              <p className="text-sm font-medium leading-normal lg:text-[20px]">
-                {noticeText}
-              </p>
-            </div>
+      <div>
+        <div className=" px-[15px] py-4 overview-expense-bg mt-[30px] rounded-lg xl:px-[35px] xl:py-[31px]">
+          <div className="flex items-center gap-3 mb-5">
+            <img src={notice} alt="notice" />
+            <p className="text-sm font-medium leading-normal lg:text-[20px]">
+              {noticeText}
+            </p>
+          </div>
 
-            <div className="flex flex-col gap-3 xl:flex-row">
-              {onBoarding.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start flex-1 gap-[15px]  bg-white py-[17px] px-[18px] rounded-lg xl:max-w-[342px]"
-                >
-                  <img src={docpin} alt="docpin icon" />
-                  <div>
-                    <div className="text-sm font-semibold leading-normal mb-[5px] lg:text-[16px]">
-                      {item.title}
-                    </div>
-                    <p
-                      className="text-[10px] font-normal leading-normal lg:text-[12px]"
-                      style={{ color: "rgba(0, 0, 0, 0.70)" }}
-                    >
-                      {item.desp}
-                    </p>
+          <div className="flex flex-col gap-3 xl:flex-row">
+            {onBoarding.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-start flex-1 gap-[15px]  bg-white py-[17px] px-[18px] rounded-lg xl:max-w-[342px]"
+              >
+                <img src={docpin} alt="docpin icon" />
+                <div>
+                  <div className="text-sm font-semibold leading-normal mb-[5px] lg:text-[16px]">
+                    {item.title}
                   </div>
+                  <p
+                    className="text-[10px] font-normal leading-normal lg:text-[12px]"
+                    style={{ color: "rgba(0, 0, 0, 0.70)" }}
+                  >
+                    {item.desp}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 

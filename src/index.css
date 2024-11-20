@@ -89,4 +89,12 @@
   .image-wrapper {
     position: relative;
   }
+
+  .payrollIsActiveClr{
+    color: #00B9CB;
+  }
+
+  .payrollNotActiveClr{
+    color: rgba(0, 0, 0, 0.20);
+  }
 }
