@@ -1,6 +1,7 @@
 import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
+import { useState } from "react";
 
 const FormOne = ({
   onChange,
@@ -11,15 +12,27 @@ const FormOne = ({
   setSelectedCountry,
   countries,
 }) => {
+  const [selectedState, setSelectedState] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const isVisible = clientName && email && selectedCountry && selectedState;
+
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
     setStates([]);
+    setSelectedState("");
+    console.log(e.target.value);
   };
 
-  const handleChange = (e) => {
-    const target = e.target.value;
-    console.log(target);
+  const handleStateChange = (e) => {
+    setSelectedState(e.target.value);
   };
+
+  // const handleChange = (e) => {
+  //   const target = e.target.value;
+  //   console.log(target);
+  // };
 
   return (
     <div>
@@ -35,7 +48,10 @@ const FormOne = ({
           id="clientName"
           placeholder="John Doe"
           value={value}
-          onChange={(onChange, handleChange)}
+          onChange={(e) => {
+            onChange(e);
+            setClientName(e.target.value);
+          }}
           required={true}
         />
 
@@ -47,7 +63,10 @@ const FormOne = ({
           id="email"
           placeholder="John@gmail.com"
           value={value}
-          onChange={onChange}
+          onChange={(e) => {
+            onChange(e);
+            setEmail(e.target.value);
+          }}
           required={true}
         />
 
@@ -62,7 +81,7 @@ const FormOne = ({
             <select
               name="country"
               id="country"
-              onChange={(e) => handleCountryChange(e)}
+              onChange={handleCountryChange}
               value={selectedCountry}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
@@ -93,13 +112,18 @@ const FormOne = ({
             <select
               name="state"
               id="state"
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                handleStateChange;
+              }}
+              value={selectedState}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
             >
               <option value=""></option>
               {states.map((state) => {
                 return (
-                  <option key={state.id} value={state.id}>
+                  <option key={state.id} value={state.iso2}>
                     {state.name}
                   </option>
                 );
@@ -110,6 +134,20 @@ const FormOne = ({
             </div>
           </div>
         </div>
+
+        {isVisible && (
+          <ContractInputForm
+            htmlFor="text"
+            label="Company Name *"
+            type="text"
+            name="text"
+            id="text"
+            placeholder=""
+            // value={value}
+            // onChange={(onChange, handleChange)}
+            required={true}
+          />
+        )}
       </div>
     </div>
   );

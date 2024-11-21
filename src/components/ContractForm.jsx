@@ -22,13 +22,13 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
+
   // const [selectedOption, setSelectedOption] = useState({});
-  const {setFormStepperData} = useGlobalContext()
+  const { setFormStepperData } = useGlobalContext();
 
   const handleOptionSelect = (option) => {
     setFormStepperData(option);
   };
-
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -114,7 +114,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               subHead={subHead}
               endDate={endDate}
               showSwitch={showSwitch}
-              onOptionSelect={handleOptionSelect} 
+              onOptionSelect={handleOptionSelect}
             />
           </div>
         );
@@ -126,7 +126,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               value={formData}
               onChange={handleInputChange}
               selectedCountry={selectedCountry}
-              onOptionSelect={handleOptionSelect} 
+              onOptionSelect={handleOptionSelect}
             />
           </div>
         );
