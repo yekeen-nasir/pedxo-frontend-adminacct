@@ -29,11 +29,6 @@ const FormOne = ({
     setSelectedState(e.target.value);
   };
 
-  // const handleChange = (e) => {
-  //   const target = e.target.value;
-  //   console.log(target);
-  // };
-
   return (
     <div>
       <div className="flex flex-col gap-[18px]">

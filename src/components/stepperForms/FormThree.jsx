@@ -1,7 +1,7 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormTwo = ({ onChange, value, selectedCountry}) => {
+const FormTwo = ({ selectedCountry}) => {
 
   return (
     <div>
@@ -31,8 +31,8 @@ const FormTwo = ({ onChange, value, selectedCountry}) => {
               type="number"
               name="paymentRate "
               id="paymentRate "
-              value={value}
-              onChange={onChange}
+              // value={value}
+              // onChange={onChange}
               className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 pl-20 text-[12px] xl:pl-40 xl:h-[60px] xl:text-[16px]"
               style={{
                 borderColor: "rgba(0, 0, 0, 0.20)",

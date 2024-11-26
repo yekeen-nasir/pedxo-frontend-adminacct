@@ -7,6 +7,7 @@ import {
 import {
   AccountVerification,
   AddDeveloper,
+  AgreementContract,
   Agreements,
   CreateContract,
   Dashboard,
@@ -59,6 +60,12 @@ const router = createBrowserRouter([
   {
     path: "/gig-based-form",
     element: <GigBasedContract />,
+    errorElement: <Error />,
+  },
+
+  {
+    path: "/agreements/:id",
+    element: <AgreementContract />,
     errorElement: <Error />,
   },
 
@@ -120,4 +127,3 @@ function App() {
 }
 
 export default App;
-// min-w-[390px] 2xl:max-w-[1512px] 2xl:mx-auto px-[25px]

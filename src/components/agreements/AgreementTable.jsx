@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import expenseavatar from "../../assets/svg/expenseavatar.svg";
 import SearchInput from "../../components/SearchInput";
-import AgreementsCard from "../AgreementsCard";
+import AgreementsCard from "./AgreementsCard";
 
 const AgreementTable = () => {
   const employees = [
@@ -14,7 +14,6 @@ const AgreementTable = () => {
       status: "Paid",
     },
 
-    // Add more employees here as needed
   ];
   return (
     <section>

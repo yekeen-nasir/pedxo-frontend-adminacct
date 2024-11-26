@@ -9,6 +9,6 @@ export { default as FormTwo } from "./stepperForms/FormTwo";
 export { default as FormThree } from "./stepperForms/FormThree";
 export { default as FormFour } from "./stepperForms/FormFour";
 export { default as FormFive } from "./stepperForms/FormFive";
-export { default as ContractFormInput } from ".//ContractFormInput";
-export { default as FormSentSuccess } from ".//FormSentSuccess";
+export { default as ContractFormInput } from "./ContractFormInput";
+export { default as ContractSentSuccess } from "./ContractSentSuccess";
 

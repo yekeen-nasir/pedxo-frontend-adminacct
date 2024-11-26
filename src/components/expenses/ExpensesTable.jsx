@@ -9,7 +9,6 @@ const ExpensesTable = () => {
       amount: "$5000",
     },
 
-    // Add more employees here as needed
   ];
   return (
     <div className="xl:flex xl:flex-row-reverse xl:gap-5 xl:mt-[46px]">

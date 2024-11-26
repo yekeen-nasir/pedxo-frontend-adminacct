@@ -11,30 +11,19 @@ const PaidTable = () => {
       status: "Paid",
     },
 
-    // Add more employees here as needed
+
   ];
   return (
     <section>
       <div className="xl:mt-[46px] flex flex-col">
         <div className="flex flex-col gap-4 mt-[21px] xl:flex-col-reverse xl:gap-[10px] xl:w-full lg:hidden">
-          <div
-            className="flex justify-between items-center px-[13px] py-[11px] rounded-lg user-bg-clr xl:px-10 xl:py-5"
-            style={{ border: "1px solid rgba(0, 0, 0, 0.05)" }}
-          >
-            <div className="text-[0.625rem] font-semibold xl:text-xl">
-              Select to pay all at once
-            </div>
-
-            <input type="checkbox" name="" id="" className="xl:w-6 xl:h-6" />
-          </div>
-
           {employees.map((employee, index) => (
             <div
               key={index}
-              className="flex justify-between font-medium px-[18px] py-[22px] rounded-lg xl:flex-row xl:items-center xl:px-10  xl:py-[20px] "
+              className="font-medium px-[18px] py-[22px] rounded-lg xl:flex-row xl:items-center xl:px-10  xl:py-[20px] "
               style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
             >
-              <div className="xl:flex xl:items-center">
+              <div className="flex justify-between">
                 <div className="flex gap-[10px] xl:items-center">
                   <img src={expenseavatar} alt="profile photo" />
                   <div className="xl:flex">
@@ -44,28 +33,27 @@ const PaidTable = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="text-[0.75rem] xl:text-sm mt-[13px] xl:mt-0">
-                  {employee.position}
+                <div
+                  className="px-[10px] py-[3px] rounded-[4px] text-[0.5rem]  max-h-max xl:hidden"
+                  style={{ backgroundColor: " rgba(0, 128, 0, 0.20)" }}
+                >
+                  {employee.status}
                 </div>
-              </div>
-              <div
-                className="px-[10px] py-[3px] rounded-[4px] text-[0.5rem]  max-h-max xl:hidden"
-                style={{ backgroundColor: " rgba(0, 128, 0, 0.20)" }}
-              >
-                {employee.status}
-              </div>
-              <div className="xl:flex-row-reverse xl:ml-[50px]">
                 <div className="text-sm flex flex-col justify-between">
                   {employee.amount}
+                </div>
+              </div>
 
-                  <div className="py-[7px] px-[9px] font-semibold text-[0.625rem] text-center pr-bg-clr text-white rounded-lg max-w-max ">
-                    <Link
-                    // to="/dashboard/add-developer"
-                    >
-                      Receipt
-                    </Link>
-                  </div>
+              <div className="flex items-center justify-between mt-[13px] xl:mt-0">
+                <div className="text-[0.75rem] xl:text-sm ">
+                  {employee.position}
+                </div>
+                <div className="py-[7px] px-[9px] font-semibold text-[0.625rem] text-center pr-bg-clr text-white rounded-lg max-w-max ">
+                  <Link
+                  // to="/dashboard/add-developer"
+                  >
+                    Receipt
+                  </Link>
                 </div>
               </div>
             </div>

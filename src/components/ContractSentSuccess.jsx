@@ -1,7 +1,7 @@
 import closeIcon from "..//assets/svg/closesuccess.svg";
 import sentIcon from "../assets/svg/sentsuccess.svg";
 
-const FormSentSuccess = () => {
+const ContractSentSuccess = () => {
   return (
     <div>
       <div className="flex justify-center items-center">
@@ -31,4 +31,4 @@ const FormSentSuccess = () => {
     </div>
   );
 };
-export default FormSentSuccess;
+export default ContractSentSuccess;

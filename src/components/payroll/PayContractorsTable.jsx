@@ -1,8 +1,11 @@
+import { useState } from "react";
 import expenseavatar from "../../assets/svg/expenseavatar.svg";
 
 import { Link } from "react-router-dom";
 
 const PayContractorsTable = () => {
+  const [allChecked, setAllChecked] = useState(false);
+
   const employees = [
     {
       name: "Mike Santos",
@@ -11,9 +14,38 @@ const PayContractorsTable = () => {
       amount: "$5000",
       status: "Payment Due",
     },
-
-    // Add more employees here as needed
+    {
+      name: "Mike Santos",
+      country: "United kingdom",
+      position: "Backend Developer",
+      amount: "$5000",
+      status: "Payment Due",
+    },
+    {
+      name: "Mike Santos",
+      country: "United kingdom",
+      position: "Backend Developer",
+      amount: "$5000",
+      status: "Payment Due",
+    },
   ];
+
+  const [employeeChecks, setEmployeeChecks] = useState(
+    Array(employees.length).fill(false)
+  );
+
+  const handleAllCheckboxChange = () => {
+    const newCheckedStatus = !allChecked;
+    setAllChecked(newCheckedStatus);
+    setEmployeeChecks(Array(employees.length).fill(newCheckedStatus));
+  };
+
+  const handleEmployeeCheckboxChange = (index) => {
+    const updatedChecks = [...employeeChecks];
+    updatedChecks[index] = !updatedChecks[index];
+    setEmployeeChecks(updatedChecks);
+  };
+
   return (
     <section>
       <div className="xl:mt-[46px] flex flex-col">
@@ -26,7 +58,14 @@ const PayContractorsTable = () => {
               Select to pay all at once
             </div>
 
-            <input type="checkbox" name="" id="" className="xl:w-6 xl:h-6" />
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              className="xl:w-6 xl:h-6"
+              checked={allChecked}
+              onChange={handleAllCheckboxChange}
+            />
           </div>
 
           {employees.map((employee, index) => (
@@ -65,6 +104,8 @@ const PayContractorsTable = () => {
                   name=""
                   id=""
                   className="w-4 h-4 ml-auto xl:hidden"
+                  checked={employeeChecks[index]}
+                  onChange={() => handleEmployeeCheckboxChange(index)}
                 />
               </div>
             </div>
@@ -108,6 +149,8 @@ const PayContractorsTable = () => {
                     name=""
                     id=""
                     className="w-6 h-6 ml-auto "
+                    checked={employeeChecks[index]}
+                    onChange={() => handleEmployeeCheckboxChange(index)}
                   />
                 </div>
               </div>
@@ -118,14 +161,21 @@ const PayContractorsTable = () => {
 
       <div className="mb-[22px] md:mb-[34px] absolute bottom-0 left-0 mx-5 md:left-[228px] right-0 xl:ml-[85px]  xl:mr-[65px] ">
         <div
-          className="hidden  mt-[10px] rounded-lg user-bg-clr xl:flex xl:justify-between xl:items-center xl:px-10 xl:py-5"
+          className="hidden mt-[10px] rounded-lg user-bg-clr lg:flex lg:justify-between lg:items-center lg:px-10 lg:py-5"
           style={{ border: "1px solid rgba(0, 0, 0, 0.05)" }}
         >
-          <div className="text-xl font-semibold ">
+          <div className="xl:text-xl font-semibold ">
             Select to pay all at once
           </div>
           <div>
-            <input type="checkbox" name="" id="" className="w-6 h-6" />
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              className="w-6 h-6"
+              checked={allChecked}
+              onChange={handleAllCheckboxChange}
+            />
           </div>
         </div>
 
@@ -133,7 +183,7 @@ const PayContractorsTable = () => {
           <div className="text-sm font-medium mt-[10px] xl:text-[22px]">
             Total Amount: $15,000
           </div>
-          <div className="py-[1em] px-[2em] xl:py-[15px] xl:px-[31px] font-semibold text-[0.625rem] xl:text-base pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
+          <div className="flex items-center justify-center gap-[10px] py-[1em] px-[2em] font-semibold text-[0.625rem] pr-bg-clr text-white mt-[15px] rounded-lg xl:text-base xl:py-[15px] xl:px-[31px]">
             <Link
               // to="/dashboard/add-developer"
               className="flex items-center gap-[10px]"

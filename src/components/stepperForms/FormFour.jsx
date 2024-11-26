@@ -3,7 +3,7 @@ import sign from "../../assets/svg/sign.svg";
 import FormFive from "./FormFive";
 import { useGlobalContext } from "../../Context";
 
-const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
+const FormFour = ({ currentStep, setCurrentStep, setComplete, heading }) => {
   const [isSignModalOpen, setIsSignModalOpen] = useState(false);
 
   const { signature } = useGlobalContext();
@@ -96,7 +96,7 @@ const FormFour = ({ currentStep, setCurrentStep, setComplete }) => {
         ) : (
           <>
             <div className="text-lg font-semibold leading-normal xl:text-2xl xl:mb-[18px]">
-              Review and Sign Contract
+              {heading}
             </div>
 
             <div

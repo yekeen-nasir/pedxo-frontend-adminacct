@@ -17,7 +17,7 @@ const statesUrl = "https://api.countrystatecity.in/v1/countries";
 const ContractForm = ({ subHead, endDate, showSwitch }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
-  const [formData, setFormData] = useState();
+  // const [formData, setFormData] = useState();
 
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -80,9 +80,9 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
     "Review Contract",
   ];
 
-  const handleInputChange = (e) => {
-    console.log(e.target.value);
-  };
+  // const handleInputChange = (e) => {
+  //   console.log(e.target.value);
+  // };
 
   const handlePrevious = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
@@ -94,8 +94,8 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
         return (
           <div>
             <FormOne
-              value={formData}
-              onChange={handleInputChange}
+              // value={formData}
+              // onChange={handleInputChange}
               countries={countries}
               states={states}
               setStates={setStates}
@@ -123,8 +123,8 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
         return (
           <div>
             <FormThree
-              value={formData}
-              onChange={handleInputChange}
+              // value={formData}
+              // onChange={handleInputChange}
               selectedCountry={selectedCountry}
               onOptionSelect={handleOptionSelect}
             />
@@ -135,11 +135,10 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
         return (
           <div>
             <FormFour
-              value={formData}
-              onChange={handleInputChange}
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
               setComplete={setComplete}
+              heading="Review and Sign Contract"
             />
           </div>
         );
