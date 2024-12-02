@@ -49,7 +49,7 @@ const Payroll = () => {
             <div className="font-semibold xl:text-2xl">
               <span
                 className={`mr-6 cursor-pointer  ${
-                  isActive ? "payrollIsActiveClr" : "payrollNotActiveClr"
+                  isActive ? "text-[#00B9CB]" : "text-[#00000033]"
                 } `}
                 onClick={handleClick}
               >
@@ -57,7 +57,7 @@ const Payroll = () => {
               </span>
               <span
                 className={`cursor-pointer ${
-                  isActive ? "payrollNotActiveClr" : "payrollIsActiveClr"
+                  isActive ? "text-[#00000033]" : "text-[#00B9CB]"
                 } `}
                 onClick={handleClick}
               >

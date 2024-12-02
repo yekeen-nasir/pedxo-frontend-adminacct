@@ -23,7 +23,6 @@ import {
   Teams,
 } from "./pages";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -62,9 +61,8 @@ const router = createBrowserRouter([
     element: <GigBasedContract />,
     errorElement: <Error />,
   },
-
   {
-    path: "/agreements/:id",
+    path: "/dashboard/agreements/:id",
     element: <AgreementContract />,
     errorElement: <Error />,
   },
@@ -80,37 +78,38 @@ const router = createBrowserRouter([
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/overview",
+        path: "overview",
         element: <Overview />,
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/add-developer",
+        path: "add-developer",
         element: <AddDeveloper />,
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/create-contract",
+        path: "create-contract",
         element: <CreateContract />,
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/teams",
+        path: "teams",
         element: <Teams />,
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/payroll",
+        path: "payroll",
         element: <Payroll />,
         errorElement: <Error />,
       },
+
       {
-        path: "/dashboard/expenses",
+        path: "expenses",
         element: <Expenses />,
         errorElement: <Error />,
       },
       {
-        path: "/dashboard/agreements",
+        path: "agreements",
         element: <Agreements />,
         errorElement: <Error />,
       },

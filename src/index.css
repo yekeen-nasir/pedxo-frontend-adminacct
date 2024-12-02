@@ -11,6 +11,12 @@
   --hover-clr: #00b9cb;
 }
 
+@layer base {
+  body {
+    font-family: "Poppins", "sans-serif";
+  }
+}
+
 @layer components {
   .line-with-text {
     @apply flex items-center;
@@ -28,7 +34,6 @@
 }
 
 @layer utilities {
-  
   .pr-text-clr {
     color: var(--pr-text-clr);
   }
@@ -66,8 +71,8 @@
     background-color: #f7f7f7;
   }
 
-  .overview-text{
-    color: rgba(0, 0, 0, 0.70);
+  .overview-text {
+    color: #000000b3;
   }
 
   .icon {
@@ -79,22 +84,14 @@
   }
 
   .stepper-clr {
-    color: rgba(0, 0, 0, 0.3);
+    color: #0000004d;
   }
 
   option:disabled {
-    color: rgba(0, 0, 0, 0.2);
+    color: #00000033;
   }
 
   .image-wrapper {
     position: relative;
-  }
-
-  .payrollIsActiveClr{
-    color: #00B9CB;
-  }
-
-  .payrollNotActiveClr{
-    color: rgba(0, 0, 0, 0.20);
   }
 }

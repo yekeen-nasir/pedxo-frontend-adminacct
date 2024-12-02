@@ -1,7 +1,8 @@
 import { useState } from "react";
 import expenseavatar from "../../assets/svg/expenseavatar.svg";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import PrimaryBtn from "../PrimaryBtn";
 
 const PayContractorsTable = () => {
   const [allChecked, setAllChecked] = useState(false);
@@ -183,13 +184,8 @@ const PayContractorsTable = () => {
           <div className="text-sm font-medium mt-[10px] xl:text-[22px]">
             Total Amount: $15,000
           </div>
-          <div className="flex items-center justify-center gap-[10px] py-[1em] px-[2em] font-semibold text-[0.625rem] pr-bg-clr text-white mt-[15px] rounded-lg xl:text-base xl:py-[15px] xl:px-[31px]">
-            <Link
-              // to="/dashboard/add-developer"
-              className="flex items-center gap-[10px]"
-            >
-              Make Payment
-            </Link>
+          <div>
+            <PrimaryBtn text="Make Payment"/>
           </div>
         </div>
       </div>

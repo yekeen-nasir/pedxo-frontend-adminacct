@@ -3,6 +3,7 @@ import expenseavatar from "../../assets/svg/expenseavatar.svg";
 import rightarrow from "../../assets/svg/rightarrow.svg";
 
 const AgreementsCard = () => {
+
   const agreementsCards = [
     {
       avatar: expenseavatar,
@@ -35,7 +36,7 @@ const AgreementsCard = () => {
       {agreementsCards.map((card, index) => (
         <div
           key={index}
-          className="flex flex-col items-center rounded-lg  py-[30px] "
+          className="flex flex-col items-center rounded-lg  py-[30px]"
           style={{ border: "0.5px solid rgba(0, 0, 0, 0.20)" }}
         >
           {/* <div className="w-[60px] h-[60px] bg-gray-500 rounded-full mb-[18px]">
@@ -49,7 +50,10 @@ const AgreementsCard = () => {
           <div className="font-medium text-center lg:text-[1.4rem]">
             {card.name}
           </div>
-          <Link to={`/agreements/${card.id}`} className="flex gap-[6px]">
+          <Link
+            to={`/dashboard/agreements/${card.id}`}
+            className="flex gap-[6px]"
+          >
             <span className="font-medium text-[0.625rem] pr-text-clr md:text-[0.75rem] lg:text-base">
               {card.link}
             </span>

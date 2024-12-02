@@ -25,6 +25,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
 
   // const [selectedOption, setSelectedOption] = useState({});
   const { setFormStepperData } = useGlobalContext();
+  const { hasSignature } = useGlobalContext();
 
   const handleOptionSelect = (option) => {
     setFormStepperData(option);
@@ -139,6 +140,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
               setCurrentStep={setCurrentStep}
               setComplete={setComplete}
               heading="Review and Sign Contract"
+              hasSignature={hasSignature}
             />
           </div>
         );
@@ -147,6 +149,19 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
         return (
           <div>
             <FormFive />
+          </div>
+        );
+
+      case 6:
+        return (
+          <div>
+            <FormFour
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              setComplete={setComplete}
+              heading="Review and Sign Contract"
+              hasSignature={hasSignature}
+            />
           </div>
         );
     }

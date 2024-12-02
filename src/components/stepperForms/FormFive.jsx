@@ -1,17 +1,19 @@
 import SignatureCanvas from "react-signature-canvas";
 import usesignature from "../../assets/svg/usesignature.svg";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGlobalContext } from "../../Context";
+import FormFour from "./FormFour";
+
 
 const FormFive = ({ currentStep, setCurrentStep, setComplete }) => {
   const sigCanvas = useRef(null);
   const { setSignature } = useGlobalContext();
+  const [nextForm, setNextForm] = useState(false);
 
   const saveSignature = () => {
     const dataUrl = sigCanvas.current.toDataURL();
-    console.log(dataUrl);
-
     setSignature(dataUrl);
+    setNextForm(true);
 
     currentStep === 6 ? setComplete(true) : setCurrentStep((prev) => prev + 1);
   };
@@ -20,12 +22,16 @@ const FormFive = ({ currentStep, setCurrentStep, setComplete }) => {
     sigCanvas.current.clear();
   };
 
+  if (nextForm) {
+    return <FormFour />;
+  }
+
   return (
     <div>
       <div className="overflow-hidden">
         <div className="text-lg font-semibold leading-normal mb-6 xl:text-2xl xl:mb-[32px]">
           Sign Signature
-        </div>
+        </div>``
         <div className="bg-white max-w-[608px] h-[202px]">
           <SignatureCanvas
             ref={sigCanvas}
@@ -51,7 +57,6 @@ const FormFive = ({ currentStep, setCurrentStep, setComplete }) => {
           </button>
         </div>
       </div>
-     
     </div>
   );
 };
