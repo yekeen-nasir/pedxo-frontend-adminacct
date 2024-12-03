@@ -4,7 +4,7 @@ import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 import { useState } from "react";
 
 const FormOne = ({
-  onChange,
+  // onChange,
   value,
   states,
   setStates,
@@ -25,10 +25,6 @@ const FormOne = ({
     console.log(e.target.value);
   };
 
-  const handleStateChange = (e) => {
-    setSelectedState(e.target.value);
-  };
-
   return (
     <div>
       <div className="flex flex-col gap-[18px]">
@@ -44,7 +40,7 @@ const FormOne = ({
           placeholder="John Doe"
           value={value}
           onChange={(e) => {
-            onChange(e);
+            // onChange(e);
             setClientName(e.target.value);
           }}
           required={true}
@@ -59,7 +55,7 @@ const FormOne = ({
           placeholder="John@gmail.com"
           value={value}
           onChange={(e) => {
-            onChange(e);
+            // onChange(e);
             setEmail(e.target.value);
           }}
           required={true}
@@ -107,10 +103,7 @@ const FormOne = ({
             <select
               name="state"
               id="state"
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                handleStateChange;
-              }}
+              onChange={(e) => setSelectedState(e.target.value)}
               value={selectedState}
               className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
               style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
