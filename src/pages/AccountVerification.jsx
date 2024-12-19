@@ -3,11 +3,13 @@ import FormInput from "../components/FormInput";
 import authFetch from "../components/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AccountVerification = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const location = useLocation();
   const email = location.state?.email;
@@ -21,18 +23,19 @@ const AccountVerification = () => {
     setIsLoading(true);
 
     const verificationData = {
-      email: "efe@gmail.com",
+      email: email,
       code: verificationCode,
     };
 
     try {
-      const response = await authFetch.post(
+      await authFetch.post(
         "/auth/verify-email",
         JSON.stringify(verificationData)
       );
-      // const data = await response.json();
-      toast.success("Account Created Successfully");
-      console.log(response.data);
+      toast.success("Account created successfully");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       if (error.response.data.message[0] === "code should not be empty") {
         toast.error(error.response.data.message[0]);
@@ -42,11 +45,29 @@ const AccountVerification = () => {
       ) {
         toast.error(error.response.data.message);
       }
-      toast.error(error.response.data.message);
-
-      console.log(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const requestOtp = async () => {
+    const otpData = {
+      email: email,
+      type: "Email Verification",
+    };
+
+    try {
+      const res = await authFetch.post(
+        "/auth/request-otp",
+        JSON.stringify(otpData)
+      );
+      if (res.data) {
+        toast.success("Check mail for otp");
+      }
+      console.log(res);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
     }
   };
 
@@ -56,9 +77,7 @@ const AccountVerification = () => {
       <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           A verification OTP has been sent to:
-          <p className="text-sm" style={{ color: "rgba(0, 0, 0, 0.60)" }}>
-            {email}
-          </p>
+          <p className="text-sm text-[#00000099]">{email}</p>
         </h1>
         <form onSubmit={handleFormSubmit}>
           <FormInput
@@ -71,6 +90,10 @@ const AccountVerification = () => {
             value={verificationCode}
             onChange={handleChange}
           />
+
+          <div className="pr-text-clr mt-1" onClick={requestOtp}>
+            Resend otp
+          </div>
 
           <div className="mt-6">
             <button

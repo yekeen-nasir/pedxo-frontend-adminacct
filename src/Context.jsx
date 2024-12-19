@@ -8,6 +8,7 @@ const AppContext = ({ children }) => {
   const [formStepperData, setFormStepperData] = useState(null);
   const [signature, setSignature] = useState(null);
   const [hasSignature, setHasSignature] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   return (
     <GlobalContext.Provider
@@ -18,6 +19,8 @@ const AppContext = ({ children }) => {
         setSignature,
         hasSignature,
         setHasSignature,
+        userData,
+        setUserData,
       }}
     >
       {children}

@@ -61,7 +61,6 @@ const AgreementContract = () => {
     }
   };
 
-
   return (
     <section>
       {/* <h1>Agreement ID: {id}</h1> */}
@@ -73,9 +72,16 @@ const AgreementContract = () => {
           >
             <img src={leftarrorw} alt="arrow" className="xl:w-[33px]" />
             {isTransactionHistoryVisible === true ? (
-              <span className="cursor-pointer" onClick={() => setIsTransactionHistoryVisible(false)}>Go back</span>
+              <span
+                className="cursor-pointer"
+                onClick={() => setIsTransactionHistoryVisible(false)}
+              >
+                Go back
+              </span>
             ) : (
-              <Link to="/dashboard/agreements" className="cursor-pointer">Go back</Link>
+              <Link to="/dashboard/agreements" className="cursor-pointer">
+                Go back
+              </Link>
             )}
           </div>
           <div

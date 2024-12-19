@@ -74,8 +74,7 @@ const FormOne = ({
               id="country"
               onChange={handleCountryChange}
               value={selectedCountry}
-              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-              style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
+              className="appearance-none w-full bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
             >
               <option value=""></option>
               {countries.map((country) => {
@@ -105,8 +104,7 @@ const FormOne = ({
               id="state"
               onChange={(e) => setSelectedState(e.target.value)}
               value={selectedState}
-              className="appearance-none w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-              style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
+              className="appearance-none w-full bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
             >
               <option value=""></option>
               {states.map((state) => {

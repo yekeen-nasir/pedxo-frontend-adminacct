@@ -3,19 +3,25 @@ import people from "../assets/svg/people.svg";
 import telegram from "../assets/svg/telegram.svg";
 import add from "../assets/svg/add.svg";
 import { NavLink } from "react-router-dom";
+import { useGlobalContext } from "../Context";
 
 const Overview = () => {
+
+
+const {userData} = useGlobalContext()
+
+
   return (
     <section>
       <div>
         <header className="text-center py-2 overflow-banner text-sm font-medium px-[17px] xl:text-[18px]">
-          Hire Nigerian 🇳🇬 Devs by recommendation and pay them as you go
+          Get Expert Developers on Demand and Pay as You Go
         </header>
 
         <div className="mx-[19px] mt-10">
           <h1
-            className="text-[20px] font-Inter font-bold  leading-normal  xl:text-[30px]"
-            style={{ color: "rgba(0, 0, 0, 0.90)" }}
+            className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]"
+            
           >
             Welcome, <span className="overview-text">Victor</span>
           </h1>

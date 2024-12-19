@@ -15,8 +15,8 @@ const ContractFormInput = ({
         <input
          
           {...props}
-          className="w-full bg-transparent border outline-gray-400 pl-3 rounded-lg h-10 text-[12px] xl:h-[60px] xl:text-[16px]"
-          style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
+          className="w-full bg-transparent border border-[#00000033] outline-gray-400 pl-3 rounded-lg h-10 text-[12px] xl:h-[60px] xl:text-[16px]"
+          
         />
       </div>
     </div>

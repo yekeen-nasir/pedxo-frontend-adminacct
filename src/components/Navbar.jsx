@@ -9,12 +9,26 @@ import logout from "../assets/svg/logout.svg";
 import dropdown from "../assets/svg/dropdown.svg";
 import { useEffect, useRef, useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
-import { NavLink } from "react-router-dom";
+import { useGlobalContext } from "../Context";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const navRef = useRef(null);
+
+  const navigate = useNavigate();
+  const { userData } = useGlobalContext();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    toast.success("Logout successful");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+  };
 
   const handleToggleMenu = () => {
     setToggleMenu(!toggleMenu);
@@ -67,8 +81,9 @@ const Navbar = () => {
 
   return (
     <nav>
+      <ToastContainer />
       <div
-      className="absolute top-[32px] left-5 md:hidden"
+        className="absolute top-[32px] left-5 md:hidden"
         onClick={handleToggleMenu}
       >
         <img src={dropdown} alt="menu icon" />
@@ -88,44 +103,32 @@ const Navbar = () => {
             Pedxo
           </h1>
           <div className="flex flex-col gap-[30px] capitalize">
-            <SideBarMenuItems
-              to="/dashboard/overview"
-              icon={overview}
-              title="Overview"
-            />
+            <SideBarMenuItems to="overview" icon={overview} title="Overview" />
 
             <div className="flex flex-col gap-8 ">
               <div className="grey-text text-sm font-semibold leading-normal">
                 Hiring
               </div>
               <SideBarMenuItems
-                to="/dashboard/add-developer"
+                to="add-developer"
                 icon={adddeveloper}
                 title="add developer"
               />
               <SideBarMenuItems
-                to="/dashboard/create-contract"
+                to="create-contract"
                 icon={createcontract}
                 title="create contract"
               />
-              <SideBarMenuItems
-                to="/dashboard/teams"
-                icon={teams}
-                title="teams"
-              />
+              <SideBarMenuItems to="teams" icon={teams} title="teams" />
             </div>
 
             <div className="flex flex-col gap-6">
               <div className="grey-text text-sm font-semibold leading-normal">
                 Payment
               </div>
+              <SideBarMenuItems to="payroll" icon={payroll} title=" payroll" />
               <SideBarMenuItems
-                to="/dashboard/payroll"
-                icon={payroll}
-                title=" payroll"
-              />
-              <SideBarMenuItems
-                to="/dashboard/expenses"
+                to="expenses"
                 icon={expenses}
                 title="expenses "
               />
@@ -136,7 +139,7 @@ const Navbar = () => {
                 Activity
               </div>
               <SideBarMenuItems
-                to="/dashboard/agreements"
+                to="agreements"
                 icon={agreements}
                 title="agreements "
               />
@@ -157,16 +160,17 @@ const Navbar = () => {
             </div>
             <div>
               <div className="font-semibold leading-normal">Personal</div>
-              <div className="text-[12px] user-email-clr">
-                davidpat@gmail.com
-              </div>
+              <div className="text-[12px] user-email-clr">david@gmail.com</div>
             </div>
           </div>
           <div className="flex justify-center">
             {toggleLogout && (
-              <button className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
+              <button
+                onClick={handleLogout}
+                className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
+              >
                 <img src={logout} alt="logout icon" />
-                <NavLink to="">Log Out</NavLink>
+                Log Out
               </button>
             )}
           </div>

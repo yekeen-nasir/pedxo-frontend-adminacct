@@ -22,6 +22,7 @@ import {
   SignUp,
   Teams,
 } from "./pages";
+import ProtectedRoutes from "./utlity/ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
@@ -50,26 +51,10 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
 
-  {
-    path: "/full-time-form",
-    element: <FullTimeContract />,
-    errorElement: <Error />,
-  },
-
-  {
-    path: "/gig-based-form",
-    element: <GigBasedContract />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/dashboard/agreements/:id",
-    element: <AgreementContract />,
-    errorElement: <Error />,
-  },
-
+  
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <ProtectedRoutes />,
     errorElement: <Error />,
     children: [
       {
@@ -113,9 +98,27 @@ const router = createBrowserRouter([
         element: <Agreements />,
         errorElement: <Error />,
       },
+      {
+        path: "full-time-form",
+        element: <FullTimeContract />,
+        errorElement: <Error />,
+      },
+    
+      {
+        path: "gig-based-form",
+        element: <GigBasedContract />,
+        errorElement: <Error />,
+      },
+      {
+        path: "/dashboard/agreements/:id",
+        element: <AgreementContract />,
+        errorElement: <Error />,
+      },
+    
     ],
   },
 ]);
+
 
 function App() {
   return (
@@ -126,3 +129,4 @@ function App() {
 }
 
 export default App;
+

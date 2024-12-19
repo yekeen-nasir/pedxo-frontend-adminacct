@@ -23,12 +23,10 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  console.log(formData);
 
   const validateForm = () => {
-    
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*()_+!])[A-Za-z\d@#$%^&*()_+!]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*()_+!])[A-Za-z\d@#$%^&*()_+!]{8,24}$/;
     if (!formData.firstName.trim()) {
       toast.error("first name is required.");
       return false;
@@ -57,11 +55,9 @@ const SignUp = () => {
       return false;
     }
     return true;
-    
   };
 
   const handleChange = (e) => {
-   
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -78,9 +74,15 @@ const SignUp = () => {
           "/auth",
           JSON.stringify(formData)
         );
-
-        navigate("/account-verification", { state: { email: formData.email } });
-        console.log(response.data);
+        if (response.data === "success" || response.status === 201) {
+          toast.success("Check mail for otp");
+          setTimeout(() => {
+            navigate("/account-verification", {
+              state: { email: formData.email },
+            });
+          }, 2000);
+        }
+        console.log(response);
       } catch (error) {
         if (
           error.response &&
@@ -89,13 +91,13 @@ const SignUp = () => {
         ) {
           toast.error("email already exists.");
           return false;
-        } 
+        }
         toast.error(error.response.data.message);
         console.log(error);
       } finally {
         setIsLoading(false);
       }
-    }else{
+    } else {
       setIsLoading(false);
     }
   };
@@ -104,7 +106,6 @@ const SignUp = () => {
     <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
       <ToastContainer />
       <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
-        <Link to="/dashboard">Temp. dashboard link.</Link>
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
           Create account
         </h1>
@@ -184,7 +185,7 @@ const SignUp = () => {
               id="confirmPassword"
               placeholder="password"
               value={confirmPassword}
-              onChange={(e) =>  setConfirmPassword(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <div className="w-4 absolute top-[60%] right-0 mr-3">
               {isConfirmPasswordVisible ? (
@@ -221,7 +222,6 @@ const SignUp = () => {
           <span>Already have an account?</span>
           <div className="pr-text-clr">
             <Link to="/login">Login</Link>
-            <Link to="/account-verification"> account verification</Link>
           </div>
         </div>
       </div>
