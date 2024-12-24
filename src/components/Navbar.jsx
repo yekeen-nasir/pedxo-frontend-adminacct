@@ -6,13 +6,13 @@ import payroll from "../assets/svg/payroll.svg";
 import expenses from "../assets/svg/expenses.svg";
 import agreements from "../assets/svg/agreements.svg";
 import logout from "../assets/svg/logout.svg";
-import dropdown from "../assets/svg/dropdown.svg";
 import { useEffect, useRef, useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
 import { useGlobalContext } from "../Context";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import MobileNavIcon from "./MobileNavIcon";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
@@ -82,16 +82,12 @@ const Navbar = () => {
   return (
     <nav>
       <ToastContainer />
-      <div
-        className="absolute top-[32px] left-5 md:hidden"
-        onClick={handleToggleMenu}
-      >
-        <img src={dropdown} alt="menu icon" />
+      <div>
+        <MobileNavIcon toggleMobileNav={handleToggleMenu} />
       </div>
-
       <div
         ref={navRef}
-        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr max-w-[228px] transform transition-transform duration-300 ease-in-out ${
+        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr w-[228px] transform transition-transform duration-300 ease-in-out ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
         }  md:translate-x-0 `}
       >
