@@ -156,11 +156,12 @@ const Navbar = () => {
         >
           <div className="flex items-center gap-2">
             <div className="w-[44px] h-[44px] rounded-full user-avatar text-white font-semibold flex items-center justify-center">
-              {userData.email ? userData.email.charAt(0).toUpperCase() : "D"}
+              {/* {userData.email ? userData.email.charAt(0).toUpperCase() : "D"}
+              {userData.email || "Pedxo@gmail.com"} */}
             </div>
             <div>
               <div className="font-semibold leading-normal">Personal</div>
-              <div className="text-[12px] user-email-clr">{userData.email}</div>
+              <div className="text-[12px] user-email-clr"></div>
             </div>
           </div>
           <div className="flex justify-center">

@@ -10,7 +10,7 @@ import {
   AgreementContract,
   Agreements,
   CreateContract,
-  Dashboard,
+  // Dashboard,
   Error,
   Expenses,
   ForgotPassword,
@@ -57,7 +57,6 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
 
-  
   {
     path: "/dashboard",
     element: <ProtectedRoutes />,
@@ -109,7 +108,7 @@ const router = createBrowserRouter([
         element: <FullTimeContract />,
         errorElement: <Error />,
       },
-    
+
       {
         path: "gig-based-form",
         element: <GigBasedContract />,
@@ -120,11 +119,9 @@ const router = createBrowserRouter([
         element: <AgreementContract />,
         errorElement: <Error />,
       },
-    
     ],
   },
 ]);
-
 
 function App() {
   return (
@@ -135,4 +132,3 @@ function App() {
 }
 
 export default App;
-

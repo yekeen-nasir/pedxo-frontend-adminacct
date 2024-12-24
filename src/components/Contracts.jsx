@@ -1,7 +1,7 @@
 import rightarrowicon from "../assets/svg/rightarrow.svg";
 import fulltimeicon from "../assets/svg/fulltime.svg";
 import gigbased from "../assets/svg/gigbased.svg";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Contracts = () => {
   return (
@@ -17,8 +17,7 @@ const Contracts = () => {
         </div>
 
         <div className="flex flex-col gap-3 mt-[31px] mx-[21px] xl:mt-10">
-          <NavLink to="/full-time-form">
-
+          <Link to="/dashboard/full-time-form">
             <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
               <div className="flex gap-[13px]">
                 <img src={fulltimeicon} alt="target icon" />
@@ -36,9 +35,9 @@ const Contracts = () => {
               </div>
               <img src={rightarrowicon} alt="arrow icon" />
             </div>
-          </NavLink>
+          </Link>
 
-          <NavLink to="/gig-based-form">
+          <Link to="/dashboard/gig-based-form">
             <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
               <div className="flex gap-[13px]">
                 <img src={gigbased} alt="target icon" />
@@ -56,7 +55,7 @@ const Contracts = () => {
               </div>
               <img src={rightarrowicon} alt="arrow icon" />
             </div>
-          </NavLink>
+          </Link>
         </div>
       </div>
     </section>
@@ -64,10 +63,8 @@ const Contracts = () => {
 };
 export default Contracts;
 
-
-
-
-{/* <section>
+{
+  /* <section>
       <div className=" mt-[190px] absolute w-full max-w-[1155px] xl:ml-[101px] xl:px-[157px]">
         <div className="text-center">
           <div className="text-[20px] font-bold xl:text-[31px] xl:mb-6">
@@ -121,4 +118,5 @@ export default Contracts;
           </NavLink>
         </div>
       </div>
-    </section> */}
+    </section> */
+}

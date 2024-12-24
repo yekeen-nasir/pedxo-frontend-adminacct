@@ -181,7 +181,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
           >
             <img src={leftarrorw} alt="arrow" className="xl:w-[33px]" />
             {currentStep === 1 ? (
-              <Link to="/dashboard/add-developer">Go back</Link>
+              <Link to="/add-developer">Go back</Link>
             ) : (
               <span className="cursor-pointer">Go back</span>
             )}

@@ -2,7 +2,7 @@ import moneybag from "../assets/svg/moneybag.svg";
 import people from "../assets/svg/people.svg";
 import telegram from "../assets/svg/telegram.svg";
 import add from "../assets/svg/add.svg";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 
 const Overview = () => {
@@ -17,7 +17,10 @@ const Overview = () => {
 
         <div className="mx-[19px] mt-10">
           <h1 className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]">
-            Welcome, <span className="overview-text">{userData.firstName}</span>
+            Welcome,{" "}
+            <span className="overview-text">
+              {userData?.firstName ? userData.firstName : "Username"}
+            </span>
           </h1>
           <p className="text-sm font-Inter font-medium leading-normal grey-text xl:text-[16px]">
             We hope you’re having a good day!
@@ -57,15 +60,14 @@ const Overview = () => {
                     0
                   </span>
                 </div>
-                <div className="">
-                  <NavLink
-                    to="/dashboard/create-contract"
-                    className="flex items-center text-[0.8rem] text-white px-3 py-[10px] sm:px-5 sm:py-[14px] pr-bg-clr rounded-lg font-semibold xl:text-[16px]"
-                  >
-                    <img src={add} alt="" className="w-4 mr-1" /> Create
-                    contract
-                  </NavLink>
-                </div>
+
+                <Link
+                  to="/dashboard/create-contract"
+                  className="flex items-center text-[0.8rem] text-white px-3 py-[10px] sm:px-5 sm:py-[14px] pr-bg-clr rounded-lg font-semibold xl:text-[16px]"
+                >
+                  <img src={add} alt="" className="w-4 mr-1" />
+                  <span>Create contract</span>
+                </Link>
               </div>
             </div>
 
