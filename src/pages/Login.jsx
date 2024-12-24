@@ -64,11 +64,7 @@ const login = () => {
         }, 2000);
 
         const user = res?.data?.user;
-        setUserData({
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-        });
+        setUserData(user);
         console.log(user);
         console.log(res);
       } catch (error) {
@@ -95,11 +91,11 @@ const login = () => {
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] ">
           Login
         </h1>
+        <button className="w-full flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
+          <img src={googleLogo} alt="google logo" />
+          <span className="font-medium">Continue with Google</span>
+        </button>
         <form onSubmit={handleFormSubmit}>
-          <button className="w-full flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
-            <img src={googleLogo} alt="google logo" />
-            <span className="font-medium">Continue with Google</span>
-          </button>
           <div className="text-lg font-medium line-with-text">Or</div>
 
           <FormInput
@@ -143,7 +139,7 @@ const login = () => {
           </div>
 
           <div className="pr-text-clr font-medium">
-            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/reset-password-otp">Forgot password?</Link>
           </div>
           <div className="mt-6">
             <button

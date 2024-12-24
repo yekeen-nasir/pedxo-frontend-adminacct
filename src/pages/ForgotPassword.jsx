@@ -7,6 +7,7 @@ const ForgotPassword = () => {
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] 2xl:mb-5">
           Reset Password
         </h1>
+
         <form>
           <FormInput
             htmlFor="new password"
@@ -15,8 +16,6 @@ const ForgotPassword = () => {
             name="password"
             id="new password"
             placeholder="password"
-            // value=""
-            // onChange={}
             required={true}
           />
 

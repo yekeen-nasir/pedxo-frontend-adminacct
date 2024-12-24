@@ -6,10 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 
 const Overview = () => {
-
-
-const {userData} = useGlobalContext()
-
+  const { userData } = useGlobalContext();
 
   return (
     <section>
@@ -19,11 +16,8 @@ const {userData} = useGlobalContext()
         </header>
 
         <div className="mx-[19px] mt-10">
-          <h1
-            className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]"
-            
-          >
-            Welcome, <span className="overview-text">Victor</span>
+          <h1 className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]">
+            Welcome, <span className="overview-text">{userData.firstName}</span>
           </h1>
           <p className="text-sm font-Inter font-medium leading-normal grey-text xl:text-[16px]">
             We hope you’re having a good day!

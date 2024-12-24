@@ -15,14 +15,16 @@ const SignUp = () => {
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
 
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+
 
   const validateForm = () => {
     const passwordRegex =
@@ -75,6 +77,7 @@ const SignUp = () => {
           JSON.stringify(formData)
         );
         if (response.data === "success" || response.status === 201) {
+       
           toast.success("Check mail for otp");
           setTimeout(() => {
             navigate("/account-verification", {
@@ -109,11 +112,11 @@ const SignUp = () => {
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
           Create account
         </h1>
+        <button className="w-full flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
+          <img src={googleLogo} alt="google logo" />
+          <span className="font-medium">Continue with Google</span>
+        </button>
         <form onSubmit={handleFormSubmit}>
-          <button className="w-full flex items-center justify-center p-4 gap-[10px] border border-black rounded-lg mb-[15px]">
-            <img src={googleLogo} alt="google logo" />
-            <span className="font-medium">Continue with Google</span>
-          </button>
           <div className="text-lg font-medium line-with-text">Or</div>
           <FormInput
             htmlFor="firstName"

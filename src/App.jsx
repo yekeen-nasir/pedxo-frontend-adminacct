@@ -19,6 +19,7 @@ import {
   Login,
   Overview,
   Payroll,
+  ResetPasswordOtp,
   SignUp,
   Teams,
 } from "./pages";
@@ -43,6 +44,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/reset-password-otp",
+    element: <ResetPasswordOtp />,
     errorElement: <Error />,
   },
   {

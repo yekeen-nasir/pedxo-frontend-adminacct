@@ -156,11 +156,11 @@ const Navbar = () => {
         >
           <div className="flex items-center gap-2">
             <div className="w-[44px] h-[44px] rounded-full user-avatar text-white font-semibold flex items-center justify-center">
-              D
+              {userData.email ? userData.email.charAt(0).toUpperCase() : "D"}
             </div>
             <div>
               <div className="font-semibold leading-normal">Personal</div>
-              <div className="text-[12px] user-email-clr">david@gmail.com</div>
+              <div className="text-[12px] user-email-clr">{userData.email}</div>
             </div>
           </div>
           <div className="flex justify-center">
