@@ -89,7 +89,7 @@ const Navbar = () => {
       </div>
       <div
         ref={navRef}
-        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr w-[228px] transform transition-transform duration-300 ease-in-out md:max-h-screen ${
+        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr w-[228px] transform transition-transform duration-300 ease-in-out max-h-[1024px] ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
         }  md:translate-x-0 `}
       >
