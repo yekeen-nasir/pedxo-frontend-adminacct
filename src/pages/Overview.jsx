@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 
 const Overview = () => {
-  const { userData } = useGlobalContext();
+  const { userBio } = useGlobalContext();
 
   return (
     <section>
@@ -19,7 +19,7 @@ const Overview = () => {
           <h1 className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]">
             Welcome,{" "}
             <span className="overview-text">
-              {userData?.firstName ? userData.firstName : "Username"}
+              {userBio?.firstName ? userBio.firstName : "Pedxo-User"}
             </span>
           </h1>
           <p className="text-sm font-Inter font-medium leading-normal grey-text xl:text-[16px]">

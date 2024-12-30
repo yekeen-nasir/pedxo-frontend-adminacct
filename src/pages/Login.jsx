@@ -17,7 +17,7 @@ const login = () => {
     password: "",
   });
 
-  const { setUserData } = useGlobalContext();
+  const { setUserBio } = useGlobalContext();
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -48,26 +48,32 @@ const login = () => {
 
     if (validateForm()) {
       try {
-        const res = await authFetch.post(
+        const response = await authFetch.post(
           "/auth/login",
           JSON.stringify(formData)
         );
         toast.success("Welcome!");
-        const accessToken = res?.data?.accessToken;
-        const token = {
-          value: accessToken,
-          expiry: Date.now() + 3600000,
+        const token = response.data.result;
+        const accessTokenExpiration = Date.now() + 1200000;
+        const refreshTokenExpiration = Date.now() + 604800000;
+
+        const tokenData = {
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+          accessTokenExpiration,
+          refreshTokenExpiration,
         };
-        localStorage.setItem("user", JSON.stringify(token));
+        localStorage.setItem("user", JSON.stringify(tokenData));
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
+        console.log(response);
 
-        const user = res?.data?.user;
-        setUserData(user);
-        console.log(user);
-        console.log(res);
+        const userBio = response.data.result;
+        setUserBio(userBio);
+        console.log(userBio);
       } catch (error) {
+        console.log(error);
         if (error.status === 400) {
           toast.error("invalid email or password");
         } else if (error.response.data.message === "user is not found") {

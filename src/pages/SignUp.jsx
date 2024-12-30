@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import eyesolid from "../assets/svg/eyesolid.svg";
 import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
 import authFetch from "../components/auth";
+import { useGlobalContext } from "../Context";
 
 const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,6 +15,7 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const { setUserBio } = useGlobalContext();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -23,8 +25,6 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
-
-
 
   const validateForm = () => {
     const passwordRegex =
@@ -77,7 +77,8 @@ const SignUp = () => {
           JSON.stringify(formData)
         );
         if (response.data === "success" || response.status === 201) {
-       
+          const userBio = response.data.result;
+          setUserBio(userBio);
           toast.success("Check mail for otp");
           setTimeout(() => {
             navigate("/account-verification", {
@@ -85,6 +86,18 @@ const SignUp = () => {
             });
           }, 2000);
         }
+
+        const tokenResp = response.data.result;
+        const accessTokenExpiration = Date.now() + 1200000;
+        const refreshTokenExpiration = Date.now() + 604800000;
+
+        const tokenData = {
+          accessToken: tokenResp.accessToken,
+          refreshToken: tokenResp.refreshToken,
+          accessTokenExpiration,
+          refreshTokenExpiration,
+        };
+        localStorage.setItem("user", JSON.stringify(tokenData));
         console.log(response);
       } catch (error) {
         if (

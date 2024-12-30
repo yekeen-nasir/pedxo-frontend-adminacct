@@ -13,6 +13,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import MobileNavIcon from "./MobileNavIcon";
+import { refreshAccessToken } from "../utlity/RefreshAccessToken";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
@@ -20,7 +21,7 @@ const Navbar = () => {
   const navRef = useRef(null);
 
   const navigate = useNavigate();
-  const { userData } = useGlobalContext();
+  const { userBio } = useGlobalContext();
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -28,6 +29,7 @@ const Navbar = () => {
     setTimeout(() => {
       navigate("/login");
     }, 1000);
+    refreshAccessToken();
   };
 
   const handleToggleMenu = () => {
@@ -87,7 +89,7 @@ const Navbar = () => {
       </div>
       <div
         ref={navRef}
-        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr w-[228px] transform transition-transform duration-300 ease-in-out ${
+        className={`fixed overflow-auto z-10 top-0 bottom-0 flex flex-col justify-between sec-bg-clr w-[228px] transform transition-transform duration-300 ease-in-out md:max-h-screen ${
           toggleMenu ? "translate-x-0" : "-translate-x-full"
         }  md:translate-x-0 `}
       >
@@ -152,12 +154,13 @@ const Navbar = () => {
         >
           <div className="flex items-center gap-2">
             <div className="w-[44px] h-[44px] rounded-full user-avatar text-white font-semibold flex items-center justify-center">
-              {/* {userData.email ? userData.email.charAt(0).toUpperCase() : "D"}
-              {userData.email || "Pedxo@gmail.com"} */}
+              {userBio?.email ? userBio?.email.charAt(0).toUpperCase() : "P"}
             </div>
             <div>
               <div className="font-semibold leading-normal">Personal</div>
-              <div className="text-[12px] user-email-clr"></div>
+              <div className="text-[12px] user-email-clr">
+                {userBio?.email || "Pedxo@gmail.com"}
+              </div>
             </div>
           </div>
           <div className="flex justify-center">

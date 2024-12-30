@@ -208,16 +208,27 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
           >
             {steps.map((step, i) => (
               <div
-                key={i}
-                className={`step-item  ${currentStep === i + 1 && "active"} ${
-                  (i + 1 < currentStep || complete) && "complete"
-                }`}
-              >
-                <div className="step">{i + 1}</div>
-                <p className="text-center text-[10px] font-medium leading-normal xl:text-2xl px-4 xl:px-0">
-                  {step}
-                </p>
-              </div>
+              key={i}
+              className={`step-item ${currentStep === i + 1 && "active"} ${
+                (i + 1 < currentStep || complete) && "complete"
+              }`}
+            >
+              <div className="step">{i + 1}</div>
+              <p className="text-center text-[10px] font-medium leading-normal xl:text-2xl px-4 xl:px-0">
+                {step}
+              </p>
+            </div>
+              // <div
+              //   key={i}
+              //   className={`step-item  ${currentStep === i + 1 && "active"} ${
+              //     (i + 1 < currentStep || complete) && "complete"
+              //   }`}
+              // >
+              //   <div className="step">{i + 1}</div>
+              //   <p className="text-center text-[10px] font-medium leading-normal xl:text-2xl px-4 xl:px-0">
+              //     {step}
+              //   </p>
+              // </div>
             ))}
           </div>
 

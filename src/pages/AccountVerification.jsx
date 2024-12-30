@@ -34,7 +34,7 @@ const AccountVerification = () => {
       );
       toast.success("Account created successfully");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/dashboard");
       }, 2000);
     } catch (error) {
       if (error.response.data.message[0] === "code should not be empty") {
@@ -91,9 +91,9 @@ const AccountVerification = () => {
             onChange={handleChange}
           />
 
-          <div className="pr-text-clr mt-1" onClick={requestOtp}>
+          <button type="button" className="pr-text-clr mt-1" onClick={requestOtp}>
             Resend otp
-          </div>
+          </button>
 
           <div className="mt-6">
             <button
