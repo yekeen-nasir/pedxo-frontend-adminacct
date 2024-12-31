@@ -49,7 +49,7 @@ const PayContractorsTable = () => {
 
   return (
     <section>
-      <div className="xl:mt-[46px] flex flex-col">
+      <div className="xl:mt-[46px] flex flex-col max-h-[1024px]">
         <div className="flex flex-col gap-4 mt-[21px] xl:flex-col-reverse xl:gap-[10px] xl:w-full lg:hidden">
           <div
             className="flex justify-between items-center px-[13px] py-[11px] rounded-lg user-bg-clr xl:px-10 xl:py-5"
@@ -160,7 +160,7 @@ const PayContractorsTable = () => {
         </div>
       </div>
 
-      <div className="mb-[22px] md:mb-[34px] absolute bottom-0 left-0 mx-5 md:left-[228px] right-0 xl:ml-[85px]  xl:mr-[65px] ">
+      <div className="mb-[22px] md:mb-[34px] absolute bottom-0 left-0 mx-5 md:left-[228px] right-0 xl:ml-[85px]  xl:mr-[65px] 2xl:bottom-[600px]">
         <div
           className="hidden mt-[10px] rounded-lg user-bg-clr lg:flex lg:justify-between lg:items-center lg:px-10 lg:py-5"
           style={{ border: "1px solid rgba(0, 0, 0, 0.05)" }}
@@ -185,7 +185,7 @@ const PayContractorsTable = () => {
             Total Amount: $15,000
           </div>
           <div>
-            <PrimaryBtn text="Make Payment"/>
+            <PrimaryBtn text="Make Payment" />
           </div>
         </div>
       </div>

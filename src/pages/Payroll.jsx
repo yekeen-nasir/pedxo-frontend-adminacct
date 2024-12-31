@@ -33,7 +33,7 @@ const Payroll = () => {
 
   return (
     <div>
-      <div className="mt-[62px] mx-5 flex flex-col xl:ml-[86px] xl:mr-[65px] ">
+      <div className="mt-[62px] mx-5 flex flex-col xl:ml-[86px] xl:mr-[65px]">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="text-xl font-medium lg:text-[30px] lg:font-semibold xl:mb-[11px]">
             Payroll
