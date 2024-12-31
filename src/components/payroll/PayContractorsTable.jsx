@@ -160,7 +160,7 @@ const PayContractorsTable = () => {
         </div>
       </div>
 
-      <div className="mb-[22px] md:mb-[34px] absolute bottom-0 left-0 mx-5 md:left-[228px] right-0 xl:ml-[85px]  xl:mr-[65px] 2xl:bottom-[600px]">
+      <div className="mb-[22px] md:mb-[34px] absolute bottom-0 left-0 mx-5 md:left-[228px] right-0 xl:ml-[85px]  xl:mr-[65px] md:bottom-[600px]">
         <div
           className="hidden mt-[10px] rounded-lg user-bg-clr lg:flex lg:justify-between lg:items-center lg:px-10 lg:py-5"
           style={{ border: "1px solid rgba(0, 0, 0, 0.05)" }}
