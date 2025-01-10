@@ -10,7 +10,7 @@ const Error = () => {
         </p>
         <div className="flex justify-center ">
           <NavLink
-            to="/dashboard"
+            to="/"
             className="flex items-center text-white px-3 py-[10px] xl:px-[49px] xl:py-[29px] pr-bg-clr rounded-full font-semibold xl:text-[22px]"
           >
             Go to Homepage

@@ -51,7 +51,7 @@ const AgreementsCard = () => {
             {card.name}
           </div>
           <Link
-            to={`/dashboard/agreements/${card.id}`}
+            to={`/agreements/${card.id}`}
             className="flex gap-[6px]"
           >
             <span className="font-medium text-[0.625rem] pr-text-clr md:text-[0.75rem] lg:text-base">

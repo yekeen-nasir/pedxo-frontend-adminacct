@@ -17,6 +17,13 @@
   }
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; 
+}
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+}
+
 @layer components {
   .line-with-text {
     @apply flex items-center;

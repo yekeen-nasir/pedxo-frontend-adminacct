@@ -119,9 +119,9 @@ const SignUp = () => {
   };
 
   return (
-    <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
+    <section className="w-full flex justify-center pb-10 pt-24 flex-col px-4 min-h-screen">
       <ToastContainer />
-      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
+      <div className="w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
           Create account
         </h1>
@@ -129,11 +129,11 @@ const SignUp = () => {
           <img src={googleLogo} alt="google logo" />
           <span className="font-medium">Continue with Google</span>
         </button>
-        <form onSubmit={handleFormSubmit}>
-          <div className="text-lg font-medium line-with-text">Or</div>
+        <div className="text-lg font-medium line-with-text">Or</div>
+        <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormInput
             htmlFor="firstName"
-            label="FirstName"
+            label="First Name"
             type="text"
             name="firstName"
             id="firstName"
@@ -144,7 +144,7 @@ const SignUp = () => {
 
           <FormInput
             htmlFor="lastName"
-            label="LastName"
+            label="Last Name"
             type="text"
             name="lastName"
             id="lastName"
@@ -224,7 +224,7 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="mt-6">
+        
             <button
               type="submit"
               disabled={isLoading}
@@ -232,7 +232,6 @@ const SignUp = () => {
             >
               {isLoading ? <div className="loading"></div> : "Continue"}
             </button>
-          </div>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>

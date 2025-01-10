@@ -1,4 +1,3 @@
-import leftarrorw from "../assets/svg/leftarrow.svg";
 import { useState, useEffect } from "react";
 import "./Stepper.css";
 import FormOne from "./stepperForms/FormOne";
@@ -10,6 +9,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import sendcontract from "../assets/svg/sendcontract.svg";
 import { useGlobalContext } from "../Context";
+import { FaArrowLeft } from "react-icons/fa";
 
 const countriesUrl = "https://api.countrystatecity.in/v1/countries";
 const statesUrl = "https://api.countrystatecity.in/v1/countries";
@@ -172,52 +172,50 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
   };
 
   return (
-    <section className="xl:flex xl:justify-center">
-      <div className=" mt-[50px] mb-[61px]">
-        <div className="mx-[21px] xl:mx-0">
-          <div
-            className="flex items-center gap-1 font-medium leading-normal pr-text-clr md:ml-24 xl:gap-3 xl:text-2xl "
-            onClick={handlePrevious}
-          >
-            <img src={leftarrorw} alt="arrow" className="xl:w-[33px]" />
-            {currentStep === 1 ? (
-              <Link to="/dashboard/add-developer">Go back</Link>
-            ) : (
-              <span className="cursor-pointer">Go back</span>
-            )}
-          </div>
+    <section className=" p-4 w-full flex flex-col gap-10 pt-10">
+      <div
+        className="flex items-center gap-1 text-sm font-medium leading-normal pr-text-clr  xl:gap-3  "
+        onClick={handlePrevious}
+      >
+        <FaArrowLeft size={18} />
+        {currentStep === 1 ? (
+          <Link to="/add-developer">Go back</Link>
+        ) : (
+          <span className="cursor-pointer">Go back</span>
+        )}
+      </div>
 
-          <div className="mt-[45px] md:mx-[143px] xl:mb-[30px] xl:mt-[75px]">
-            <h3 className="text-xl leading-normal font-bold xl:text-[29px]">
-              Preparing a contract
-            </h3>
-            <p
-              className="text-[12px] font-medium leading-normal xl:w-[428px] xl:text-[16px]"
-              style={{ color: "rgba(0, 0, 0, 0.60)" }}
-            >
-              Input the required details to customize your contract. Ensure all
-              fields are complete for accuracy.
-            </p>
-          </div>
+      <div className="flex flex-col gap-6">
+        <div className="space-y-3">
+          <h3 className="text-xl leading-normal font-bold xl:text-[29px]">
+            Preparing a contract
+          </h3>
+          <p
+            className="text-[12px] font-medium leading-normal xl:w-[428px] xl:text-[16px]"
+            style={{ color: "rgba(0, 0, 0, 0.60)" }}
+          >
+            Input the required details to customize your contract. Ensure all
+            fields are complete for accuracy.
+          </p>
         </div>
 
-        <div className="md:mx-[143px] xl:flex xl:gap-[39px]">
-          <div
-            className="flex mt-4 mb-9 mr-[45px] px-2 xl:m-0 
-          xl:user-bg-clr xl:rounded-lg xl:w-[456px] xl:px-[45px] xl:py-[45px] xl:flex-col xl:gap-[45px] xl:order-1"
-          >
+        <div className="flex-col md:flex gap-5 md:justify-between w-full">
+          <div className="flex  user-bg-clr mb-3 md:mb-0 rounded-md h-fit md:p-8 px-8 p-2 flex-shrink-0  md:w-96 gap-4 md:flex-col md:order-2  items-center">
             {steps.map((step, i) => (
-              <div
-              key={i}
-              className={`step-item ${currentStep === i + 1 && "active"} ${
-                (i + 1 < currentStep || complete) && "complete"
-              }`}
-            >
-              <div className="step">{i + 1}</div>
-              <p className="text-center text-[10px] font-medium leading-normal xl:text-2xl px-4 xl:px-0">
-                {step}
-              </p>
-            </div>
+              <div key={i} className="flex w-full items-center gap-4">
+                <p
+                  className={`w-8 h-8 md:w-10 md:h-10 flex-shrink-0 flex items-center  justify-center rounded-full ${
+                    currentStep >= i + 1
+                      ? "bg-[#008000] text-white"
+                      : "text-[#E1E2DD] ring-1 ring-[#E1E2DD]"
+                  }`}
+                >
+                  {i + 1}
+                </p>
+                <p className=" hidden md:block text-center text-base truncate font-medium leading-normal ">
+                  {step}
+                </p>
+              </div>
               // <div
               //   key={i}
               //   className={`step-item  ${currentStep === i + 1 && "active"} ${
@@ -232,7 +230,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
             ))}
           </div>
 
-          <div className="xl:w-[731px] user-bg-clr mx-[21px] p-5 pb-[25px] rounded-lg lg:px-[70px] lg:pt-[51px] lg:pb-[29px] xl:order-0 xl:mx-0">
+          <div className=" user-bg-clr  p-10 w-full rounded-lg ">
             <form onSubmit={handleFormSubmit}>
               <div>{renderStep()}</div>
 

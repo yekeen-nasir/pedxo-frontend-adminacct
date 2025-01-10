@@ -1,9 +1,9 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, replace } from "react-router-dom";
 import { Dashboard } from "../pages";
 import { refreshAccessToken } from "./RefreshAccessToken";
 
-const ProtectedRoutes = () => {
-  const storedData = JSON.parse(localStorage.getItem("user"));
+const ProtectedRoutes = ({ children }) => {
+  const storedData = JSON.parse(localStorage.getItem("user") || null);
 
   if (storedData) {
     const {
@@ -22,10 +22,12 @@ const ProtectedRoutes = () => {
     }
   }
 
+  if (!storedData) return <Navigate to="/login" replace />;
+
   return (
     <div>
       {storedData.refreshTokenExpiration > Date.now() ? (
-        <Dashboard />
+        children
       ) : (
         <Navigate to="/login" />
       )}

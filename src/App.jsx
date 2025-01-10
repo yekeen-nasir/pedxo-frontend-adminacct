@@ -24,111 +24,97 @@ import {
   Teams,
 } from "./pages";
 import ProtectedRoutes from "./utlity/ProtectedRoutes";
+import PageNotFound from "./pages/PageNotFound";
+import AppLayout from "./components/AppLayout";
+import { SideBarProvider } from "./context/SideBarContext";
 
 const router = createBrowserRouter([
+  //This does all better than putting Error Element
   {
-    path: "/",
-    element: <Navigate to="/signup" replace />,
-    errorElement: <Error />,
+    path: "*",
+    element: <PageNotFound />,
   },
   {
     path: "/signup",
     element: <SignUp />,
-    errorElement: <Error />,
   },
   {
     path: "/account-verification",
     element: <AccountVerification />,
-    errorElement: <Error />,
   },
   {
     path: "/login",
     element: <Login />,
-    errorElement: <Error />,
   },
   {
     path: "/reset-password-otp",
     element: <ResetPasswordOtp />,
-    errorElement: <Error />,
   },
   {
     path: "/forgot-password",
     element: <ForgotPassword />,
-    errorElement: <Error />,
   },
 
   {
-    path: "/dashboard",
-    element: <ProtectedRoutes />,
-    errorElement: <Error />,
+    path: "/",
+    element: (
+      <ProtectedRoutes>
+        <SideBarProvider>
+          <AppLayout />
+        </SideBarProvider>
+      </ProtectedRoutes>
+    ),
+
     children: [
       {
         index: true,
         element: <Overview />,
-        errorElement: <Error />,
       },
-      {
-        path: "overview",
-        element: <Overview />,
-        errorElement: <Error />,
-      },
+
       {
         path: "add-developer",
         element: <AddDeveloper />,
-        errorElement: <Error />,
       },
       {
         path: "create-contract",
         element: <CreateContract />,
-        errorElement: <Error />,
       },
       {
         path: "teams",
         element: <Teams />,
-        errorElement: <Error />,
       },
       {
         path: "payroll",
         element: <Payroll />,
-        errorElement: <Error />,
       },
 
       {
         path: "expenses",
         element: <Expenses />,
-        errorElement: <Error />,
       },
       {
         path: "agreements",
         element: <Agreements />,
-        errorElement: <Error />,
       },
       {
         path: "full-time-form",
         element: <FullTimeContract />,
-        errorElement: <Error />,
       },
 
       {
         path: "gig-based-form",
         element: <GigBasedContract />,
-        errorElement: <Error />,
       },
       {
-        path: "/dashboard/agreements/:id",
+        path: "agreements/:id",
         element: <AgreementContract />,
-        errorElement: <Error />,
       },
     ],
   },
 ]);
 
 function App() {
-  return (
-    <div>
-      <RouterProvider router={router}></RouterProvider>
-    </div>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

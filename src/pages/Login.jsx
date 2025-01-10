@@ -10,7 +10,6 @@ import authFetch from "../components/auth";
 import { useGlobalContext } from "../Context";
 
 const login = () => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -65,7 +64,7 @@ const login = () => {
         };
         localStorage.setItem("user", JSON.stringify(tokenData));
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/");
         }, 2000);
         console.log(response);
 
@@ -91,9 +90,9 @@ const login = () => {
   };
 
   return (
-    <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
+    <section className="w-full flex justify-center flex-col px-4 h-screen">
       <ToastContainer />
-      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
+      <div className=" w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] ">
           Login
         </h1>
@@ -101,9 +100,8 @@ const login = () => {
           <img src={googleLogo} alt="google logo" />
           <span className="font-medium">Continue with Google</span>
         </button>
-        <form onSubmit={handleFormSubmit}>
-          <div className="text-lg font-medium line-with-text">Or</div>
-
+        <div className="text-lg font-medium line-with-text">Or</div>
+        <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormInput
             htmlFor="email"
             label="Email"
@@ -115,46 +113,28 @@ const login = () => {
             onChange={handleChange}
           />
 
-          <div className="relative">
+          <div className="relative ">
             <FormInput
               htmlFor="password"
               label="Password"
-              type={isPasswordVisible ? "text" : "password"}
+              type={"password"}
               name="password"
               id="password"
               placeholder="password"
               value={formData.password}
               onChange={handleChange}
             />
-
-            <div className="w-4 absolute top-[60%] right-0 mr-3">
-              {isPasswordVisible ? (
-                <img
-                  src={eyesolid}
-                  alt="password visible icon"
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                />
-              ) : (
-                <img
-                  src={eyeslashsolid}
-                  alt="password invisible icon"
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                />
-              )}
-            </div>
           </div>
 
           <div className="pr-text-clr font-medium">
             <Link to="/reset-password-otp">Forgot password?</Link>
           </div>
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
-            >
-              {isLoading ? <div className="loading"></div> : "Continue"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
+          >
+            {isLoading ? <div className="loading"></div> : "Continue"}
+          </button>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Don't have an account?</span>

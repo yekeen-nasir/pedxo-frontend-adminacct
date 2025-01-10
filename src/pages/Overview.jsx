@@ -62,10 +62,10 @@ const Overview = () => {
                 </div>
 
                 <Link
-                  to="/dashboard/create-contract"
+                  to="/create-contract"
                   className="flex items-center text-[0.8rem] text-white px-3 py-[10px] sm:px-5 sm:py-[14px] pr-bg-clr rounded-lg font-semibold xl:text-[16px]"
                 >
-                  <img src={add} alt="" className="w-4 mr-1" />
+                  <img src={add} alt="" className="w-4 " />
                   <span>Create contract</span>
                 </Link>
               </div>

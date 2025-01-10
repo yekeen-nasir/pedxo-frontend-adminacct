@@ -31,13 +31,12 @@ const FormFive = ({ currentStep, setCurrentStep, setComplete }) => {
       <div className="overflow-hidden">
         <div className="text-lg font-semibold leading-normal mb-6 xl:text-2xl xl:mb-[32px]">
           Sign Signature
-        </div>``
-        <div className="bg-white max-w-[608px] h-[202px]">
+        </div>
+        <div className="bg-white h-[202px]">
           <SignatureCanvas
             ref={sigCanvas}
-            penColor="black"
             canvasProps={{
-              width: 608,
+              width: 200,
               height: 202,
             }}
           />

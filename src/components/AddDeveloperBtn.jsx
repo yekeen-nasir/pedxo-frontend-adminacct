@@ -4,7 +4,7 @@ const AddDeveloperBtn = () => {
   return (
     <div className="py-[14px] px-5 font-semibold text-base pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]">
       <NavLink
-        to="/dashboard/add-developer"
+        to="/add-developer"
         className="flex items-center gap-[10px]"
       >
         <svg
