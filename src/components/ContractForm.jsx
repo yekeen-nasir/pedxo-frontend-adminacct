@@ -199,7 +199,7 @@ const ContractForm = ({ subHead, endDate, showSwitch }) => {
           </p>
         </div>
 
-        <div className="flex-col md:flex gap-5 md:justify-between w-full">
+        <div className="flex-col flex md:flex-row gap-5 md:justify-between w-full">
           <div className="flex  user-bg-clr mb-3 md:mb-0 rounded-md h-fit md:p-8 px-8 p-2 flex-shrink-0  md:w-96 gap-4 md:flex-col md:order-2  items-center">
             {steps.map((step, i) => (
               <div key={i} className="flex w-full items-center gap-4">

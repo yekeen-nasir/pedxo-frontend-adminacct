@@ -17,7 +17,6 @@ import AgreementsIcon from "../assets/icons/AgreementsIcon";
 
 const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
-  const navRef = useRef(null);
 
   const navigate = useNavigate();
   const { userBio } = useGlobalContext();
@@ -81,8 +80,8 @@ const Navbar = () => {
   // }, []);
 
   return (
-    <nav className="hidden md:flex border-r-2 w-full max-w-[20em] gap-6 p-8 h-screen  flex-col fixed bg-white   ">
-      <div className="flex-col pt-2">
+    <nav className="hidden md:flex border-r-2 w-full max-w-[13em]  pt-8 justify-between  h-screen  flex-col fixed sec-bg-clr   ">
+      <div className="flex-col px-8 pt-2">
         <h1
           role="button"
           onClick={() => navigate("/")}
@@ -90,7 +89,7 @@ const Navbar = () => {
         >
           Pedxo
         </h1>
-        <div className="flex flex-col  h-full custom-scrollbar w-full  gap-8 capitalize">
+        <div className="flex flex-col  w-full  gap-8 capitalize">
           <SideBarMenuItems to="/" icon={OverviewIcon} title="Overview" />
 
           <div className="flex flex-col gap-5">
@@ -139,32 +138,32 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="user-bg-clr flex-flex-col absolute bottom-0 left-0  w-full gap-3 p-2 h-fit">
+      <div className="user-bg-clr flex-shrink-0   flex flex-col  w-full  p-2">
         <div
           role="button"
           onClick={() => setToggleLogout(!toggleLogout)}
-          className="flex px-8 hover:shadow-md p-2 items-center gap-2"
+          className="flex w-full hover:shadow-md p-2  items-center gap-2"
         >
           <div className="w-10 h-10 flex-shrink-0 rounded-full user-avatar text-white font-semibold flex items-center justify-center">
             {userBio?.email ? userBio?.email.charAt(0).toUpperCase() : "P"}
           </div>
-          <div>
-            <div className="font-semibold leading-normal">Personal</div>
-            <div className="text-[12px] user-email-clr">
+          <div className=" flex w-32 p-1 flex-col">
+            <p className="font-semibold leading-normal">Personal</p>
+
+            <p className="text-xs truncate user-email-clr">
               {userBio?.email || "Pedxo@gmail.com"}
-            </div>
+            </p>
           </div>
         </div>
         {toggleLogout && (
-          <div className="flex w-full justify-center">
+          
             <button
               onClick={handleLogout}
-              className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
+              className="p-3 font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
             >
               <img src={logout} alt="logout icon" />
               Log Out
             </button>
-          </div>
         )}
       </div>
     </nav>

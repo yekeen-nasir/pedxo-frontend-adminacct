@@ -8,7 +8,7 @@ const SideBarMenuItems = ({ icon: Icon, title, onClick, to }) => {
         to={to}
         onClick={onClick}
         className={({ isActive }) =>
-          `flex items-center text-sm gap-2 transition-colors duration-200 font-semibold leading-normal hover:pr-text-clr ${
+          `flex items-center text-sm gap-2 transition-colors duration-200 font-normal leading-normal hover:pr-text-clr ${
             isActive
               ? "bg-primary text-primary-foreground pr-text-clr"
               : "text-gray-700 hover:bg-primary/10 hover:text-primary"
