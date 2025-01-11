@@ -40,12 +40,12 @@ const MobileSideBar = () => {
   return (
     <section
       className={`w-full ${
-        navOpen ? "block" : "hidden"
-      } md:hidden absolute inset-0 z-50  bg-black/30 backdrop-blur-md`}
+        navOpen ? "fixed" : "hidden"
+      } md:hidden  w-full inset-0 bottom-0 z-50 h-screen overflow-y-hidden  bg-black/30 backdrop-blur-md`}
     >
       <nav
         ref={navRef}
-        className="flex border-r-2 w-full max-w-[20em] gap-6 p-8 h-screen  flex-col fixed bg-white   "
+        className="flex border-r-2 w-full justify-between max-w-[20em] gap-6 p-8 h-screen  flex-col fixed user-bg-clr   "
       >
         <div className="flex-col pt-2">
           <h1
