@@ -64,7 +64,6 @@ const router = createBrowserRouter([
         </SideBarProvider>
       </ProtectedRoutes>
     ),
-
     children: [
       {
         index: true,

@@ -119,7 +119,7 @@ const SignUp = () => {
   };
 
   return (
-    <section className="w-full flex justify-center pb-10 pt-24 flex-col px-4 min-h-screen">
+    <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex justify-center flex-col px-4 h-screen">
       <ToastContainer />
       <div className="w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
@@ -224,14 +224,13 @@ const SignUp = () => {
             </div>
           </div>
 
-        
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="outline-none py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
-            >
-              {isLoading ? <div className="loading"></div> : "Continue"}
-            </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="outline-none py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
+          >
+            {isLoading ? <div className="loading"></div> : "Continue"}
+          </button>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>

@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../assets/svg/google-logo.svg";
 import FormInput from "../components/FormInput";
-import eyesolid from "../assets/svg/eyesolid.svg";
-import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
+// import eyesolid from "../assets/svg/eyesolid.svg";
+// import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authFetch from "../components/auth";
 import { useGlobalContext } from "../Context";
 
-const login = () => {
+const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -90,7 +90,7 @@ const login = () => {
   };
 
   return (
-    <section className="w-full flex justify-center flex-col px-4 h-screen">
+    <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex justify-center flex-col px-4 h-screen">
       <ToastContainer />
       <div className=" w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal 2xl:text-[30px] ">
@@ -137,7 +137,7 @@ const login = () => {
           </button>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
-          <span>Don't have an account?</span>
+          <span>Don&apos;t have an account?</span>
           <div className="pr-text-clr">
             <Link to="/signup">Create account</Link>
           </div>
@@ -146,4 +146,4 @@ const login = () => {
     </section>
   );
 };
-export default login;
+export default Login;
