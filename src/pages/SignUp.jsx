@@ -119,7 +119,7 @@ const SignUp = () => {
   };
 
   return (
-    <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex justify-center flex-col px-4 h-screen">
+    <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex  justify-center flex-col px-4 h-screen">
       <ToastContainer />
       <div className="w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">

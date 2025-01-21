@@ -29,7 +29,6 @@ const ProtectedRoutes = ({ children }) => {
           try {
             const newToken = await refreshAccessToken(refreshToken);
             refreshAccessToken(refreshToken);
-            console.log("token refreshed");
             if (newToken) {
               setIsAuthenticated(true);
             } else throw new Error("Failed torefresh tokens");
