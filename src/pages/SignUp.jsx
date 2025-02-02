@@ -2,12 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../assets/svg/google-logo.svg";
 import FormInput from "../components/FormInput";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import eyesolid from "../assets/svg/eyesolid.svg";
 import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
-import authFetch from "../components/auth";
 import { useGlobalContext } from "../Context";
+import toast from "react-hot-toast";
+import authFetch from "../api";
 
 const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -120,7 +119,6 @@ const SignUp = () => {
 
   return (
     <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex  justify-center flex-col px-4 h-screen">
-      <ToastContainer />
       <div className="w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
           Create account

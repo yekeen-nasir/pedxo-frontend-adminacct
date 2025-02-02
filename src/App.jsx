@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import {
   AccountVerification,
@@ -10,8 +6,6 @@ import {
   AgreementContract,
   Agreements,
   CreateContract,
-  // Dashboard,
-  Error,
   Expenses,
   ForgotPassword,
   FullTimeContract,
@@ -27,6 +21,15 @@ import ProtectedRoutes from "./utlity/ProtectedRoutes";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./components/AppLayout";
 import { SideBarProvider } from "./context/SideBarContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider } from "./context/UserContext";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  },
+});
 
 const router = createBrowserRouter([
   //This does all better than putting Error Element
@@ -59,9 +62,11 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ProtectedRoutes>
-        <SideBarProvider>
-          <AppLayout />
-        </SideBarProvider>
+        <UserProvider>
+          <SideBarProvider>
+            <AppLayout />
+          </SideBarProvider>
+        </UserProvider>
       </ProtectedRoutes>
     ),
     children: [
@@ -113,7 +118,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router}></RouterProvider>;
+    </QueryClientProvider>
+  );
 }
 
 export default App;

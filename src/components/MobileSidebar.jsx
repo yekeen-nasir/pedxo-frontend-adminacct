@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import MobileNavIcon from "./MobileNavIcon";
-import { refreshAccessToken } from "../utlity/RefreshAccessToken";
 import AddDeveloperIcon from "../assets/icons/AddDeveloperIcon";
 import OverviewIcon from "../assets/icons/OverviewIcon";
 import CreateContractIcon from "../assets/icons/CreateContractIcon";
@@ -24,14 +23,7 @@ const MobileSideBar = () => {
   const navigate = useNavigate();
   const { userBio } = useGlobalContext();
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    toast.success("Logout successful");
-    setTimeout(() => {
-      navigate("/login");
-    }, 500);
-    refreshAccessToken();
-  };
+
 
   const closeSidebar = () => setNavOpen(false);
 
@@ -138,7 +130,7 @@ const MobileSideBar = () => {
           {toggleLogout && (
             <div className="flex w-full justify-center">
               <button
-                onClick={handleLogout}
+                // onClick={handleLogout}
                 className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
               >
                 <img src={logout} alt="logout icon" />
