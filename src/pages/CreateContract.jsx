@@ -1,10 +1,6 @@
-import Contracts from "../components/Contracts"
+import Contracts from "../components/Contracts";
 
 const CreateContract = () => {
-  return (
-    <div>
-      <Contracts/>
-    </div>
-  )
-}
-export default CreateContract
+  return <Contracts />;
+};
+export default CreateContract;

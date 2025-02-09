@@ -26,6 +26,11 @@ export async function loginUser(details) {
   return response?.data;
 }
 
+
+export async function signUpUserAPI(details){
+  const reponse = await authFetch.post("/auth/")
+}
+
 export function logoutUser() {
   return new Promise((resolve) => {
     localStorage.removeItem("user");

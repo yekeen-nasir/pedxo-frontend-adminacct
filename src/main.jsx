@@ -12,7 +12,6 @@ createRoot(document.getElementById("root")).render(
     <AppContext>
       <App />
       <Toaster
-        // position="top-right"
         containerStyle={{
           top: 0,
           padding: "10px 20px",

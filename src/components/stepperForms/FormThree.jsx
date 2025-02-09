@@ -1,8 +1,7 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormTwo = ({ selectedCountry}) => {
-
+const FormTwo = ({ formik, selectedCountry }) => {
   return (
     <div>
       <div className="flex flex-col gap-[18px]">
@@ -11,12 +10,19 @@ const FormTwo = ({ selectedCountry}) => {
         </div>
 
         <div className="flex flex-col gap-1 xl:gap-4 relative">
-          <label
-            htmlFor="paymentRate"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Payment Rate *
-          </label>
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="paymentRate"
+              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+            >
+              Payment Rate *
+            </label>
+            {formik.errors.paymentRate && (
+              <p className="text-sm text-red-500">
+                {formik.errors.paymentRate}
+              </p>
+            )}
+          </div>
           <div className="relative">
             <div
               className="py-[15px] pl-[19px] h-full rounded-lg pointer-events-none absolute inset-y-0 left-0  flex items-center pr-[14px]  xl:pl-[37px] xl:w-[115px]"
@@ -25,12 +31,17 @@ const FormTwo = ({ selectedCountry}) => {
                 border: "1px solid rgba(0, 0, 0, 0.30",
               }}
             >
-              <span className="text-[12px] font-semibold xl:text-xl">{selectedCountry === "NG" ? "NGN" : "USD"}</span>
+              <span className="text-[12px] font-semibold xl:text-xl">
+                {selectedCountry === "NG" ? "NGN" : "USD"}
+              </span>
             </div>
             <input
               type="number"
-              name="paymentRate "
+              name="paymentRate"
+              onBlur={formik.handleBlur}
               id="paymentRate "
+              value={formik.values.paymentRate}
+              onChange={formik.handleChange}
               // value={value}
               // onChange={onChange}
               className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 pl-20 text-[12px] xl:pl-40 xl:h-[60px] xl:text-[16px]"
@@ -41,17 +52,26 @@ const FormTwo = ({ selectedCountry}) => {
           </div>
         </div>
 
-        
         <div className="relative flex flex-col gap-1 xl:gap-4">
-          <label
-            htmlFor="paymentFrequency"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Payment Frequency *
-          </label>
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="paymentFrequency"
+              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+            >
+              Payment Frequency *
+            </label>
+            {formik.errors.paymentFrequency && (
+              <p className="text-sm text-red-500">
+                {formik.errors.paymentFrequency}
+              </p>
+            )}
+          </div>
           <select
             name="paymentFrequency"
             id="paymentFrequency"
+            value={formik.values.paymentFrequency}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
             className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
@@ -73,4 +93,3 @@ const FormTwo = ({ selectedCountry}) => {
   );
 };
 export default FormTwo;
-
