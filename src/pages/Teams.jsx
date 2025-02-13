@@ -24,23 +24,22 @@ const Teams = () => {
   ];
 
   return (
-    <div>
-      <div className="mt-[62px] mx-5 flex flex-col xl:ml-[86px] xl:mr-[65px] ">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-xl font-medium lg:text-[30px] lg:font-semibold xl:mb-[11px]">
-            Teams
-          </div>
-          <div className="hidden md:flex gap-2">
-            <AddDeveloperBtn />
-            <CreateContractBtn />
-          </div>
+    <div className=" flex flex-col w-full mt-10 p-4 gap-3 ">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <h1 className="text-xl font-medium lg:text-[30px] lg:font-semibold">
+          Teams
+        </h1>
+        <div className="hidden md:flex gap-2">
+          <AddDeveloperBtn />
+          <CreateContractBtn />
         </div>
+      </div>
 
-        <div>
-          <div>
-            <TeamsTable />
-          </div>
-          {/* <div>
+      <div>
+      
+          <TeamsTable />
+      
+        {/* <div>
             <SearchingDoc
               noticeText="How onboarding works?"
               searchingdocTitle="Create Contract"
@@ -49,7 +48,6 @@ const Teams = () => {
               onBoarding={onBoarding}
             />
           </div> */}
-        </div>
       </div>
     </div>
   );

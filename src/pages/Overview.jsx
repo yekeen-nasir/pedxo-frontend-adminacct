@@ -3,11 +3,10 @@ import people from "../assets/svg/people.svg";
 import telegram from "../assets/svg/telegram.svg";
 import add from "../assets/svg/add.svg";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../Context";
+import { useUser } from "../context/UserContext";
 
 const Overview = () => {
-  const { userBio } = useGlobalContext();
-
+  const { username } = useUser();
   return (
     <section>
       <div>
@@ -17,10 +16,8 @@ const Overview = () => {
 
         <div className="mx-[19px] mt-10">
           <h1 className="text-[20px] font-Inter font-bold  leading-normal text-[#000000e6]  xl:text-[30px]">
-            Welcome,{" "}
-            <span className="overview-text">
-              {userBio?.firstName ? userBio.firstName : "Pedxo-User"}
-            </span>
+            Welcome, {username}
+            <span className="overview-text"></span>
           </h1>
           <p className="text-sm font-Inter font-medium leading-normal grey-text xl:text-[16px]">
             We hope you’re having a good day!
@@ -32,7 +29,7 @@ const Overview = () => {
                 Total Expenses
               </h2>
               <p className="mb-2 text-sm font-Inter font-medium leading-normal grey-text pr-[51px] xl:text-[16px]">
-                Total amount you've spent on your contractors
+                Total amount you&apos;ve spent on your contractors
               </p>
 
               <div className="flex justify-between bg-white rounded-lg py-3 px-[21px] xl:py-10 xl:px-16">
@@ -62,10 +59,10 @@ const Overview = () => {
                 </div>
 
                 <Link
-                  to="/dashboard/create-contract"
+                  to="/create-contract"
                   className="flex items-center text-[0.8rem] text-white px-3 py-[10px] sm:px-5 sm:py-[14px] pr-bg-clr rounded-lg font-semibold xl:text-[16px]"
                 >
-                  <img src={add} alt="" className="w-4 mr-1" />
+                  <img src={add} alt="" className="w-4 " />
                   <span>Create contract</span>
                 </Link>
               </div>

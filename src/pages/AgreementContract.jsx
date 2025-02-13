@@ -7,6 +7,8 @@ import document from "../assets/svg/document.svg";
 import PrimaryBtn from "../components/PrimaryBtn";
 import MobileTransactionHistory from "../components/agreements/MobileTransactionHistory";
 import UpdateContract from "../components/agreements/UpdateContract";
+import { BsArrowLeft } from "react-icons/bs";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const AgreementContract = () => {
   // const { id } = useParams();
@@ -62,15 +64,14 @@ const AgreementContract = () => {
   };
 
   return (
-    <section>
+    <section className="w-full px-10 pt-20">
       {/* <h1>Agreement ID: {id}</h1> */}
-      <div className="mt-[50px] mb-[61px]">
-        <div className="flex justify-between mx-[21px] xl:mx-0">
+        <div className="flex justify-between  xl:mx-0">
           <div
-            className="flex items-center gap-1 font-medium leading-normal pr-text-clr md:ml-24 xl:gap-3 xl:text-2xl"
+            className="flex items-center  font-medium leading-normal pr-text-clr text-base gap-2"
             onClick={handlePrevious}
           >
-            <img src={leftarrorw} alt="arrow" className="xl:w-[33px]" />
+            <FaArrowLeft />
             {isTransactionHistoryVisible === true ? (
               <span
                 className="cursor-pointer"
@@ -79,7 +80,7 @@ const AgreementContract = () => {
                 Go back
               </span>
             ) : (
-              <Link to="/dashboard/agreements" className="cursor-pointer">
+              <Link to="/agreements" className="cursor-pointer">
                 Go back
               </Link>
             )}
@@ -99,7 +100,7 @@ const AgreementContract = () => {
         {isTransactionHistoryVisible ? (
           <MobileTransactionHistory />
         ) : (
-          <div className="flex flex-col gap-[19px] mt-[45px] md:mx-[143px] xl:flex-row xl:justify-center xl:gap-[48px] xl:mt-[75px]">
+          <div className="flex flex-col xl:flex-row xl:justify-center xl:gap-[48px] xl:mt-[75px]">
             <div
               className={`xl:order-1 ${currentStep === 2 ? "hidden" : "block"}`}
             >
@@ -152,7 +153,7 @@ const AgreementContract = () => {
               </div>
             </div>
 
-            <div className="xl:w-[731px] user-bg-clr mx-[21px] p-5 pb-[25px] rounded-lg lg:px-[70px] lg:pt-[51px] lg:pb-[29px] xl:order-0 xl:mx-0">
+            <div className=" user-bg-clr lg:w-[32em] rounded-lg  p-10 xl:order-0 xl:mx-0">
               {/* <form onSubmit={handleSubmit}> */}
               <div>{renderStep()}</div>
 
@@ -183,7 +184,6 @@ const AgreementContract = () => {
             </div>
           </div>
         )}
-      </div>
     </section>
   );
 };

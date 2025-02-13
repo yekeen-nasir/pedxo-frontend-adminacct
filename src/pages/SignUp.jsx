@@ -2,12 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import googleLogo from "../assets/svg/google-logo.svg";
 import FormInput from "../components/FormInput";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import eyesolid from "../assets/svg/eyesolid.svg";
 import eyeslashsolid from "../assets/svg/eyeslashsolid.svg";
-import authFetch from "../components/auth";
 import { useGlobalContext } from "../Context";
+import toast from "react-hot-toast";
+import authFetch from "../api";
 
 const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -119,9 +118,8 @@ const SignUp = () => {
   };
 
   return (
-    <section className="min-w-[390px] max-w-[1440px] min-h-[844px] max-h-[1024px] mx-auto px-[25px]">
-      <ToastContainer />
-      <div className="pt-[143px] pb-[59px] max-w-[569px] mx-auto xl:pt-10">
+    <section className="w-full mx-auto md:w-1/2 md:max-w-[38em] flex  justify-center flex-col px-4 h-screen">
+      <div className="w-full">
         <h1 className="mb-[59px] text-2xl font-semibold leading-normal xl:text-[30px] 2xl:text-[40px] 2xl:mb-5">
           Create account
         </h1>
@@ -129,11 +127,11 @@ const SignUp = () => {
           <img src={googleLogo} alt="google logo" />
           <span className="font-medium">Continue with Google</span>
         </button>
-        <form onSubmit={handleFormSubmit}>
-          <div className="text-lg font-medium line-with-text">Or</div>
+        <div className="text-lg font-medium line-with-text">Or</div>
+        <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormInput
             htmlFor="firstName"
-            label="FirstName"
+            label="First Name"
             type="text"
             name="firstName"
             id="firstName"
@@ -144,7 +142,7 @@ const SignUp = () => {
 
           <FormInput
             htmlFor="lastName"
-            label="LastName"
+            label="Last Name"
             type="text"
             name="lastName"
             id="lastName"
@@ -224,15 +222,13 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="mt-6">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="outline-none py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
-            >
-              {isLoading ? <div className="loading"></div> : "Continue"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="outline-none py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
+          >
+            {isLoading ? <div className="loading"></div> : "Continue"}
+          </button>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">
           <span>Already have an account?</span>

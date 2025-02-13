@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 const Contracts = () => {
   return (
-    <section>
-      <div className=" mt-[200px] xl:ml-[101px] xl:px-[157px]">
+    <section className=" flex items-center justify-center flex-col h-screen">
+      <div className="">
         <div className="text-center">
           <div className="text-[20px] font-bold xl:text-[31px] xl:mb-6">
             Creating a Contract
@@ -17,9 +17,9 @@ const Contracts = () => {
         </div>
 
         <div className="flex flex-col gap-3 mt-[31px] mx-[21px] xl:mt-10">
-          <Link to="/dashboard/full-time-form">
-            <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
-              <div className="flex gap-[13px]">
+          <Link to="/full-time-form?contractType=full-time">
+            <div className="flex items-center justify-between gap-4 user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
+              <div className="flex items-center gap-[13px]">
                 <img src={fulltimeicon} alt="target icon" />
                 <div>
                   <div className="text-sm font-semibold md:text-xl xl:text-2xl">
@@ -37,7 +37,7 @@ const Contracts = () => {
             </div>
           </Link>
 
-          <Link to="/dashboard/gig-based-form">
+          <Link to="/gig-based-form?contractType=gig-based">
             <div className="flex items-center justify-between user-bg-clr rounded-lg px-4 py-[19px] xl:px-10 xl:py-9">
               <div className="flex gap-[13px]">
                 <img src={gigbased} alt="target icon" />

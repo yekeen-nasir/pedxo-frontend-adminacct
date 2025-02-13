@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import expenseavatar from "../../assets/svg/expenseavatar.svg";
 import SearchInput from "../../components/SearchInput";
-
+import { GoDotFill } from "react-icons/go";
 const TeamsTable = () => {
   const employees = [
     {
@@ -18,17 +18,13 @@ const TeamsTable = () => {
   return (
     <section>
       <div>
-        <div className="flex items-center justify-between font-medium mt-2 lg:justify-self-start xl:text-xl">
-          <div className="flex items-center gap-1 md:mr-[21px]">
+        <div className="flex items-center px-4 justify-between font-medium  gap-10 lg:justify-self-start xl:text-xl">
+          <h2 className="flex items-center gap-1 ">
             Active Developers
-            <div
-              className="w-3 h-3 rounded-full "
-              style={{ backgroundColor: "#008000" }}
-            ></div>
-          </div>
-          <div>
-            <SearchInput />
-          </div>
+            <GoDotFill className="text-[#008000]" />
+          </h2>
+
+          <SearchInput />
         </div>
 
         <div className="flex flex-col gap-4 mt-[21px] xl:flex-col-reverse xl:gap-[10px] xl:w-full lg:hidden">
