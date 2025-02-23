@@ -37,7 +37,7 @@ const MobileSideBar = () => {
     >
       <nav
         ref={navRef}
-        className="flex border-r-2 w-full justify-between max-w-[20em] gap-6 p-8 h-screen  flex-col fixed user-bg-clr   "
+        className="flex border-r-2 w-full justify-between max-w-[20em] gap-6 p-8 h-full  flex-col fixed user-bg-clr   "
       >
         <div className="flex-col pt-2">
           <h1
@@ -111,7 +111,7 @@ const MobileSideBar = () => {
           </div>
         </div>
 
-        <div className="user-bg-clr flex-flex-col absolute bottom-0 left-0  w-full gap-3 p-2 h-fit">
+        <div ref={navRef} className="user-bg-clr flex-flex-col absolute bottom-0 left-0  w-full gap-3 p-2 h-fit">
           <div
             role="button"
             onClick={() => setToggleLogout(!toggleLogout)}
