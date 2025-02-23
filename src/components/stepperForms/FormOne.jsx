@@ -2,10 +2,17 @@ import ContractInputForm from "../ContractFormInput";
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
 
-const FormOne = ({ formik, countries, states, setSelectedCountry }) => {
+const FormOne = ({
+  formik,
+  countries,
+  isLoading,
+  loadingStates,
+  states,
+  setSelectedCountry,
+}) => {
   const handleCountryChange = (e) => {
     const selectedIso = e.target.value;
-    const selected = countries.find((c) => c.iso2 === selectedIso);
+    const selected = countries?.find((c) => c.iso2 === selectedIso);
     if (selected) {
       formik.setFieldValue("country", selected.name);
       setSelectedCountry(selectedIso);
@@ -68,15 +75,18 @@ const FormOne = ({ formik, countries, states, setSelectedCountry }) => {
             <select
               name="country"
               id="country"
+              disabled={isLoading}
               onChange={handleCountryChange}
               value={
-                countries.find((c) => c.name === formik.values.country)?.iso2 ||
-                ""
+                countries?.find((c) => c.name === formik.values.country)
+                  ?.iso2 || ""
               }
-              className="appearance-none w-full bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              className="appearance-none w-full disabled:ring-gray-300  bg-transparent ring-1 ring-[#00000033] outline-none rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
             >
-              <option value="">Select Country</option>
-              {countries.map((country) => (
+              <option value="">
+                {isLoading ? "Loading Countries..." : "Select Country"}
+              </option>
+              {countries?.map((country) => (
                 <option key={country.id} value={country.iso2}>
                   {country.name}
                 </option>
@@ -99,13 +109,16 @@ const FormOne = ({ formik, countries, states, setSelectedCountry }) => {
           <div className="relative">
             <select
               name="state"
+              disabled={loadingStates}
               id="state"
               onChange={(e) => formik.setFieldValue("state", e.target.value)}
               value={formik.values.state}
-              className="appearance-none w-full bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
+              className="appearance-none w-full disabled:ring-gray-300  bg-transparent ring-1 ring-[#00000033] outline-none rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
             >
-              <option value="">Select State</option>
-              {states.map((state) => (
+              <option value="">
+                {loadingStates ? "Loading States..." : states?.length === 0 ? "-" : "Select State"}
+              </option>
+              {states?.map((state) => (
                 <option key={state.id} value={state.name}>
                   {state.name}
                 </option>

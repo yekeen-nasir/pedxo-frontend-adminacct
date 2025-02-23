@@ -3,10 +3,13 @@ import { Switch } from "antd";
 import { useRef, useState } from "react";
 import Dropdown from "../../Dropdown.json";
 import { templateBenefits } from "../../data";
+import { useSearchParams } from "react-router-dom";
 
 const FormTwo = ({ subHead, endDate, formik }) => {
   const dropdownRef = useRef();
   // const [addedTemplate, setAddedTemplate] = useState("");
+  const [searchParams] = useSearchParams();
+  const contractType = searchParams.get("contractType") || null;
   const today = new Date().toISOString().split("T")[0];
   const [showSwitch, setShowSwitch] = useState(false);
 
@@ -82,7 +85,6 @@ const FormTwo = ({ subHead, endDate, formik }) => {
           <select
             name="seniorityLevel"
             onBlur={formik.handleBlur}
-
             value={formik.values.seniorityLevel}
             onChange={formik.handleChange}
             className="appearance-none w-full cursor-pointer bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
@@ -101,13 +103,12 @@ const FormTwo = ({ subHead, endDate, formik }) => {
             htmlFor="scopOfWork"
             className="text-[12px] font-semibold leading-normal xl:text-[16px]"
           >
-            Scope of Work template
+            Scope of explanation and tech stack requirements
           </label>
 
           <select
             name="scopeOfWork"
             onBlur={formik.handleBlur}
-
             value={formik.values.scopeOfWork}
             onChange={handleSow}
             className="appearance-none w-full cursor-pointer bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
@@ -127,7 +128,7 @@ const FormTwo = ({ subHead, endDate, formik }) => {
               htmlFor="startDate"
               className="text-[12px] font-semibold leading-normal xl:text-[16px]"
             >
-              Start Date
+              Start Date *
             </label>
           </div>
           <input
@@ -135,7 +136,6 @@ const FormTwo = ({ subHead, endDate, formik }) => {
             name="startDate"
             id="startDate"
             onBlur={formik.handleBlur}
-
             value={formik.values.startDate}
             onChange={formik.handleChange}
             min={today}
@@ -154,16 +154,21 @@ const FormTwo = ({ subHead, endDate, formik }) => {
                 ${!showSwitch && "opacity-40"}
               `}
             >
-              {endDate}
+              End Date
             </label>
 
-            <Switch size="small" onChange={() => setShowSwitch(!showSwitch)} />
+            {contractType === "full-time" && (
+              <Switch
+                size="small"
+                onChange={() => setShowSwitch(!showSwitch)}
+              />
+            )}
           </div>
           <input
             type="date"
             name="endDate"
             id="endDate"
-            disabled={!showSwitch}
+            disabled={contractType === "full-time" && !showSwitch}
             value={formik.values.endDate}
             onChange={formik.handleChange}
             min={formik.values.startDate}
@@ -185,7 +190,6 @@ const FormTwo = ({ subHead, endDate, formik }) => {
           <textarea
             name="description"
             onBlur={formik.handleBlur}
-
             id="scope of work"
             rows="7"
             value={formik.values.description}

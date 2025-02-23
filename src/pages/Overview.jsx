@@ -4,6 +4,7 @@ import telegram from "../assets/svg/telegram.svg";
 import add from "../assets/svg/add.svg";
 import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { formatCurrency } from "../utlity/helper";
 
 const Overview = () => {
   const { username } = useUser();
@@ -36,7 +37,7 @@ const Overview = () => {
                 <div className="flex items-center gap-4">
                   <img src={moneybag} alt="" />
                   <span className="text-2xl font-semibold leading-normal xl:text-[40px] overview-text">
-                    $0
+                    {formatCurrency(0)}
                   </span>
                 </div>
               </div>

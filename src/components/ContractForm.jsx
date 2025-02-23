@@ -1,79 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./Stepper.css";
 import FormOne from "./stepperForms/FormOne";
 import FormTwo from "./stepperForms/FormTwo";
 import FormThree from "./stepperForms/FormThree";
 import FormFour from "./stepperForms/FormFour";
 import FormFive from "./stepperForms/FormFive";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import sendcontract from "../assets/svg/sendcontract.svg";
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 import { FaArrowLeft } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-
-const countriesUrl = "https://api.countrystatecity.in/v1/countries";
-const statesUrl = "https://api.countrystatecity.in/v1/countries";
+import useGetCountries from "../features/countriesandstates/useGetCountries";
+import useGetStates from "../features/countriesandstates/useGetStates";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ContractForm = ({ subHead, endDate }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [fetchError, setFetchError] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState("");
-
+  const { countries, isLoading: loadingCountries } = useGetCountries();
   const { setFormStepperData } = useGlobalContext();
+  const { states, loadingStates, refetch } = useGetStates(selectedCountry);
+
+  useEffect(() => {
+    queryClient.invalidateQueries(["states"]);
+  }, [selectedCountry, queryClient]);
 
   const handleOptionSelect = (option) => {
     setFormStepperData(option);
   };
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get(countriesUrl, {
-          headers: {
-            "X-CSCAPI-KEY":
-              "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
-          },
-        });
-        setFetchError(false);
-        const data = response.data;
-        setCountries(data);
-      } catch (error) {
-        setFetchError(true);
-        console.log(error.message);
-      }
-    };
-
-    fetchCountries();
-  }, []);
-
-  useEffect(() => {
-    if (!selectedCountry) return;
-
-    const fetchStates = async () => {
-      try {
-        const response = await axios.get(
-          `${statesUrl}/${selectedCountry}/states`,
-          {
-            headers: {
-              "X-CSCAPI-KEY":
-                "OEVBRUJVQUhTaEpYMDdOcmtySGhWUW1rQ1A1V2VxMFlTQ1JoQzhTTQ==",
-            },
-          }
-        );
-        const data = response.data;
-        setStates(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchStates();
-  }, [selectedCountry]);
 
   const steps = [
     "Personal Information",
@@ -89,7 +46,7 @@ const ContractForm = ({ subHead, endDate }) => {
     state: "",
     companyName: "",
     roleTitle: "", //Optional
-    seniorityLevel: "", 
+    seniorityLevel: "",
     scopeOfWork: "",
     description: "",
     startDate: "",
@@ -99,6 +56,31 @@ const ContractForm = ({ subHead, endDate }) => {
     signature: "",
   };
 
+  const handlePrevious = useCallback(() => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    else {
+      navigate("/add-developer");
+    }
+  }, [currentStep, navigate]);
+
+  useEffect(() => {
+    window.history.pushState({ step: currentStep }, "");
+  }, [currentStep]);
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (e.state && e.state.step) {
+        setCurrentStep(e.state.step);
+      } else {
+        navigate("/add-developer");
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [navigate]);
+
   const validationSchema = Yup.object({
     clientName: Yup.string().required("Client name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -106,7 +88,6 @@ const ContractForm = ({ subHead, endDate }) => {
     state: Yup.string().required("State is required"),
     companyName: Yup.string().required("Company name is required"),
     scopeOfWork: Yup.string().required("Scope of work is required"),
-    // template: Yup.string().required("Template is required"),
     startDate: Yup.string().required("Start date is required"),
     description: Yup.string().required("Scope of work explanation is required"),
     paymentRate: Yup.number().required("Payment rate is required"),
@@ -117,15 +98,10 @@ const ContractForm = ({ subHead, endDate }) => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: (values, {setSubmitting, resetForm}) => {
-
-      toast.success("Application sent Successfully")
+    onSubmit: (values, { setSubmitting, resetForm }) => {
+      toast.success("Application sent Successfully");
     },
   });
-
-  const handlePrevious = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -133,9 +109,10 @@ const ContractForm = ({ subHead, endDate }) => {
         return (
           <FormOne
             formik={formik}
+            isLoading={loadingCountries}
             countries={countries}
+            loadingStates={loadingStates}
             states={states}
-            setStates={setStates}
             selectedCountry={selectedCountry}
             setSelectedCountry={setSelectedCountry}
           />
@@ -197,14 +174,12 @@ const ContractForm = ({ subHead, endDate }) => {
     }
   };
 
-
-
   const handleFormSubmit = (e) => {
     if (
       (currentStep === 6 && formik.values.signature) ||
       (currentStep === 4 && formik.values.signature)
     ) {
-      console.log("ee")
+      console.log("ee");
       formik.handleSubmit(e);
     } else {
       e.preventDefault();
@@ -217,10 +192,15 @@ const ContractForm = ({ subHead, endDate }) => {
       case 1:
         if (
           formik.values.clientName &&
+          !formik.errors.clientName &&
           formik.values.companyName &&
+          !formik.errors.companyName &&
           formik.values.country &&
+          !formik.errors.country &&
           formik.values.email &&
-          formik.values.state
+          !formik.errors.email &&
+          formik.values.state &&
+          !formik.errors.state
         ) {
           return false;
         } else return true;
@@ -251,11 +231,8 @@ const ContractForm = ({ subHead, endDate }) => {
         onClick={handlePrevious}
       >
         <FaArrowLeft size={18} />
-        {currentStep === 1 ? (
-          <Link to="/add-developer">Go back</Link>
-        ) : (
-          <span className="cursor-pointer">Go back</span>
-        )}
+
+        <span className="cursor-pointer">Go back</span>
       </div>
 
       <div className="flex flex-col gap-6">

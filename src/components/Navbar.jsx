@@ -29,9 +29,9 @@ const Navbar = () => {
   return (
     <nav
       ref={navRef}
-      className="hidden md:flex border-r-2 w-full max-w-[13em]  pt-8 justify-between  h-screen  flex-col fixed sec-bg-clr   "
+      className="hidden md:flex border-r-2 w-full max-w-[13em] pt-8 justify-between  h-screen  flex-col fixed sec-bg-clr   "
     >
-      <div className="flex-col px-8 pt-2">
+      <div className="flex-col px-8 ">
         <h1
           role="button"
           onClick={() => navigate("/")}
@@ -39,7 +39,7 @@ const Navbar = () => {
         >
           Pedxo
         </h1>
-        <div className="flex flex-col  w-full  gap-8 capitalize">
+        <div className="flex flex-col  w-full  gap-6 capitalize">
           <SideBarMenuItems to="/" icon={OverviewIcon} title="Overview" />
 
           <div className="flex flex-col gap-5">

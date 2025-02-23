@@ -33,7 +33,7 @@ const MobileSideBar = () => {
     <section
       className={`w-full ${
         navOpen ? "fixed" : "hidden"
-      } md:hidden  w-full inset-0 bottom-0 z-50 h-screen overflow-y-hidden  bg-black/30 backdrop-blur-md`}
+      } md:hidden  w-full inset-0 bottom-0 z-50 h-smh overflow-y-hidden  bg-black/30 backdrop-blur-md`}
     >
       <nav
         ref={navRef}
@@ -47,7 +47,7 @@ const MobileSideBar = () => {
           >
             Pedxo
           </h1>
-          <div className="flex flex-col  h-full custom-scrollbar w-full  gap-8 capitalize">
+          <div className="flex flex-col  h-full custom-scrollbar w-full  gap-6 capitalize">
             <SideBarMenuItems
               onClick={() => setNavOpen(false)}
               to="/"

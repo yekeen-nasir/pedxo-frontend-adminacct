@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const Contracts = () => {
   return (
     <section className=" flex items-center justify-center flex-col h-screen">
-      <div className="">
         <div className="text-center">
           <div className="text-[20px] font-bold xl:text-[31px] xl:mb-6">
             Creating a Contract
@@ -57,7 +56,6 @@ const Contracts = () => {
             </div>
           </Link>
         </div>
-      </div>
     </section>
   );
 };
