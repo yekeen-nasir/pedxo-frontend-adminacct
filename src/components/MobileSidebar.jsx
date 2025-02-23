@@ -33,7 +33,7 @@ const MobileSideBar = () => {
     <section
       className={`w-full ${
         navOpen ? "fixed" : "hidden"
-      } md:hidden  w-full inset-0 bottom-0 z-50 h-smh overflow-y-hidden  bg-black/30 backdrop-blur-md`}
+      } md:hidden  w-full inset-0 bottom-0 z-50 h-svh overflow-y-hidden  bg-black/30 backdrop-blur-md`}
     >
       <nav
         ref={navRef}
