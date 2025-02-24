@@ -3,7 +3,10 @@ import { nanoid } from "nanoid";
 import AddDeveloperBtn from "../components/AddDeveloperBtn";
 import CreateContractBtn from "../components/CreateContractBtn";
 import TeamsTable from "../components/teams/TeamsTable";
-
+import Button from "../components/Button";
+import { FaUserPlus } from "react-icons/fa";
+import CreateContractIcon from "../assets/icons/CreateContractIcon";
+import Table from "../components/Table";
 const Teams = () => {
   const onBoarding = [
     {
@@ -24,21 +27,46 @@ const Teams = () => {
   ];
 
   return (
-    <div className=" flex flex-col w-full mt-10 p-4 gap-3 ">
+    <section className=" flex flex-col w-full mt-10 p-4 gap-10 ">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <h1 className="text-xl font-medium lg:text-[30px] lg:font-semibold">
           Teams
         </h1>
-        <div className="hidden md:flex gap-2">
-          <AddDeveloperBtn />
-          <CreateContractBtn />
+
+        <div className=" hidden lg:flex items-center gap-4">
+          <Button
+            link
+            linkTo={"/add-developer"}
+            type={"primary"}
+            iconLeft={<FaUserPlus size={18} />}
+          >
+            Add Developer
+          </Button>
+          <Button
+            link
+            linkTo={"/add-developer"}
+            size="large"
+            type={"secondary"}
+            iconLeft={<CreateContractIcon />}
+          >
+            Create Contract
+          </Button>
         </div>
       </div>
 
       <div>
-      
-          <TeamsTable />
-      
+        <TeamsTable />
+        {/* <Table columns="1.2fr 1fr 1fr 1fr 1fr 0.5fr">
+          <Table.Header>
+            <div>Name</div>
+            <div>Country</div>
+            <div>Position</div>
+            <div>Pay</div>
+            <div>Seniority Level</div>
+            <div></div>
+          </Table.Header>
+        </Table> */}
+
         {/* <div>
             <SearchingDoc
               noticeText="How onboarding works?"
@@ -49,7 +77,7 @@ const Teams = () => {
             />
           </div> */}
       </div>
-    </div>
+    </section>
   );
 };
 export default Teams;
