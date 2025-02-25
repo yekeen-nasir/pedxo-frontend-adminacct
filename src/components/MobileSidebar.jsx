@@ -1,4 +1,4 @@
-import logout from "../assets/svg/logout.svg";
+
 import { useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
 import { useGlobalContext } from "../Context";
@@ -13,6 +13,9 @@ import AgreementsIcon from "../assets/icons/AgreementsIcon";
 import { useNavBar } from "../context/SideBarContext";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import logoutsvg from "../assets/svg/logout.svg";
+import logosvg from "/logo.svg"
+
+
 const MobileSideBar = () => {
   const { navOpen, setNavOpen } = useNavBar();
   const [toggleLogout, setToggleLogout] = useState(false);
