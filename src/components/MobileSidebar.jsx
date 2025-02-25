@@ -12,7 +12,7 @@ import ExpensesIcon from "../assets/icons/ExpensesIcon";
 import AgreementsIcon from "../assets/icons/AgreementsIcon";
 import { useNavBar } from "../context/SideBarContext";
 import { useOutsideClick } from "../hooks/useOutsideClick";
-
+import logoutsvg from "../assets/svg/logout.svg";
 const MobileSideBar = () => {
   const { navOpen, setNavOpen } = useNavBar();
   const [toggleLogout, setToggleLogout] = useState(false);
