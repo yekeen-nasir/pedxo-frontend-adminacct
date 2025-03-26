@@ -9,7 +9,7 @@ export default function usePersonalInfoContract() {
     onSuccess: (data) => {
       toast.success("Form Saved")
       const contractData = data?.data;
-      sessionStorage.setItem("saved", JSON.stringify(contractData));
+      sessionStorage.setItem("personal-info", JSON.stringify(contractData))
     },
     onError: (err) => {
       toast.error("Saving Failed, Please try again");
