@@ -12,7 +12,6 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AppContext>
       <ThemeProvider>
-
       <App />
       <Toaster
         containerStyle={{

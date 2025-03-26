@@ -129,7 +129,7 @@ const MobileSideBar = () => {
                 // onClick={handleLogout}
                 className="py-[6px] px-[36px] font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
               >
-                <img src={logout} alt="logout icon" />
+                <img src={logoutsvg} alt="logout icon" />
                 Log Out
               </button>
             </div>

@@ -1,22 +1,20 @@
-import { useState } from "react";
 import sign from "../../assets/svg/sign.svg";
-import FormFive from "./FormFive";
-import sendcontract from "../../assets/svg/sendcontract.svg";
-import { useGlobalContext } from "../../Context";
 import { useSearchParams } from "react-router-dom";
 import { formatCurrency, formatDate } from "../../utlity/helper";
+import useFinalizeContract from "../../features/contracts/useFinalizeContract";
+import Button from "../Button";
 
 const FormFour = ({
-  currentStep,
-  setCurrentStep,
-  setComplete,
-  formik,
+  savedState,
   heading,
+  nextStep,
+  setCurrentStep,
   signature,
   hasSignature,
 }) => {
   const [searchParams] = useSearchParams();
   const contractType = searchParams.get("contractType") || "";
+  const { finalize, sendingForm } = useFinalizeContract();
 
   const userInfo = [
     {
@@ -26,40 +24,44 @@ const FormFour = ({
 
     {
       title: "Start Date",
-      data: formatDate(formik?.values?.startDate) || "-",
+      data: formatDate(savedState.startDate) || "-",
     },
 
     {
       title: "End Date",
-      data: formatDate(formik.values.endDate) || "-",
+      data: formatDate(savedState.endDate) || "-",
     },
     {
       title: "Job Title",
-      data: formik.values.roleTitle || "-",
+      data: savedState.roleTitle || "-",
     },
     {
       title: "Seniority Level",
-      data: formik.values.seniorityLevel || "-",
+      data: savedState.seniorityLevel || "-",
     },
 
     {
       title: "Scope of Work",
-      data: formik.values.scopeOfWork || "-",
+      data: savedState.scopeOfWork || "-",
     },
     {
       title: "Payment Rate",
       data:
         formatCurrency(
-          formik.values.paymentRate,
-          formik.values.country === "Nigeria" ? "NGN" : "USD",
-          formik.values.country === "Nigeria" ? "en-NG" : "en-US"
+          savedState.paymentRate,
+          savedState.country === "Nigeria" ? "NGN" : "USD",
+          savedState.country === "Nigeria" ? "en-NG" : "en-US"
         ) || null,
     },
     {
       title: "Payment Frequency",
-      data: formik.values.paymentFrequency || null,
+      data: savedState.paymentFrequency || null,
     },
   ];
+
+  const sendFinalForm = () => {
+    finalize(savedState);
+  };
 
   return (
     <div className="flex flex-col gap-[18px]">
@@ -83,66 +85,44 @@ const FormFour = ({
         </div>
       </div>
 
-      {!hasSignature && (
-        <button
-          type="button"
-          onClick={() => setCurrentStep(5)}
-          className="flex items-center justify-between border border-solid border-[#00000033] px-[15px] py-[10px] bg-[#d9d9d980] rounded-lg xl:px-[30px] xl:py-[19px] cursor-pointer"
-        >
-          <div className="font-medium text-[0.6875rem] text-[#00000099] xl:text-[1.125rem]">
-            Sign Contract
-          </div>
+      <button
+        type="button"
+        onClick={() => {
+          if (hasSignature) {
+            setCurrentStep(5);
+          } else {
+            nextStep();
+          }
+        }}
+        className="flex items-center justify-between border border-solid border-[#00000033] px-[15px] py-[10px] bg-[#d9d9d980] rounded-lg xl:px-[30px] xl:py-[19px] cursor-pointer"
+      >
+        <div className="font-medium text-[0.6875rem] text-[#00000099] xl:text-[1.125rem]">
+          {hasSignature ? "Re-Sign Contract" : "Sign Contract"}
+        </div>
 
-          <div>
-            <img src={sign} alt="sign icon" />
-          </div>
-        </button>
-      )}
+        <div>
+          <img src={sign} alt="sign icon" />
+        </div>
+      </button>
+
       {hasSignature && (
-        <button
-          onClick={formik.handleSubmit}
-          type="submit"
-          className={`pr-bg-clr flex items-center justify-center mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px] 
-                          
-                          `}
-        >
-          Send Contract <img src={sendcontract} alt="send icon" />
-        </button>
+        // <button
+        //   // onClick={formik.handleSubmit}
+        //   type="button"
+        //   onClick={sendFinalForm}
+        //   className={`pr-bg-clr flex items-center justify-center mt-[18px] w-full rounded-lg text-white text-[0.75rem] py-[14px] lg:w-auto lg:mx-auto lg:px-[60px] xl:py-6 xl:text-xl xl:mt-[36px]
+
+        //                   `}
+        // >
+        //   Send Contract
+        // </button>
+        <div className="w-full flex items-center justify-center">
+          <Button type="primary" onClick={sendFinalForm} isLoading={sendingForm} disabled={sendingForm} size="full">
+            Send Contract
+          </Button>
+        </div>
       )}
     </div>
   );
 };
 export default FormFour;
-
-// {
-//   title: "Contract Type",
-//   data: "Contract type",
-// },
-// {
-//   title: "Start Date",
-//   data: formStepperData.contractStartDate,
-// },
-// {
-//   title: "End Date",
-//   data: formStepperData.contractEndDate,
-// },
-// {
-//   title: "Role Title",
-//   data: formStepperData.roleTitle,
-// },
-// {
-//   title: "Seniority Level",
-//   data: formStepperData.seniorityLevel,
-// },
-// {
-//   title: "Scope of work",
-//   data: formStepperData.responsibility,
-// },
-// {
-//   title: "Payment Rate",
-//   data: "Contract type",
-// },
-// {
-//   title: "Payment Frequency",
-//   data: "Contract type",
-// },

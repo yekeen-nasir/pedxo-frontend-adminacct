@@ -1,17 +1,58 @@
-import "../stepperForms/forms.css";
 import { Switch } from "antd";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Dropdown from "../../Dropdown.json";
-import { templateBenefits } from "../../data";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import CustomForm from "../../ui/CustomForm";
+import CustomSelect from "../../ui/CustomSelect";
+import Button from "../Button";
+import useJobDetailsForm from "../../features/contracts/useJobDetailsForm";
 import { useSearchParams } from "react-router-dom";
-
-const FormTwo = ({ subHead, endDate, formik }) => {
-  const dropdownRef = useRef();
-  // const [addedTemplate, setAddedTemplate] = useState("");
+import { formatISO } from "date-fns";
+const FormTwo = ({ nextStep, savedState }) => {
   const [searchParams] = useSearchParams();
   const contractType = searchParams.get("contractType") || null;
+  const { updateForm, sendingForm } = useJobDetailsForm();
   const today = new Date().toISOString().split("T")[0];
-  const [showSwitch, setShowSwitch] = useState(false);
+  const [showSwitch, setShowSwitch] = useState(
+    Boolean(savedState.endDate) || false
+  );
+  const [settingTemplate, setSettingTemplate] = useState(false);
+
+  const validationSchema = Yup.object({
+    roleTitle: Yup.string().notRequired(""),
+    seniorityLevel: Yup.string().notRequired(""),
+    scopeOfWork: Yup.string().notRequired(""),
+    startDate: Yup.string().required("Start Date is required"),
+    endDate: Yup.string().notRequired(""),
+    explanationOfScopeOfWork: Yup.string().notRequired(""),
+  });
+
+  const formik = useFormik({
+    validationSchema,
+    initialValues: {
+      roleTitle: savedState.roleTitle || "",
+      seniorityLevel: savedState.seniorityLevel || "",
+      scopeOfWork: savedState.scopeOfWork || "",
+      startDate: savedState.startDate
+        ? formatISO(new Date(savedState.startDate), { representation: "date" })
+        : "",
+      endDate: savedState.endDate
+        ? formatISO(new Date(savedState?.endDate), { representation: "date" })
+        : "",
+      explanationOfScopeOfWork: savedState.explanationOfScopeOfWork || "",
+    },
+    onSubmit: (values, { setSubmitting }) => {
+      updateForm(values, {
+        onSuccess: () => {
+          nextStep();
+        },
+        onSettled: () => {
+          setSubmitting(false);
+        },
+      });
+    },
+  });
 
   const handleSow = (e) => {
     formik.setFieldValue("scopeOfWork", e.target.value);
@@ -20,6 +61,7 @@ const FormTwo = ({ subHead, endDate, formik }) => {
 
   const handleSetTemplate = (name) => {
     if (!name) return;
+    setSettingTemplate(true);
     const selected = Dropdown.scopeOfWork.explanation.find(
       (el) => el.title === name
     );
@@ -27,130 +69,88 @@ const FormTwo = ({ subHead, endDate, formik }) => {
       const responsibilitiesText = selected.responsibilities
         .map((item) => `- ${item}`)
         .join("\n");
-      formik.setFieldValue("description", responsibilitiesText);
+      formik.setFieldValue("explanationOfScopeOfWork", responsibilitiesText);
     }
+    setSettingTemplate(false);
   };
 
   return (
-    <div ref={dropdownRef}>
-      <div className="flex flex-col gap-[18px]">
-        <div>
-          <div className="text-lg font-semibold leading-normal xl:text-2xl">
-            Role Details
-          </div>
-          <div
-            className="text-[12px] font-medium leading-normal xl:text-[16px]"
-            style={{ color: "rgba(0, 0, 0, 0.50)" }}
-          >
-            {subHead}
-          </div>
-        </div>
-
+    <div className="flex flex-col gap-4">
+      <div className="space-y-1">
+        <h1 className="text-lg font-semibold leading-normal">Role Details</h1>
         <div
-          className="relative flex flex-col gap-2 text-[12px] xl:text-base"
-          ref={dropdownRef}
+          className="text-sm font-medium leading-normal"
+          style={{ color: "rgba(0, 0, 0, 0.50)" }}
         >
-          <label
-            htmlFor="roleTitle"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Role Title(Optional)
-          </label>
-          <select
-            name="roleTitle"
-            onBlur={formik.handleBlur}
-            value={formik.values.roleTitle}
-            onChange={formik.handleChange}
-            className="appearance-none w-full cursor-pointer bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-          >
-            <option value="">Select Role title...</option>
-            {Dropdown.roleTitle.map((el) => (
-              <option key={el} value={el}>
-                {el}
-              </option>
-            ))}
-          </select>
+          {contractType === "full-time" ? "Full Time Role" : "Gig Based Role"}
         </div>
+      </div>
+      <CustomForm onSubmit={formik.handleSubmit}>
+        <CustomSelect
+          label="Role Title"
+          name="roleTitle"
+          onBlur={formik.handleBlur}
+          value={formik.values.roleTitle}
+          placeholder="Select Role Title..."
+          onChange={formik.handleChange}
+          options={Dropdown.roleTitle}
+        />
 
-        <div
-          className="relative flex flex-col gap-3 text-[12px] xl:text-base"
-          ref={dropdownRef}
-        >
-          <label
-            htmlFor="seniorityLevel"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Seniority Level (Optional)
-          </label>
-          <select
-            name="seniorityLevel"
-            onBlur={formik.handleBlur}
-            value={formik.values.seniorityLevel}
-            onChange={formik.handleChange}
-            className="appearance-none w-full cursor-pointer bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-          >
-            <option value="">Select seniority level..</option>
-            {Dropdown.seniorityLevels.map((el) => (
-              <option key={el} value={el}>
-                {el}
-              </option>
-            ))}
-          </select>
-        </div>
+        <CustomSelect
+          label="Seniority Level"
+          name="seniorityLevel"
+          onBlur={formik.handleBlur}
+          value={formik.values.seniorityLevel}
+          onChange={formik.handleChange}
+          placeholder="Select seniority level.."
+          options={Dropdown.seniorityLevels}
+        />
 
-        <div className="relative text-[12px] xl:text-base" ref={dropdownRef}>
-          <label
-            htmlFor="scopOfWork"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
-          >
-            Scope of explanation and tech stack requirements
-          </label>
+        <CustomSelect
+          label="Scope of work template"
+          name="scopeOfWork"
+          onBlur={formik.handleBlur}
+          onChange={handleSow}
+          value={
+            settingTemplate ? "Setting template..." : formik.values.scopeOfWork
+          }
+          placeholder={
+            settingTemplate ? "Setting Template... " : "Choose template.."
+          }
+          disabled={settingTemplate}
+          options={Dropdown.scopeOfWork.options}
+        />
 
-          <select
-            name="scopeOfWork"
-            onBlur={formik.handleBlur}
-            value={formik.values.scopeOfWork}
-            onChange={handleSow}
-            className="appearance-none w-full cursor-pointer bg-transparent border border-[#00000033] outline-gray-400 rounded-lg h-10 px-3 text-[12px] xl:h-[60px] xl:text-[16px]"
-          >
-            <option value="">Choose template..</option>
-            {Dropdown.scopeOfWork.options.map((el) => (
-              <option key={el} value={el}>
-                {el}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="relative flex flex-col gap-1 xl:gap-4 ">
+        <div className="relative flex flex-col gap-1 w-full md:gap-3">
           <div className="flex justify-between">
             <label
               htmlFor="startDate"
-              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+              className="text-sm font-semibold leading-normal"
             >
-              Start Date *
+              Start Date <span className="text-red-500">*</span>
             </label>
           </div>
           <input
             type="date"
             name="startDate"
             id="startDate"
+            onClick={(e) => e.target.showPicker()}
             onBlur={formik.handleBlur}
             value={formik.values.startDate}
             onChange={formik.handleChange}
             min={today}
-            className={`w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px]`}
+            className={`w-full bg-transparent border outline-gray-400 rounded-lg p-3 text-sm`}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
           />
         </div>
 
-        <div className="relative flex flex-col gap-1 xl:gap-4  ">
+        <div className="relative flex flex-col gap-1 md:gap-3 w-full text-sm">
           <div className="flex justify-between">
             <label
               htmlFor="endDate"
-              className={`text-[12px] font-semibold leading-normal xl:text-[16px]  
+              className={`font-semibold leading-normal
                 ${!showSwitch && "opacity-40"}
               `}
             >
@@ -160,6 +160,7 @@ const FormTwo = ({ subHead, endDate, formik }) => {
             {contractType === "full-time" && (
               <Switch
                 size="small"
+                value={savedState.endDate}
                 onChange={() => setShowSwitch(!showSwitch)}
               />
             )}
@@ -171,8 +172,9 @@ const FormTwo = ({ subHead, endDate, formik }) => {
             disabled={contractType === "full-time" && !showSwitch}
             value={formik.values.endDate}
             onChange={formik.handleChange}
+            onClick={(e) => e.target.showPicker()}
             min={formik.values.startDate}
-            className={`w-full disabled:opacity-50 bg-transparent border outline-gray-400 rounded-lg h-10 p-3 text-[12px] xl:h-[60px] xl:text-[16px] 
+            className={`w-full disabled:opacity-50 bg-transparent border outline-gray-400 rounded-lg p-4
             `}
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
@@ -180,25 +182,36 @@ const FormTwo = ({ subHead, endDate, formik }) => {
           />
         </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4">
+        <div className="flex flex-col gap-1 w-full md:gap-3 text-sm">
           <label
             htmlFor="scope of work"
-            className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+            className="font-semibold leading-normal"
           >
-            Explanation of Scope of Work *
+            Scope of explanation and tech stack requirements
           </label>
           <textarea
-            name="description"
+            name="explanationOfScopeOfWork"
             onBlur={formik.handleBlur}
             id="scope of work"
             rows="7"
-            value={formik.values.description}
+            value={formik.values.explanationOfScopeOfWork}
             onChange={formik.handleChange}
-            className="bg-transparent border outline-gray-400 rounded-lg px-4 py-2 text-[12px] xl:text-[16px]"
+            className="bg-transparent border outline-gray-400 rounded-lg px-4 py-2"
             style={{ borderColor: "rgba(0, 0, 0, 0.20)" }}
           ></textarea>
         </div>
-      </div>
+        <div>
+          <Button
+            isLoading={formik.isSubmitting || sendingForm}
+            type="primary"
+            buttonType="submit"
+            disabled={!formik.isValid || formik.isSubmitting || !formik.dirty}
+            size="large"
+          >
+            Save and Continue
+          </Button>
+        </div>
+      </CustomForm>
     </div>
   );
 };

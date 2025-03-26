@@ -3,7 +3,7 @@ import { getStates } from "../../services/apiCountriesandStates";
 
 export default function useGetStates(country) {
   const { data: states, isLoading: loadingStates, refetch } = useQuery({
-    queryKey: ["states"],
+    queryKey: ["states", country],
     queryFn: async () => {
       if (!country) return;
       return getStates(country);

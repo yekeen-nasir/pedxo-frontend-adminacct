@@ -1,19 +1,46 @@
 import "../stepperForms/forms.css";
 import dropdownarrow from "../../assets/svg/dropdownarrow.svg";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import useCompensation from "../../features/contracts/useCompensation";
+import CustomForm from "../../ui/CustomForm";
+import Button from "../Button";
 
-const FormTwo = ({ formik, selectedCountry }) => {
+const FormTwo = ({ nextStep, savedState }) => {
+  const { updatePayment, isUpdating } = useCompensation();
+  const validationSchema = Yup.object({
+    paymentRate: Yup.number().required("Amount is required"),
+    paymentFrequency: Yup.string().required("Payment frequency is required"),
+  });
+  const formik = useFormik({
+    validationSchema,
+    initialValues: {
+      paymentFrequency: savedState.paymentFrequency || "",
+      paymentRate: savedState.paymentRate || "",
+    },
+    onSubmit: (values, { setSubmitting }) => {
+      updatePayment(values, {
+        onSuccess: () => {
+          nextStep();
+        },
+        onSettled: () => {
+          setSubmitting(false);
+        },
+      });
+    },
+  });
   return (
-    <div>
-      <div className="flex flex-col gap-[18px]">
-        <div className="text-lg font-semibold leading-normal">
-          Compensation and Budget
-        </div>
+    <div className="flex flex-col gap-[18px]">
+      <div className="text-lg font-semibold leading-normal">
+        Compensation and Budget
+      </div>
 
-        <div className="flex flex-col gap-1 xl:gap-4 relative">
+      <CustomForm onSubmit={formik.handleSubmit}>
+        <div className="flex flex-col w-full gap-2 relative">
           <div className="flex items-center gap-3">
             <label
               htmlFor="paymentRate"
-              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+              className="text-sm font-semibold leading-normal"
             >
               Payment Rate *
             </label>
@@ -23,28 +50,29 @@ const FormTwo = ({ formik, selectedCountry }) => {
               </p>
             )}
           </div>
-          <div className="relative">
-            <div
-              className="py-[15px] pl-[19px] h-full rounded-lg pointer-events-none absolute inset-y-0 left-0  flex items-center pr-[14px]  xl:pl-[37px] xl:w-[115px]"
+          <div className="relative flex items-center">
+            {/* <div
+              className=""
               style={{
                 backgroundColor: "rgba(217, 217, 217, 0.87)",
                 border: "1px solid rgba(0, 0, 0, 0.30",
               }}
             >
-              <span className="text-[12px] font-semibold xl:text-xl">
-                {selectedCountry === "NG" ? "NGN" : "USD"}
-              </span>
-            </div>
+              <span className="text-[12px] font-semibold xl:text-xl">NGN</span>
+            </div> */}
+            <span className="ring-1 ring-black/50 rounded-s-lg font-bold bg-gray-400 px-6 p-3">
+              NGN
+            </span>
             <input
               type="number"
               name="paymentRate"
               onBlur={formik.handleBlur}
-              id="paymentRate "
+              id="paymentRate"
               value={formik.values.paymentRate}
               onChange={formik.handleChange}
               // value={value}
               // onChange={onChange}
-              className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 p-3 pl-20 text-[12px] xl:pl-40 xl:h-[60px] xl:text-[16px]"
+              className="w-full bg-transparent border ring-1 rounded-e-lg outline-none ring-gray-400  p-3 text-sm"
               style={{
                 borderColor: "rgba(0, 0, 0, 0.20)",
               }}
@@ -52,11 +80,11 @@ const FormTwo = ({ formik, selectedCountry }) => {
           </div>
         </div>
 
-        <div className="relative flex flex-col gap-1 xl:gap-4">
+        <div className="relative flex flex-col w-full gap-2">
           <div className="flex items-center gap-3">
             <label
               htmlFor="paymentFrequency"
-              className="text-[12px] font-semibold leading-normal xl:text-[16px]"
+              className="text-sm font-semibold leading-normal"
             >
               Payment Frequency *
             </label>
@@ -72,12 +100,12 @@ const FormTwo = ({ formik, selectedCountry }) => {
             value={formik.values.paymentFrequency}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
-            className="w-full bg-transparent border outline-gray-400 rounded-lg h-10 px-[30px] text-[12px] xl:h-[60px] xl:text-[16px] appearance-none"
+            className="w-full bg-transparent border  outline-gray-400 rounded-lg p-3 text-sm appearance-none"
             style={{
               borderColor: "rgba(0, 0, 0, 0.20)",
             }}
           >
-            <option value=""></option>
+            {/* <option value=""></option> */}
             <option className="w-full max-w-full" value="Monthly">
               Monthly
             </option>
@@ -88,7 +116,18 @@ const FormTwo = ({ formik, selectedCountry }) => {
             <img src={dropdownarrow} alt="" />
           </div>
         </div>
-      </div>
+        <div>
+          <Button
+            isLoading={formik.isSubmitting || isUpdating}
+            type="primary"
+            buttonType="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+            size="large"
+          >
+            Save and Continue
+          </Button>
+        </div>
+      </CustomForm>
     </div>
   );
 };
