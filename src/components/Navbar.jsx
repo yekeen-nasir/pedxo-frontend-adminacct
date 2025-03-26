@@ -1,7 +1,6 @@
-import logout from "../assets/svg/logout.svg";
+import logoutsvg from "../assets/svg/logout.svg";
 import { useState } from "react";
 import SideBarMenuItems from "../components/SideBarMenuItems";
-import { useGlobalContext } from "../Context";
 import { useNavigate } from "react-router-dom";
 import AddDeveloperIcon from "../assets/icons/AddDeveloperIcon";
 import OverviewIcon from "../assets/icons/OverviewIcon";
@@ -14,11 +13,12 @@ import { useUser } from "../context/UserContext";
 import { useLogout } from "../features/auth/useLogout";
 import { useNavBar } from "../context/SideBarContext";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import logosvg from "/logo.svg"
 
 const Navbar = () => {
   const { username, email } = useUser();
   const navigate = useNavigate();
-  const { navOpen, setNavOpen } = useNavBar();
+  const { setNavOpen } = useNavBar();
   const [toggleLogout, setToggleLogout] = useState(false);
   const { logout } = useLogout();
 
@@ -29,17 +29,18 @@ const Navbar = () => {
   return (
     <nav
       ref={navRef}
-      className="hidden md:flex border-r-2 w-full max-w-[13em]  pt-8 justify-between  h-screen  flex-col fixed sec-bg-clr   "
+      className="hidden md:flex border-r-2 w-full max-w-[13em] pt-8 justify-between  h-screen  flex-col fixed sec-bg-clr   "
     >
-      <div className="flex-col px-8 pt-2">
-        <h1
+      <div className="flex-col px-8 ">
+        {/* <h1
           role="button"
           onClick={() => navigate("/")}
           className=" text-[35px]  font-extrabold leading-normal mb-[50px]"
         >
           Pedxo
-        </h1>
-        <div className="flex flex-col  w-full  gap-8 capitalize">
+        </h1> */}
+        <img role="button" className="p-4 mx-auto my-2" onClick={() => navigate("/")} src={logosvg} alt="logo" />
+        <div className="flex flex-col  w-full  gap-6 capitalize">
           <SideBarMenuItems to="/" icon={OverviewIcon} title="Overview" />
 
           <div className="flex flex-col gap-5">
@@ -110,7 +111,7 @@ const Navbar = () => {
             onClick={() => logout()}
             className="p-3 font-medium text-[13px] pr-bg-clr text-white mt-[15px] rounded-lg flex items-center justify-center gap-[10px]"
           >
-            <img src={logout} alt="logout icon" />
+            <img src={logoutsvg} alt="logout icon" />
             Log Out
           </button>
         )}

@@ -4,6 +4,7 @@ import FormInput from "../components/FormInput";
 import useLogin from "../features/auth/useLogin";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import MiniLoader from "../components/MiniLoader";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const Login = () => {
             type="submit"
             className="py-4 font-medium pr-bg-clr text-white w-full mt-[6px] rounded-lg"
           >
-            {isLoggingIn ? <div className="loading"></div> : "Continue"}
+            {isLoggingIn ? <MiniLoader /> : "Continue"}
           </button>
         </form>
         <div className="flex gap-2 text-[15px] mt-[13px] font-medium">

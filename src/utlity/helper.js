@@ -4,7 +4,7 @@ export function formatDate(dateString) {
     if(!dateString) return
   return format(parseISO(dateString), "MMM d, yyyy");
 }
-export function formatCurrency(amount, currency = "USD", locale = "en-US") {
+export function formatCurrency(amount, currency = "NGN", locale = "en-NG") {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: currency,

@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
 
   if (!accessToken) return <Navigate to="/login" replace />;
 
-  return children;
+  if(accessToken)return children;
   
 }
 

@@ -1,16 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const SideBarMenuItems = ({ icon: Icon, title, onClick, to }) => {
+  const [color, setColor] = useState("black")
   return (
     <>
       <NavLink
         to={to}
+        onMouseEnter={() =>setColor("#4195f1")}
+        onMouseLeave={() => setColor("black")}
         onClick={onClick}
         className={({ isActive }) =>
           `flex items-center text-sm gap-2 transition-colors duration-200 font-normal leading-normal hover:pr-text-clr ${
             isActive
-              ? "bg-primary text-primary-foreground pr-text-clr"
+              ? " text-primary-foreground pr-text-clr"
               : "text-gray-700 hover:bg-primary/10 hover:text-primary"
           }`
         }
@@ -44,7 +47,7 @@ const SideBarMenuItems = ({ icon: Icon, title, onClick, to }) => {
          */}
         {({ isActive }) => (
           <>
-            {Icon && <Icon color={isActive ? "#4195f1" : "black"} />}
+            {Icon && <Icon color={isActive ? "#4195f1" : color} />}
             {title}
           </>
         )}
