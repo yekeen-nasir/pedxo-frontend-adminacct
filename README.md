@@ -16,7 +16,7 @@ Pedxo is a fully remote company, as of recent, all our team and engineers work f
 
 💼 Use Cases
 
-Ideal for startups who have remote culture, use AI agents and human/virtual contractors to be more efficient in achieving outcome.
+Ideal for startups who have remote culture, use AI agents and human/virtual contractors to be more efficient in achieving outcomes.
 Pedxo only charge you for success based and outcome.
 
 If you're interested in exploring pedxo.com further or need assistance in determining whether it's suitable for your code agent needs, feel free to ask!
