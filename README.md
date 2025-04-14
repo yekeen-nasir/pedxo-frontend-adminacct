@@ -20,14 +20,3 @@ Ideal for startups who have remote culture, use AI agents and human/virtual cont
 Pedxo only charge you for success based and outcome.
 
 If you're interested in exploring pedxo.com further or need assistance in determining whether it's suitable for your code agent needs, feel free to ask!
-
-
-
-
-
-
-
-
-Live link: https://pedxo-dashboard.netlify.app/
-
-Live Head
