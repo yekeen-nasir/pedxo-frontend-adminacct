@@ -1,4 +1,4 @@
-[Pedxo.com]
+Pedxo.com
  http://pedxo.com
 
 pedxo software allows you to onboard virtual engineers to support your code agents on-demand and pay only for output
