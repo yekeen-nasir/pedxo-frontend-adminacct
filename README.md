@@ -19,7 +19,7 @@ Pedxo is a fully remote company, as of recent, all our team and engineers work f
 Ideal for startups who have remote culture, use AI agents and human/virtual contractors to be more efficient in achieving outcomes.
 
 
-Onboard teleoperators for your code agents on-demand and pay-as-you-go, this can be achieved via IDE or version control. 
+Onboard teleoperators for your code agents on-demand and pay-as-you-go. This can be achieved via IDE or version control. 
 
 
 Pedxo only charge you for success based and outcome.
