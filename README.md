@@ -7,7 +7,7 @@ pedxo software allows you to onboard virtual engineers to support your code agen
 * Contract Creation: Create a unique contract to specify your requirments and expectations from the virtual developer.
 * Agreement Managment: Modify the contract terms like wages, payout frequency and role.
 * Automated Onboarding: Automatically get a developer within 5 mins of creating a contract.
-* Expense maintenance: Track, record and store your spendings on the devs.
+* Expense maintenance: Track, record and store your spending on the devs.
 
 
 🚀 Recent Developments
