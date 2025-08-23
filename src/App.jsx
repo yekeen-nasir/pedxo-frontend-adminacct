@@ -18,12 +18,21 @@ import {
   StaticPage,
   Teams,
 } from './pages'
-import ProtectedRoutes from './utlity/ProtectedRoutes'
+import ProtectedRoutes from './utility/ProtectedRoutes'
 import PageNotFound from './pages/PageNotFound'
 import AppLayout from './components/AppLayout'
 import { SideBarProvider } from './context/SideBarContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { UserProvider } from './context/UserContext'
+
+import ProtectedAdminRoute from './components/admin/common/ProtectedAdminRoute';
+import LoginPage from "./pages/admin/login";
+import SignupPage from "./pages/admin/signup";
+import DashboardPage from "./pages/admin/dashboard";
+import ContractsPage from "./pages/admin/contracts";
+import DevelopersPage from "./pages/admin/developers";
+import AssignmentPage from "./pages/admin/assignments";
+import SettingsPage from "./pages/admin/settings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,11 +42,6 @@ const queryClient = new QueryClient({
 })
 
 const router = createBrowserRouter([
-  //This does all better than putting Error Element
-  {
-    path: '*',
-    element: <PageNotFound />,
-  },
   {
     path: '/',
     element: <StaticPage />, // Accessible to all
@@ -63,6 +67,28 @@ const router = createBrowserRouter([
     element: <ForgotPassword />, // Accessible to all
   },
 
+  // Admin routes: login/signup public, other admin pages protected
+  {
+    path: '/admin/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/admin/signup',
+    element: <SignupPage />,
+  },
+  {
+  path: '/admin',
+  element: <ProtectedAdminRoute />,
+  children: [
+    { path: 'dashboard', element: <DashboardPage /> },
+    { path: 'contracts', element: <ContractsPage /> },
+    { path: 'developers', element: <DevelopersPage /> },
+    { path: 'assignments', element: <AssignmentPage /> },
+    { path: 'settings', element: <SettingsPage /> },
+  ],
+},
+  
+
   // Protected routes group
   {
     path: '/dashboard',
@@ -77,7 +103,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '/dashboard',
+        path: '',
         element: <Overview />,
       },
       {
@@ -113,17 +139,23 @@ const router = createBrowserRouter([
         element: <GigBasedContract />,
       },
       {
-        path: 'agreements/:id',
+        path: 'agreement-contract',
         element: <AgreementContract />,
       },
     ],
+  },
+
+  // Catch-all 404
+  {
+    path: '*',
+    element: <PageNotFound />,
   },
 ])
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   )
 }
