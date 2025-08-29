@@ -12,7 +12,7 @@ const GradientTextHeading = () => (
       <span className='bg-gradient-to-r from-gradientPrimary via-violet to-gradientPrimary bg-clip-text text-transparent'>
         Try Agent
       </span>
-      <span className='text-gray-900'> + Human on your codebase</span>
+      <span className='text-gray-900'> +  Prompt engineers on your codebase</span>
     </h1>
   </RevealAnimation>
 )
@@ -20,8 +20,7 @@ const GradientTextHeading = () => (
 const Description = () => (
   <RevealAnimation delay={0.4} duration={0.8} className='w-full md:w-1/2'>
     <p className='text-center text-lg text-gray-600'>
-      Add creative humans to support your code agent with edge cases and build
-      better software.
+      Add the right prompt engineer to support your agentic IDE using plain English
     </p>
   </RevealAnimation>
 )
@@ -32,7 +31,7 @@ const ActionButton = ({ children, variant = 'primary', ...props }) => {
   return (
     <button
       onClick={goToDashboard}
-      className={`px-6 py-3 rounded-full font-medium transition-all shadow-sm ${
+      className={`px-5 py-3 sm:text-base text-sm rounded-full font-medium transition-all shadow-sm ${
         variant === 'primary'
           ? 'bg-gradient-to-r from-gradientPrimary via-violet to-gradientPrimary text-white hover:opacity-90'
           : 'border border-gray-300 text-gray-800 hover:bg-gray-50 bg-[#FFFFFF]'
@@ -46,7 +45,7 @@ const ActionButton = ({ children, variant = 'primary', ...props }) => {
 
 const ActionButtons = () => (
   <RevealAnimation delay={0.6} className='flex items-center gap-3'>
-    <ActionButton variant='primary'>Add Human</ActionButton>
+    <ActionButton variant='primary'>Add Engineer</ActionButton>
     <ActionButton variant='secondary'>Get Started</ActionButton>
   </RevealAnimation>
 )
@@ -126,12 +125,12 @@ export const HeroSection = () => {
 
   return (
     <MaxScreenWrapper
-      style={{
-        backgroundImage: showBackground ? `url(${bgGradient})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        transition: 'background-image 1s ease-in-out',
-      }}
+      // style={{
+      //   backgroundImage: showBackground ? `url(${bgGradient})` : 'none',
+      //   backgroundSize: 'cover',
+      //   backgroundPosition: 'center',
+      //   transition: 'background-image 1s ease-in-out',
+      // }}
       className='rounded-none md:rounded-3xl py-4 md:py-14 px-4 md:px-24 bg-white'
     >
       <Navigation />
@@ -143,11 +142,12 @@ export const HeroSection = () => {
       </div>
       
       {/* Loading indicator for initial delay */}
-      {isInitialLoad && (
+      {/* {isInitialLoad && (
         <div className="fixed bottom-4 right-4 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm">
           Background loading in {Math.ceil((30000 - (Date.now() - performance.timing.navigationStart)) / 1000)} seconds...
         </div>
-      )}
+      )} */}
+
     </MaxScreenWrapper>
   )
 }

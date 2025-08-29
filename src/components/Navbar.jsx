@@ -66,7 +66,7 @@ const Navbar = () => {
                 <SideBarMenuItems
                   to="add-developer"
                   icon={AddDeveloperIcon}
-                  title="add developer"
+                  title="add engineer"
                 />
 
                 {/* <SideBarMenuItems
