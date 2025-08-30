@@ -33,6 +33,7 @@ import ContractsPage from "./pages/admin/contracts";
 import DevelopersPage from "./pages/admin/developers";
 import AssignmentPage from "./pages/admin/assignments";
 import SettingsPage from "./pages/admin/settings";
+import { NotificationProvider } from './utility/notificationBus.jsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,14 @@ const queryClient = new QueryClient({
     refetchOnWindowFocus: false,
   },
 })
+
+const AdminRoutesWrapper = () => {
+  return (
+    <NotificationProvider>
+      <ProtectedAdminRoute />
+    </NotificationProvider>
+  );
+};
 
 const router = createBrowserRouter([
   {
@@ -77,16 +86,16 @@ const router = createBrowserRouter([
     element: <SignupPage />,
   },
   {
-  path: '/admin',
-  element: <ProtectedAdminRoute />,
-  children: [
-    { path: 'dashboard', element: <DashboardPage /> },
-    { path: 'contracts', element: <ContractsPage /> },
-    { path: 'developers', element: <DevelopersPage /> },
-    { path: 'assignments', element: <AssignmentPage /> },
-    { path: 'settings', element: <SettingsPage /> },
-  ],
-},
+    path: '/admin',
+    element: <AdminRoutesWrapper />, // Wrapped with NotificationProvider
+    children: [
+      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'contracts', element: <ContractsPage /> },
+      { path: 'developers', element: <DevelopersPage /> },
+      { path: 'assignments', element: <AssignmentPage /> },
+      { path: 'settings', element: <SettingsPage /> },
+    ],
+  },
   
 
   // Protected routes group
