@@ -23,7 +23,12 @@ export function isAuthenticated() {
   return !!getToken();
 }
 
-export function authHeader() {
-  const t = getToken();
-  return t ? { Authorization: `Bearer ${t}` } : {};
-}
+export const authHeader = () => {
+  const token = getToken("pexdo_admin_token"); // use your getToken function
+  if (token) {
+    return { Authorization: `Bearer ${token}` };
+  }
+  return {};
+};
+
+

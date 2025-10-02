@@ -51,8 +51,10 @@ export default function AdminLoginPage() {
       return;
     }
 
-    setToken(token);
-    setMsg({ type: "success", text: "Welcome back." });
+    if (res.data?.token) {
+  setToken(res.data.token); // saves to "pexdo_admin_token"
+  }
+  setMsg({ type: "success", text: "Welcome back." });
     navigate("/admin/dashboard");
   }
 

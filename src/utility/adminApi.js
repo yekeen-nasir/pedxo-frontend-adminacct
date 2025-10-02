@@ -2,6 +2,8 @@
 import axios from "axios";
 import { authHeader } from "./adminAuth.js";
 
+
+
 // ---------- DEPLOYED BACKEND ----------
 const BASE_URL = "https://pedxo-back-project.onrender.com"; // deployed backend
 
@@ -13,13 +15,16 @@ export const http = axios.create({
 });
 
 // Attach Bearer token automatically
+// Attach token from localStorage automatically
 http.interceptors.request.use((config) => {
   const tokenHeader = authHeader();
+    console.log("authHeader output:", tokenHeader); // <-- add this
   if (tokenHeader) {
     config.headers = { ...config.headers, ...tokenHeader };
   }
   return config;
 });
+
 
 // Centralized error normalization
 function normalizeError(err) {
@@ -60,7 +65,7 @@ export async function adminLogin({ email, password }) {
 // ✅ WORKING ENDPOINT - Used in Contracts page and Dashboard
 export const listContracts = async () => {
   try {
-    const res = await http.get("/hire/get-all-hires");
+    const res = await http.get("/contracts/get-all-contract");
     return res.data?.data || res.data || []; // handle different response structures
   } catch (err) {
     console.error("Error fetching contracts:", err.message);
@@ -82,7 +87,8 @@ export const createContract = async (contractData) => {
 // ✅ WORKING ENDPOINT - Used in Developers page and Dashboard
 export const listDevelopers = async () => {
   try {
-    const res = await http.get("/talent/details/all");
+    const res = await http.get("/hire/get-all-hires");
+    console.log("Developers API response:", res.data); // <-- add this to debug
     return res.data?.data || res.data || [];
   } catch (err) {
     console.error("Error fetching developers:", err.message);
