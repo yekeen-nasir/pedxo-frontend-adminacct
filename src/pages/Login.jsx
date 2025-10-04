@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import googleLogo from "../assets/svg/google-logo.svg";
-import GitHubLogo from "../assets/svg/githubLogo.svg";
+// import googleLogo from "../assets/svg/google-logo.svg";
+// import GitHubLogo from "../assets/svg/githubLogo.svg";
 import FormInput from "../components/FormInput";
 import useLogin from "../features/auth/useLogin";
 import * as Yup from "yup";
@@ -54,6 +54,7 @@ const Login = () => {
             </span>
           </button>
         </div> */}
+
         <div className="text-lg font-medium line-with-text">Or</div>
         <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
           <FormInput
