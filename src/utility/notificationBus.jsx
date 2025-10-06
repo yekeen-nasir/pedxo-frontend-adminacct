@@ -6,8 +6,13 @@ import {
   markAllNotificationsAsRead,
   deleteNotification,
   clearAllNotifications,
-  playNotificationSound
 } from './adminApi.js';
+
+function playNotificationSound() {
+  const audio = new Audio("/sounds/notification.mp3"); // make sure you have this file in /public/sounds/
+  audio.play().catch(err => console.error("Sound play failed:", err));
+}
+
 
 // Create notification context
 const NotificationContext = createContext();
@@ -197,6 +202,8 @@ export const NotificationProvider = ({ children }) => {
     }
   }, []);
 
+  
+
   // Add new notification (for real-time updates)
   const addNotification = useCallback((notification) => {
     const newNotification = {
@@ -213,6 +220,7 @@ export const NotificationProvider = ({ children }) => {
 
     setNotifications(prev => [newNotification, ...prev]);
     setUnreadCount(prev => prev + 1);
+
 
     // Play notification sound for high priority notifications
     if (notification.priority === 'high') {

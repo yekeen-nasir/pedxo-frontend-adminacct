@@ -12,12 +12,26 @@ import {
   Mail,
   Phone,
   Link as LinkIcon,
+  Copy
 } from "lucide-react";
 
 export default function DevelopersPage() {
   const [developers, setDevelopers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDev, setSelectedDev] = useState(null);
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState(null);
+
+  // Normalize whatever shape listDevelopers returns into an array
+  const normalizeResponse = (res) => {
+    if (!res) return [];
+    if (Array.isArray(res)) return res;
+    if (res.data && Array.isArray(res.data)) return res.data;
+    if (res?.data?.data && Array.isArray(res.data.data)) return res.data.data;
+    // some APIs return { error, message, data: [...] }
+    if (res.response && res.response.data && Array.isArray(res.response.data)) return res.response.data;
+    return [];
+  };
 
   useEffect(() => {
     loadDevelopers();
@@ -32,19 +46,14 @@ export default function DevelopersPage() {
 
   const loadDevelopers = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await listDevelopers();
-      // normalize: array or { data: [...] } or { data: { data: [...] } }
-      const arr = Array.isArray(res)
-        ? res
-        : res?.data && Array.isArray(res.data)
-        ? res.data
-        : res?.data?.data && Array.isArray(res.data.data)
-        ? res.data.data
-        : [];
+      const arr = normalizeResponse(res);
       setDevelopers(arr);
     } catch (err) {
       console.error("Error loading developers:", err);
+      setError("Could not load developers. Check console / backend.");
       setDevelopers([]);
     } finally {
       setLoading(false);
@@ -52,20 +61,10 @@ export default function DevelopersPage() {
   };
 
   const getInitials = (dev) => {
-    // support both talent objects (firstName/lastName) or hires (name)
-    if (dev?.firstName || dev?.lastName) {
-      const f = dev.firstName ? dev.firstName[0].toUpperCase() : "";
-      const l = dev.lastName ? dev.lastName[0].toUpperCase() : "";
-      return (f + l) || "??";
-    }
-    if (dev?.name) {
-      return dev.name
-        .split(" ")
-        .map((p) => p[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase();
-    }
+    const f = (dev?.firstName || "").trim();
+    const l = (dev?.lastName || "").trim();
+    if (f || l) return (f[0] || "") + (l[0] || "");
+    if (dev?.name) return dev.name.split(" ").map(p => p[0]).slice(0,2).join("");
     if (dev?.email) return dev.email[0].toUpperCase();
     return "??";
   };
@@ -77,38 +76,72 @@ export default function DevelopersPage() {
     return d.toLocaleDateString();
   };
 
-  // Safe getters to show fields from either talent object or hire object
   const getFullName = (dev) =>
     [dev?.firstName, dev?.lastName].filter(Boolean).join(" ") ||
     dev?.name ||
-    dev?.githubAccount ||
     dev?.email ||
     "Unknown";
 
   const getTitle = (dev) =>
     dev?.roleTitle ||
-    dev?.YourTitle ||
     dev?.role ||
-    dev?.title ||
+    dev?.YourTitle ||
     "Developer";
 
   const getLocation = (dev) =>
-    dev?.city || dev?.whereYouLive || dev?.state || dev?.region || dev?.country || "Unknown";
+    [dev?.city, dev?.state || dev?.region, dev?.country].filter(Boolean).join(", ") ||
+    dev?.whereYouLive ||
+    "Unknown";
 
-  if (loading) {
+  // simple search across common fields
+  const filtered = developers.filter((d) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
     return (
-      <AdminLayout title="Developer Pool">
-        <div className="p-6 text-center">Loading developers...</div>
-      </AdminLayout>
+      (getFullName(d) || "").toLowerCase().includes(q) ||
+      (d?.email || "").toLowerCase().includes(q) ||
+      (getTitle(d) || "").toLowerCase().includes(q) ||
+      (getLocation(d) || "").toLowerCase().includes(q)
     );
-  }
+  });
+
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      // tiny visual cue would be nice — for now console.log
+      console.log("copied:", text);
+    } catch (e) {
+      console.warn("clipboard failed", e);
+    }
+  };
 
   return (
-    <AdminLayout title="Developer Pool">
-      {developers.length > 0 ? (
+    <AdminLayout title={`Developer Pool (${developers.length})`}>
+      {/* top row: search */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-4">
+        <div className="relative w-full max-w-md">
+          <input
+            className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            placeholder="Search developers by name, email, role or location..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <div className="text-sm text-gray-600">{developers.length} total</div>
+      </div>
+
+      {loading ? (
+        <div className="p-8 text-center">Loading developers…</div>
+      ) : error ? (
+        <div className="p-6 bg-red-50 border border-red-100 rounded text-red-700">{error}</div>
+      ) : filtered.length === 0 ? (
+        <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+          <p className="text-gray-500">No developers found.</p>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {developers.map((dev, idx) => (
-            <div key={dev._id || dev.id || idx} className="bg-white rounded-lg border border-gray-200 p-6">
+          {filtered.map((dev, idx) => (
+            <div key={dev._id || dev.talentId || dev.id || idx} className="bg-white rounded-lg border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="h-12 w-12 bg-black rounded-full grid place-items-center text-white font-medium text-sm">
@@ -119,7 +152,7 @@ export default function DevelopersPage() {
                     <div className="text-xs text-gray-600 mt-1">{getTitle(dev)}</div>
                   </div>
                 </div>
-                <button className="p-1 hover:bg-gray-100 rounded-md">
+                <button className="p-1 hover:bg-gray-100 rounded-md" aria-label="more">
                   <MoreVertical className="h-4 w-4 text-gray-600" />
                 </button>
               </div>
@@ -138,10 +171,17 @@ export default function DevelopersPage() {
                 <div className="text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
-                    <span>{dev?.email || "No email"}</span>
+                    <a className="underline" href={`mailto:${dev?.email || ""}`}>{dev?.email || "No email"}</a>
+                    {dev?.email && (
+                      <button className="ml-2 text-xs" onClick={() => copyToClipboard(dev.email)} title="Copy email">
+                        <Copy className="h-4 w-4 inline-block" />
+                      </button>
+                    )}
                   </div>
                   {dev?.whatsappNumber && (
-                    <div className="text-xs mt-1 flex items-center gap-2"><Phone className="h-3 w-3" /> WhatsApp: {dev.whatsappNumber}</div>
+                    <div className="text-xs mt-1 flex items-center gap-2">
+                      <Phone className="h-3 w-3" /> WhatsApp: <a href={`https://wa.me/${dev.whatsappNumber.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="underline">{dev.whatsappNumber}</a>
+                    </div>
                   )}
                 </div>
 
@@ -163,9 +203,11 @@ export default function DevelopersPage() {
                   )}
                 </div>
 
-                {/* small summary */}
                 <div className="text-sm text-gray-800 mt-2">
-                  <div><span className="text-xs text-gray-500">Title</span> <div className="font-medium">{getTitle(dev)}</div></div>
+                  <div>
+                    <span className="text-xs text-gray-500">Title</span>
+                    <div className="font-medium">{getTitle(dev)}</div>
+                  </div>
                   <div className="mt-1 text-xs text-gray-500">Joined</div>
                   <div className="text-sm">{formatDate(dev?.createdAt)}</div>
                 </div>
@@ -179,10 +221,6 @@ export default function DevelopersPage() {
               </div>
             </div>
           ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-          <p className="text-gray-500">No developers / hires registered yet.</p>
         </div>
       )}
 
@@ -206,6 +244,9 @@ export default function DevelopersPage() {
               </div>
 
               <div className="flex items-center gap-2">
+                <button className="p-2 rounded hover:bg-gray-100" onClick={() => setSelectedDev(null)} aria-label="close">
+                  <X className="h-5 w-5" />
+                </button>
               </div>
             </div>
 
@@ -222,7 +263,7 @@ export default function DevelopersPage() {
 
                 <div>
                   <div className="text-xs text-gray-500">Location</div>
-                  <div className="font-medium">{(selectedDev?.whereYouLive || selectedDev?.city || selectedDev?.state || selectedDev?.region || selectedDev?.country) || "Not set"}</div>
+                  <div className="font-medium">{(selectedDev?.whereYouLive || getLocation(selectedDev)) || "Not set"}</div>
                 </div>
 
                 <div>
@@ -263,7 +304,7 @@ export default function DevelopersPage() {
                 )}
               </div>
 
-              {/* right column: hire-related / extra details */}
+              {/* right column */}
               <div className="space-y-3">
                 {selectedDev?.haveYouBuildSomePart && (
                   <div>
@@ -312,7 +353,6 @@ export default function DevelopersPage() {
                   <div className="font-medium">{formatDate(selectedDev.createdAt)} — {formatDate(selectedDev.updatedAt)}</div>
                 </div>
 
-                {/* long description / bio */}
                 {selectedDev?.bio && (
                   <div>
                     <div className="text-xs text-gray-500">Bio</div>
