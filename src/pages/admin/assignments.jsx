@@ -5,12 +5,13 @@ import { listHires, listDevelopers, assignDeveloper } from "../../utility/adminA
 import { Eye, X } from "lucide-react";
 
 /**
- * AssignmentPage (refactored)
+ * AssignmentPage (improved)
  *
- * - Tabs: pending / assigned / completed
- * - Left: hires (contracts)
- * - Right: talent pool (available / busy)
- * - View hire (modal) + Assign developer (modal)
+ * Key fixes:
+ * - robust id handling (_id, talentId, id)
+ * - talentMap keyed by all id variants
+ * - assigned ID set computed from hires for accurate "Busy" check
+ * - optimistic local update after successful assignment (then refresh)
  */
 
 export default function AssignmentPage() {
@@ -22,7 +23,7 @@ export default function AssignmentPage() {
   const [activeTab, setActiveTab] = useState("pending"); // pending | assigned | completed
   const [selectedHire, setSelectedHire] = useState(null); // for view modal
   const [assigningHire, setAssigningHire] = useState(null); // contract being assigned (opens assign modal)
-  const [selectedTalentId, setSelectedTalentId] = useState(null); // chosen talent id in modal
+  const [selectedTalentId, setSelectedTalentId] = useState(null); // chosen talent id in modal (string)
   const [assigning, setAssigning] = useState(false);
   const [notice, setNotice] = useState(null); // { type, text }
   const [searchDev, setSearchDev] = useState("");
@@ -67,7 +68,7 @@ export default function AssignmentPage() {
     }
   }
 
-  // safe helper — supports different backend keys for assigned ids
+  // support different backend keys for assigned ids
   const getAssignedTalentIds = (item) => {
     if (!item) return [];
     const ids =
@@ -79,7 +80,7 @@ export default function AssignmentPage() {
       item.assignedDeveloper ||
       null;
     if (!ids) return [];
-    if (Array.isArray(ids)) return ids;
+    if (Array.isArray(ids)) return ids.map(String);
     if (typeof ids === "string") return [ids];
     return [];
   };
@@ -101,26 +102,54 @@ export default function AssignmentPage() {
     return !!h.isCompleted || String(h.progress || "").toLowerCase() === "completed" || String(h.progress || "").toLowerCase() === "signed";
   });
 
-  // talent lookup
+  // talent lookup (map by all id variants)
   const talentMap = useMemo(() => {
     const m = new Map();
-    developers.forEach((d) => m.set(d._id || d.id || d.talentId || "", d));
+    developers.forEach((d) => {
+      if (d._id) m.set(String(d._id), d);
+      if (d.talentId) m.set(String(d.talentId), d);
+      if (d.id) m.set(String(d.id), d);
+    });
     return m;
   }, [developers]);
 
-  const isTalentAssigned = (talentId) => {
-    if (!talentId) return false;
-    return hires.some((h) => getAssignedTalentIds(h).includes(talentId));
+  // Build a set of all assigned ids (strings) across hires so availability checks are fast & accurate
+  const allAssignedIdsSet = useMemo(() => {
+    const s = new Set();
+    hires.forEach((h) => {
+      getAssignedTalentIds(h).forEach((id) => {
+        if (id != null) s.add(String(id));
+      });
+    });
+    return s;
+  }, [hires]);
+
+  // Get representative id variants for a developer object
+  const getDeveloperIdVariants = (d) => {
+    if (!d) return [];
+    const ids = [];
+    if (d._id) ids.push(String(d._id));
+    if (d.talentId) ids.push(String(d.talentId));
+    if (d.id) ids.push(String(d.id));
+    return [...new Set(ids)];
   };
 
-  const availableDevelopers = developers.filter((d) => {
-    const id = d._id || d.id || d.talentId || "";
-    return !isTalentAssigned(id);
-  });
+  // Accept either developer object or raw id string
+  const isTalentAssigned = (devOrId) => {
+    if (!devOrId) return false;
+    if (typeof devOrId === "string") {
+      return allAssignedIdsSet.has(String(devOrId));
+    }
+    const ids = getDeveloperIdVariants(devOrId);
+    return ids.some((id) => allAssignedIdsSet.has(id));
+  };
+
+  // Available developers (not assigned according to the hires' assigned ids)
+  const availableDevelopers = developers.filter((d) => !isTalentAssigned(d));
 
   const getAssignedDevelopersForHire = (hire) => {
     const ids = getAssignedTalentIds(hire);
-    return ids.map((id) => talentMap.get(id) || { _id: id, name: id });
+    return ids.map((id) => talentMap.get(String(id)) || { _id: id, name: id });
   };
 
   // Format helpers
@@ -146,22 +175,20 @@ export default function AssignmentPage() {
     const devText = `${dev.roleTitle || ""} ${dev.experienceLevel || ""} ${dev.skills ? dev.skills.join(" ") : ""}`.toLowerCase();
     const hireText = `${hire.roleTitle || hire.YourTitle || ""} ${hire.scopeOfWork || hire.explanationOfScopeOfWork || ""} ${hire.wantTalentAs || ""}`.toLowerCase();
 
-    // word matches (cheap)
     const hireWords = Array.from(new Set(hireText.split(/\W+/).filter(Boolean).slice(0, 30)));
     hireWords.forEach((w) => {
       if (w.length > 2 && devText.includes(w)) score += 2;
     });
 
-    // experience match preference
     const devExp = (dev.experienceLevel || "").toLowerCase();
     const hireSen = (hire.seniorityLevel || "").toLowerCase();
     if (devExp && hireSen && devExp === hireSen) score += 3;
-    if (devExp.includes("senior") && (hireSen.includes("mid") || hireSen.includes("junior"))) score += 1; // overqualified gently favored
+    if (devExp.includes("senior") && (hireSen.includes("mid") || hireSen.includes("junior"))) score += 1;
 
     return score;
   };
 
-  // When assign modal opens, we sort available devs by score for that hire
+  // sorted available devs when assigning
   const sortedAvailableForAssign = useMemo(() => {
     const base = availableDevelopers.slice();
     if (!assigningHire) return base;
@@ -184,45 +211,55 @@ export default function AssignmentPage() {
   };
 
   const performAssignment = async () => {
-  if (!assigningHire) return setNotice({ type: "error", text: "No hire selected" });
-  if (!selectedTalentId) return setNotice({ type: "error", text: "Select a developer first" });
+    if (!assigningHire) return setNotice({ type: "error", text: "No hire selected" });
+    if (!selectedTalentId) return setNotice({ type: "error", text: "Select a developer first" });
 
-  setAssigning(true);
-  setNotice(null);
+    setAssigning(true);
+    setNotice(null);
 
-  try {
-    // ✅ Ensure we send the correct talentId array
-    const talentIds = [selectedTalentId];
+    try {
+      const talentIds = Array.isArray(selectedTalentId) ? selectedTalentId : [selectedTalentId];
+      const hireId = assigningHire._id || assigningHire.hireId || assigningHire.id;
 
-    // Optional safety check
-    const validTalentIds = developers.map(d => d.talentId);
-    if (!talentIds.every(id => validTalentIds.includes(id))) {
-      setNotice({ type: "error", text: "Selected developer does not exist in backend." });
-      return;
-    }
+      // send to backend
+      const res = await assignDeveloper(talentIds, hireId);
 
-    const hireId = assigningHire._id || assigningHire.hireId || assigningHire.id;
-    console.log("Sending assignment:", { hireId, talentIds });
+      // consider several "success" shapes
+      const success = res?.ok || res?.status === "success" || (res?.data && !res.data.error);
 
-    const res = await assignDeveloper(talentIds, hireId);
+      if (!success) {
+        setNotice({ type: "error", text: res?.error || res?.message || "Assignment failed" });
+        return;
+      }
 
-    // Check backend response properly
-    if (res?.data?.error) {
-      setNotice({ type: "error", text: res.data.message || "Assignment failed." });
-    } else {
-      setNotice({ type: "success", text: "Developer assigned successfully!" });
+      // Optimistically update local hires so UI updates immediately:
+      setHires((prev) =>
+        prev.map((h) => {
+          const id = h._id || h.hireId || h.id;
+          if (!id) return h;
+          if (String(id) === String(hireId)) {
+            const existing = getAssignedTalentIds(h);
+            const combined = Array.from(new Set([...existing.map(String), ...talentIds.map(String)]));
+            // prefer to set talentAssignedId if that key exists, otherwise set talentIds
+            return { ...h, talentAssignedId: combined };
+          }
+          return h;
+        })
+      );
+
+      setNotice({ type: "success", text: "Developer assigned successfully! Owner will now see the contract." });
       closeAssignModal();
-      await loadAll();
-    }
-  } catch (err) {
-    console.error("Assign error:", err);
-    setNotice({ type: "error", text: err?.message || "An error occurred while assigning." });
-  } finally {
-    setAssigning(false);
-    setTimeout(() => setNotice(null), 4000);
-  }
-};
 
+      // refresh from server for final sync (but UI already updated optimistically)
+      await loadAll();
+    } catch (err) {
+      console.error("Assign error:", err);
+      setNotice({ type: "error", text: err?.message || "An error occurred while assigning." });
+    } finally {
+      setAssigning(false);
+      setTimeout(() => setNotice(null), 4000);
+    }
+  };
 
   // Derived visible hires
   const visibleHires = activeTab === "pending" ? pendingHires : activeTab === "assigned" ? assignedHires : completedHires;
@@ -308,7 +345,7 @@ export default function AssignmentPage() {
                       <div className="text-xs text-gray-500">Assigned Developers:</div>
                       <div className="mt-1 flex flex-wrap gap-2">
                         {assignedList.map((t) => (
-                          <span key={t._id || t.id} className="px-2 py-1 bg-gray-100 rounded text-xs">
+                          <span key={t._id || t.id || t.name} className="px-2 py-1 bg-gray-100 rounded text-xs">
                             {getDevDisplayName(t)}
                           </span>
                         ))}
@@ -333,10 +370,9 @@ export default function AssignmentPage() {
               {developers.length === 0 && <div className="text-sm text-gray-500">No developers found.</div>}
 
               {developers.map((d) => {
-                const id = d._id || d.id || d.talentId || "";
-                const assigned = isTalentAssigned(id);
+                const assigned = isTalentAssigned(d);
                 return (
-                  <div key={id || d.email || Math.random()} className="p-3 border border-gray-100 rounded flex items-center justify-between">
+                  <div key={(d._id || d.talentId || d.id) || Math.random()} className="p-3 border border-gray-100 rounded flex items-center justify-between">
                     <div>
                       <div className="text-sm font-medium text-black">{getDevDisplayName(d)}</div>
                       <div className="text-xs text-gray-500">{d.roleTitle || d.experienceLevel || ""}</div>
@@ -469,25 +505,31 @@ export default function AssignmentPage() {
             </div>
 
             <div className="space-y-2 max-h-[50vh] overflow-y-auto">
-              {sortedAvailableForAssign.map((d) => {
-  const talentId = d.talentId; // <-- always pick talentId
-  return (
-    <label key={talentId} className="flex items-center gap-3 p-2 border rounded hover:bg-gray-50 cursor-pointer">
-      <input
-        type="radio"
-        name="selectedTalent"
-        value={talentId}
-        checked={selectedTalentId === talentId}
-        onChange={() => setSelectedTalentId(talentId)}
-      />
-      <div className="flex-1">
-        <div className="text-sm font-medium">{getDevDisplayName(d)}</div>
-        <div className="text-xs text-gray-500">{d.roleTitle || d.experienceLevel || ""}</div>
-      </div>
-      <div className="text-xs text-gray-500">{d.country || d.state || ""}</div>
-    </label>
-  );
-})}
+              {sortedAvailableForAssign.filter(d => {
+                const q = searchDev.trim().toLowerCase();
+                if (!q) return true;
+                return (getDevDisplayName(d) + " " + (d.roleTitle || "") + " " + (d.experienceLevel || "")).toLowerCase().includes(q);
+              }).map((d) => {
+                // pick a stable id to send to the backend (prefer talentId, fallback to _id or id)
+                const talentId = d.talentId || d._id || d.id;
+                return (
+                  <label key={talentId} className="flex items-center gap-3 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="selectedTalent"
+                      value={talentId}
+                      checked={selectedTalentId === talentId}
+                      onChange={() => setSelectedTalentId(talentId)}
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium">{getDevDisplayName(d)}</div>
+                      <div className="text-xs text-gray-500">{d.roleTitle || d.experienceLevel || ""}</div>
+                    </div>
+                    <div className="text-xs text-gray-500">{d.country || d.state || ""}</div>
+                  </label>
+                );
+              })}
+
               {sortedAvailableForAssign.length === 0 && <div className="text-sm text-gray-500">No available developers to assign.</div>}
             </div>
 

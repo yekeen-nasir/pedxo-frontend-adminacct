@@ -4,6 +4,16 @@ import AdminLayout from "../../components/admin/common/AdminLayout";
 import { FileText, Clock, UserCheck, CheckCircle } from "lucide-react";
 import { listContracts, listDevelopers } from "../../utility/adminApi.js";
 
+/**
+ * DashboardPage (improved)
+ * - Robust normalization of API responses
+ * - Accurate developer counts (total / busy / available)
+ * - Accurate contract counts (total / pending / completed)
+ * - Recent contracts sorted by createdAt/updatedAt
+ */
+
+const DEBUG = false; // set true locally to print helpful logs
+
 const StatCard = ({ icon: Icon, title, value, subtitle }) => (
   <div className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
@@ -19,6 +29,105 @@ const StatCard = ({ icon: Icon, title, value, subtitle }) => (
   </div>
 );
 
+/* ---------- Helpers ---------- */
+
+const normalizeArray = (res) => {
+  if (!res) return [];
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res.data)) return res.data;
+  if (Array.isArray(res.data?.data)) return res.data.data;
+  return [];
+};
+
+/**
+ * Extract assigned talent/dev IDs from a contract record.
+ * Supports:
+ * - arrays of strings: ["id1", "id2"]
+ * - arrays of objects: [{ _id }, { id }, { talentId }]
+ * - single string: "id"
+ * - object: { _id: '...' }
+ * - nested shapes (best-effort)
+ */
+const getAssignedTalentIds = (contract = {}) => {
+  if (!contract) return [];
+
+  // keys we saw in backend and some alternatives
+  const candidateKeys = [
+    "talentAssignedId",
+    "talentAssigned",
+    "talentIds",
+    "talentAssignedIds",
+    "assignedTalent",
+    "assignedDev",
+    "developerId",
+    "assignedDeveloper",
+    "talentId",
+    "talent_assigned",
+  ];
+
+  for (const key of candidateKeys) {
+    const v = contract[key];
+    if (v === undefined || v === null) continue;
+
+    // array
+    if (Array.isArray(v)) {
+      const out = v.flatMap((item) => {
+        if (!item) return [];
+        if (typeof item === "string") return [item];
+        if (typeof item === "number") return [String(item)];
+        if (typeof item === "object") {
+          // try common id fields
+          return [item._id ?? item.id ?? item.talentId ?? item.talent_id ?? item.value].filter(Boolean);
+        }
+        return [];
+      });
+      if (out.length) return Array.from(new Set(out.map(String)));
+    }
+
+    // string or number
+    if (typeof v === "string" || typeof v === "number") {
+      return [String(v)];
+    }
+
+    // single object
+    if (typeof v === "object") {
+      const id = v._id ?? v.id ?? v.talentId ?? v.talent_id ?? v.value;
+      if (id) return [String(id)];
+    }
+  }
+
+  // some contracts might nest assignment under 'hire' or 'meta'
+  if (contract.hire?.talentAssignedId) return getAssignedTalentIds({ talentAssignedId: contract.hire.talentAssignedId });
+
+  return [];
+};
+
+const isContractCompleted = (c) => {
+  if (!c) return false;
+  if (c.isCompleted === true) return true;
+  const p = (c.progress ?? "").toString().toLowerCase();
+  return p.includes("signed") || p.includes("completed") || p.includes("done") || p.includes("closed");
+};
+
+const getContractAmount = (c = {}) => {
+  const candidates = [
+    c.paymentRate,
+    c.payment_rate,
+    c.minimumToPayToTalent,
+    c.paymentAmount,
+    c.payment,
+    c.payment_rate_amount,
+  ];
+  for (const x of candidates) {
+    if (x === undefined || x === null || x === "") continue;
+    const n = Number(x);
+    if (!Number.isNaN(n)) return n;
+  }
+  return 0;
+};
+
+/* ---------- Component ---------- */
+
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [contracts, setContracts] = useState([]);
@@ -27,58 +136,10 @@ export default function DashboardPage() {
     totalContracts: 0,
     pendingAssignments: 0,
     availableDevelopers: 0,
+    busyDevelopers: 0,
     completedProjects: 0,
   });
   const [recent, setRecent] = useState([]);
-
-  // helper: normalize API responses into arrays
-  const normalizeArray = (res) => {
-    if (!res) return [];
-    if (Array.isArray(res)) return res;
-    if (Array.isArray(res.data)) return res.data;
-    if (Array.isArray(res.data?.data)) return res.data.data;
-    return [];
-  };
-
-  // helper: get assigned talent ids from a contract (support multiple field names)
-  const getAssignedTalentIds = (c) => {
-    if (!c) return [];
-    const ids =
-      c.talentAssignedId ||
-      c.talentIds ||
-      c.assignedTalent ||
-      c.assignedDev ||
-      c.developerId ||
-      c.assignedDeveloper ||
-      c.talentAssigned ||
-      null;
-    if (!ids) return [];
-    if (Array.isArray(ids)) return ids;
-    if (typeof ids === "string") return [ids];
-    return [];
-  };
-
-  // helper: check if contract considered completed
-  const isContractCompleted = (c) => {
-    if (!c) return false;
-    if (c.isCompleted === true) return true;
-    const p = (c.progress || "").toString().toLowerCase();
-    if (p.includes("signed") || p.includes("completed") || p.includes("done")) return true;
-    return false;
-  };
-
-  // helper: pick a numeric amount from various fields
-  const getContractAmount = (c) => {
-    // backend fields seen: paymentRate, payment_rate, minimumToPayToTalent
-    const candidates = [c?.paymentRate, c?.payment_rate, c?.minimumToPayToTalent, c?.paymentAmount, c?.payment];
-    for (const v of candidates) {
-      if (v === null || v === undefined || v === "") continue;
-      const num = Number(v);
-      if (!Number.isNaN(num)) return num;
-      // if string but not numeric, ignore
-    }
-    return 0;
-  };
 
   useEffect(() => {
     (async () => {
@@ -89,69 +150,90 @@ export default function DashboardPage() {
         const cons = normalizeArray(rawContracts);
         const devs = normalizeArray(rawDevelopers);
 
-        // canonicalize contracts array items so we can safely use fields
-        // sort by createdAt/updatedAt desc for "recent"
-        const sortedContracts = cons.slice().sort((a, b) => {
-          const ta = new Date(a.createdAt || a.updatedAt || 0).getTime() || 0;
-          const tb = new Date(b.createdAt || b.updatedAt || 0).getTime() || 0;
-          return tb - ta;
+        // Build canonical developer id map (devId -> developer)
+        const devIdToDev = new Map();
+        devs.forEach((d) => {
+          const id = d._id ?? d.id ?? d.talentId ?? d.userId ?? null;
+          if (id) devIdToDev.set(String(id), d);
         });
 
-        // gather set of all assigned talent ids across all contracts
+        // Build set of assigned developer IDs across all contracts (unique)
         const assignedIdSet = new Set();
-        sortedContracts.forEach((c) => {
-          getAssignedTalentIds(c).forEach((id) => {
-            if (id) assignedIdSet.add(id);
+        cons.forEach((c) => {
+          const ids = getAssignedTalentIds(c);
+          ids.forEach((id) => {
+            if (id) assignedIdSet.add(String(id));
           });
         });
 
-        // total contracts
+        // Determine busy vs available developers:
+        // - busy if dev is in assignedIdSet OR dev.status suggests busy
+        // - we count each developer once
+        let busyCount = 0;
+        let availableCount = 0;
+
+        devs.forEach((d) => {
+          const id = d._id ?? d.id ?? d.talentId ?? d.userId ?? null;
+          const idStr = id ? String(id) : null;
+          const status = (d.status ?? d.state ?? "").toString().toLowerCase();
+
+          const statusBusy = ["busy", "assigned", "in-progress", "working", "unavailable"].some((s) =>
+            status.includes(s)
+          );
+
+          const assignedByContract = idStr ? assignedIdSet.has(idStr) : false;
+
+          if (statusBusy || assignedByContract) busyCount++;
+          else availableCount++;
+        });
+
+        // There might be assigned ids in assignedIdSet that are not present in developer list
+        // These are "external" assignments — we don't increment busyCount for them since they are not in our dev list,
+        // but we might want to surface them in logs for debugging.
+        const unmatchedAssigned = Array.from(assignedIdSet).filter((id) => !devIdToDev.has(id));
+        if (DEBUG && unmatchedAssigned.length) {
+          console.warn("Assigned IDs not found in developers list:", unmatchedAssigned);
+        }
+
         const totalContracts = cons.length;
-
-        // pending assignments = contracts that are not completed AND have no assigned talent ids
         const pendingAssignments = cons.filter((c) => !isContractCompleted(c) && getAssignedTalentIds(c).length === 0).length;
-
-        // completed projects
         const completedProjects = cons.filter((c) => isContractCompleted(c)).length;
 
-        // available developers: developers whose id is not in assignedIdSet
-        const availableDevelopers = devs.filter((d) => {
-          const id = d?._id || d?.id || d?.talentId || d?.userId || "";
-          // if developer record has explicit status field, prefer checking 'available'
-          if (d?.status) {
-            const st = (d.status || "").toString().toLowerCase();
-            if (st === "available" || st === "free") return true;
-            if (st === "busy" || st === "assigned") return false;
-          }
-          if (!id) return true; // can't match -> assume available
-          return !assignedIdSet.has(id);
-        }).length;
+        // Prepare recent contracts sorted by createdAt/updatedAt (newest first)
+        const sorted = cons.slice().sort((a, b) => {
+          const ta = new Date(a.createdAt ?? a.updatedAt ?? 0).getTime();
+          const tb = new Date(b.createdAt ?? b.updatedAt ?? 0).getTime();
+          return tb - ta;
+        });
 
-        // recent: take first 3 sortedContracts and map friendly display fields
-        const recentContracts = sortedContracts.slice(0, 3).map((c) => ({
-          id: c._id || c.id || "",
-          title: c.roleTitle || c.YourTitle || c.projectTitle || c.scopeOfWork || c.explanationOfScopeOfWork || (c.clientName ? `${c.clientName} • ${c.contractType || c.progress || ""}` : "Untitled Contract"),
-          client: c.clientName || c.companyName || c.name || "Unknown Client",
-          contact: c.email || "No email",
-          location: (c.whereYouLive || c.city || c.region || c.state || c.country) || "Location not specified",
+        const recentContracts = sorted.slice(0, 3).map((c) => ({
+          id: c._id ?? c.id ?? "",
+          title: c.roleTitle ?? c.YourTitle ?? c.projectTitle ?? c.scopeOfWork ?? c.explanationOfScopeOfWork ?? (c.clientName ? `${c.clientName} • ${c.contractType || c.progress || ""}` : "Untitled Contract"),
+          client: c.clientName ?? c.companyName ?? c.name ?? "Unknown Client",
+          contact: c.email ?? "No email",
+          location: c.whereYouLive ?? c.city ?? c.region ?? c.state ?? c.country ?? "Location not specified",
           statusAssigned: getAssignedTalentIds(c).length > 0,
           amount: getContractAmount(c),
-          createdAt: c.createdAt || c.updatedAt || null,
+          createdAt: c.createdAt ?? c.updatedAt ?? null,
         }));
 
-        // set state
-        setContracts(sortedContracts);
+        // update state
+        setContracts(sorted);
         setDevelopers(devs);
         setStats({
           totalContracts,
           pendingAssignments,
-          availableDevelopers,
+          availableDevelopers: availableCount,
+          busyDevelopers: busyCount,
           completedProjects,
         });
         setRecent(recentContracts);
+
+        if (DEBUG) {
+          console.log("Dashboard debug:", { totalContracts, pendingAssignments, busyCount, availableCount, completedProjects, unmatchedAssigned });
+        }
       } catch (err) {
         console.error("Dashboard load error:", err);
-        // leave defaults
       } finally {
         setLoading(false);
       }
@@ -178,15 +260,18 @@ export default function DashboardPage() {
 
   return (
     <AdminLayout title="Dashboard Overview">
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard icon={FileText} title="Total Contracts" value={stats.totalContracts} subtitle="Active projects" />
         <StatCard icon={Clock} title="Pending Assignments" value={stats.pendingAssignments} subtitle="Awaiting developer" />
-        <StatCard icon={UserCheck} title="Available Developers" value={stats.availableDevelopers} subtitle="Ready for work" />
+        <StatCard
+          icon={UserCheck}
+          title=" Total Developers"
+          value={developers.length}
+          subtitle="Current Value"
+        />
         <StatCard icon={CheckCircle} title="Completed Projects" value={stats.completedProjects} subtitle="This month" />
       </div>
 
-      {/* Recent Contracts */}
       <div className="bg-white rounded-lg border border-gray-200 mt-6">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-black">Recent Contracts</h2>
@@ -195,17 +280,24 @@ export default function DashboardPage() {
           {recent.length > 0 ? (
             <div className="space-y-4">
               {recent.map((contract) => (
-                <div key={contract.id || contract.title} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                <div
+                  key={contract.id || contract.title}
+                  className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
+                >
                   <div>
                     <h3 className="font-medium text-black">{contract.title}</h3>
                     <p className="text-sm text-gray-600">{contract.client} • {contract.contact}</p>
-                    <p className="text-xs text-gray-500 mt-1">{contract.location} • {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : ""}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {contract.location} • {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : ""}
+                    </p>
                   </div>
                   <div className="flex items-center gap-4">
                     <span className={badge(contract.statusAssigned ? "assigned" : "pending")}>
                       {contract.statusAssigned ? "assigned" : "pending"}
                     </span>
-                    <span className="font-semibold text-black">${(Number(contract.amount) || 0).toLocaleString()}</span>
+                    <span className="font-semibold text-black">
+                      ${(Number(contract.amount) || 0).toLocaleString()}
+                    </span>
                   </div>
                 </div>
               ))}
