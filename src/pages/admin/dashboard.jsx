@@ -9,7 +9,7 @@ import { listContracts, listDevelopers } from "../../utility/adminApi.js";
  * - Robust normalization of API responses
  * - Accurate developer counts (total / busy / available)
  * - Accurate contract counts (total / pending / completed)
- * - Recent contracts sorted by createdAt/updatedAt
+ * - Recent contracts sorted by updatedAt/createdAt/startDate (newest first)
  */
 
 const DEBUG = false; // set true locally to print helpful logs
@@ -39,19 +39,9 @@ const normalizeArray = (res) => {
   return [];
 };
 
-/**
- * Extract assigned talent/dev IDs from a contract record.
- * Supports:
- * - arrays of strings: ["id1", "id2"]
- * - arrays of objects: [{ _id }, { id }, { talentId }]
- * - single string: "id"
- * - object: { _id: '...' }
- * - nested shapes (best-effort)
- */
 const getAssignedTalentIds = (contract = {}) => {
   if (!contract) return [];
 
-  // keys we saw in backend and some alternatives
   const candidateKeys = [
     "talentAssignedId",
     "talentAssigned",
@@ -69,14 +59,12 @@ const getAssignedTalentIds = (contract = {}) => {
     const v = contract[key];
     if (v === undefined || v === null) continue;
 
-    // array
     if (Array.isArray(v)) {
       const out = v.flatMap((item) => {
         if (!item) return [];
         if (typeof item === "string") return [item];
         if (typeof item === "number") return [String(item)];
         if (typeof item === "object") {
-          // try common id fields
           return [item._id ?? item.id ?? item.talentId ?? item.talent_id ?? item.value].filter(Boolean);
         }
         return [];
@@ -84,19 +72,16 @@ const getAssignedTalentIds = (contract = {}) => {
       if (out.length) return Array.from(new Set(out.map(String)));
     }
 
-    // string or number
     if (typeof v === "string" || typeof v === "number") {
       return [String(v)];
     }
 
-    // single object
     if (typeof v === "object") {
       const id = v._id ?? v.id ?? v.talentId ?? v.talent_id ?? v.value;
       if (id) return [String(id)];
     }
   }
 
-  // some contracts might nest assignment under 'hire' or 'meta'
   if (contract.hire?.talentAssignedId) return getAssignedTalentIds({ talentAssignedId: contract.hire.talentAssignedId });
 
   return [];
@@ -122,6 +107,21 @@ const getContractAmount = (c = {}) => {
     if (x === undefined || x === null || x === "") continue;
     const n = Number(x);
     if (!Number.isNaN(n)) return n;
+  }
+  return 0;
+};
+
+/* ---------- NEW: timestamp helper ---------- */
+/**
+ * Return numeric timestamp (ms) representing the "recency" of the contract.
+ * Priority: updatedAt -> createdAt -> startDate -> 0
+ */
+const getContractTime = (c = {}) => {
+  const candidates = [c.updatedAt, c.createdAt, c.startDate, c.created_at, c.updated_at];
+  for (const t of candidates) {
+    if (!t && t !== 0) continue;
+    const parsed = Date.parse(t);
+    if (!Number.isNaN(parsed)) return parsed;
   }
   return 0;
 };
@@ -167,8 +167,6 @@ export default function DashboardPage() {
         });
 
         // Determine busy vs available developers:
-        // - busy if dev is in assignedIdSet OR dev.status suggests busy
-        // - we count each developer once
         let busyCount = 0;
         let availableCount = 0;
 
@@ -187,9 +185,6 @@ export default function DashboardPage() {
           else availableCount++;
         });
 
-        // There might be assigned ids in assignedIdSet that are not present in developer list
-        // These are "external" assignments — we don't increment busyCount for them since they are not in our dev list,
-        // but we might want to surface them in logs for debugging.
         const unmatchedAssigned = Array.from(assignedIdSet).filter((id) => !devIdToDev.has(id));
         if (DEBUG && unmatchedAssigned.length) {
           console.warn("Assigned IDs not found in developers list:", unmatchedAssigned);
@@ -199,23 +194,24 @@ export default function DashboardPage() {
         const pendingAssignments = cons.filter((c) => !isContractCompleted(c) && getAssignedTalentIds(c).length === 0).length;
         const completedProjects = cons.filter((c) => isContractCompleted(c)).length;
 
-        // Prepare recent contracts sorted by createdAt/updatedAt (newest first)
-        const sorted = cons.slice().sort((a, b) => {
-          const ta = new Date(a.createdAt ?? a.updatedAt ?? 0).getTime();
-          const tb = new Date(b.createdAt ?? b.updatedAt ?? 0).getTime();
-          return tb - ta;
-        });
+        // ---------- FIX: sort by newest first using getContractTime ----------
+        const sorted = cons.slice().sort((a, b) => getContractTime(b) - getContractTime(a));
 
-        const recentContracts = sorted.slice(0, 3).map((c) => ({
-          id: c._id ?? c.id ?? "",
-          title: c.roleTitle ?? c.YourTitle ?? c.projectTitle ?? c.scopeOfWork ?? c.explanationOfScopeOfWork ?? (c.clientName ? `${c.clientName} • ${c.contractType || c.progress || ""}` : "Untitled Contract"),
-          client: c.clientName ?? c.companyName ?? c.name ?? "Unknown Client",
-          contact: c.email ?? "No email",
-          location: c.whereYouLive ?? c.city ?? c.region ?? c.state ?? c.country ?? "Location not specified",
-          statusAssigned: getAssignedTalentIds(c).length > 0,
-          amount: getContractAmount(c),
-          createdAt: c.createdAt ?? c.updatedAt ?? null,
-        }));
+        // Take top 3 most recent contracts (after sorting)
+        const recentContracts = sorted.slice(0, 3).map((c) => {
+          const ts = getContractTime(c) || null;
+          return {
+            id: c._id ?? c.id ?? "",
+            title: c.roleTitle ?? c.YourTitle ?? c.projectTitle ?? c.scopeOfWork ?? c.explanationOfScopeOfWork ?? (c.clientName ? `${c.clientName} • ${c.contractType || c.progress || ""}` : "Untitled Contract"),
+            client: c.clientName ?? c.companyName ?? c.name ?? "Unknown Client",
+            contact: c.email ?? "No email",
+            location: c.whereYouLive ?? c.city ?? c.region ?? c.state ?? c.country ?? "Location not specified",
+            statusAssigned: getAssignedTalentIds(c).length > 0,
+            amount: getContractAmount(c),
+            // createdAt is shown in UI — use the same recency basis (prefer updatedAt then createdAt)
+            createdAt: ts ? new Date(ts).toISOString() : null,
+          };
+        });
 
         // update state
         setContracts(sorted);
@@ -230,7 +226,7 @@ export default function DashboardPage() {
         setRecent(recentContracts);
 
         if (DEBUG) {
-          console.log("Dashboard debug:", { totalContracts, pendingAssignments, busyCount, availableCount, completedProjects, unmatchedAssigned });
+          console.log("Dashboard debug:", { totalContracts, pendingAssignments, busyCount, availableCount, completedProjects, unmatchedAssigned, recentContracts });
         }
       } catch (err) {
         console.error("Dashboard load error:", err);

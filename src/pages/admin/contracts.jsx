@@ -23,6 +23,14 @@ export default function ContractsPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // --- helper to pick best timestamp for sorting ---
+  const getContractTime = (c) => {
+    // prefer updatedAt, then createdAt, then startDate
+    const t = c?.updatedAt || c?.createdAt || c?.startDate || null;
+    const n = t ? Date.parse(t) : NaN;
+    return isNaN(n) ? 0 : n;
+  };
+
   const loadContracts = async () => {
     setLoading(true);
     try {
@@ -32,6 +40,10 @@ export default function ContractsPage() {
         : data && Array.isArray(data.data)
         ? data.data
         : [];
+
+      // SORT: newest first based on updatedAt -> createdAt -> startDate
+      arr.sort((a, b) => getContractTime(b) - getContractTime(a));
+
       setContracts(arr);
     } catch (err) {
       console.error("Error loading contracts:", err);
