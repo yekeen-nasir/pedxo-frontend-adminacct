@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import AdminLayout from "../../components/admin/common/AdminLayout";
 import { FileText, Clock, UserCheck, CheckCircle } from "lucide-react";
 import { listContracts, listDevelopers } from "../../utility/adminApi.js";
+// replace local helpers with import
+import { getAssignedTalentIds, isContractCompleted, getContractTime, getContractAmount } from "../../utility/contractUtils.js";
+
 
 /**
  * DashboardPage (improved)
@@ -37,93 +40,6 @@ const normalizeArray = (res) => {
   if (Array.isArray(res.data)) return res.data;
   if (Array.isArray(res.data?.data)) return res.data.data;
   return [];
-};
-
-const getAssignedTalentIds = (contract = {}) => {
-  if (!contract) return [];
-
-  const candidateKeys = [
-    "talentAssignedId",
-    "talentAssigned",
-    "talentIds",
-    "talentAssignedIds",
-    "assignedTalent",
-    "assignedDev",
-    "developerId",
-    "assignedDeveloper",
-    "talentId",
-    "talent_assigned",
-  ];
-
-  for (const key of candidateKeys) {
-    const v = contract[key];
-    if (v === undefined || v === null) continue;
-
-    if (Array.isArray(v)) {
-      const out = v.flatMap((item) => {
-        if (!item) return [];
-        if (typeof item === "string") return [item];
-        if (typeof item === "number") return [String(item)];
-        if (typeof item === "object") {
-          return [item._id ?? item.id ?? item.talentId ?? item.talent_id ?? item.value].filter(Boolean);
-        }
-        return [];
-      });
-      if (out.length) return Array.from(new Set(out.map(String)));
-    }
-
-    if (typeof v === "string" || typeof v === "number") {
-      return [String(v)];
-    }
-
-    if (typeof v === "object") {
-      const id = v._id ?? v.id ?? v.talentId ?? v.talent_id ?? v.value;
-      if (id) return [String(id)];
-    }
-  }
-
-  if (contract.hire?.talentAssignedId) return getAssignedTalentIds({ talentAssignedId: contract.hire.talentAssignedId });
-
-  return [];
-};
-
-const isContractCompleted = (c) => {
-  if (!c) return false;
-  if (c.isCompleted === true) return true;
-  const p = (c.progress ?? "").toString().toLowerCase();
-  return p.includes("signed") || p.includes("completed") || p.includes("done") || p.includes("closed");
-};
-
-const getContractAmount = (c = {}) => {
-  const candidates = [
-    c.paymentRate,
-    c.payment_rate,
-    c.minimumToPayToTalent,
-    c.paymentAmount,
-    c.payment,
-    c.payment_rate_amount,
-  ];
-  for (const x of candidates) {
-    if (x === undefined || x === null || x === "") continue;
-    const n = Number(x);
-    if (!Number.isNaN(n)) return n;
-  }
-  return 0;
-};
-
-/* ---------- NEW: timestamp helper ---------- */
-/**
- * Return numeric timestamp (ms) representing the "recency" of the contract.
- * Priority: updatedAt -> createdAt -> startDate -> 0
- */
-const getContractTime = (c = {}) => {
-  const candidates = [c.updatedAt, c.createdAt, c.startDate, c.created_at, c.updated_at];
-  for (const t of candidates) {
-    if (!t && t !== 0) continue;
-    const parsed = Date.parse(t);
-    if (!Number.isNaN(parsed)) return parsed;
-  }
-  return 0;
 };
 
 /* ---------- Component ---------- */
