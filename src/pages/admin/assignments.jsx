@@ -1,34 +1,35 @@
 // src/pages/admin/assignment.jsx
 import { useEffect, useMemo, useState } from "react";
 import AdminLayout from "../../components/admin/common/AdminLayout";
-import { listHires, listDevelopers, assignDeveloper } from "../../utility/adminApi.js";
+import { listContracts, listDevelopers, assignDeveloper } from "../../utility/adminApi.js";
 import { Eye, X } from "lucide-react";
+import { getAssignedTalentIds, isContractCompleted } from "../../utility/contractUtils.js";
+
 
 /**
- * AssignmentPage (improved)
+ * AssignmentPage (contracts-based)
  *
- * Key fixes:
- * - robust id handling (_id, talentId, id)
- * - talentMap keyed by all id variants
- * - assigned ID set computed from hires for accurate "Busy" check
- * - optimistic local update after successful assignment (then refresh)
+ * Notes:
+ * - Uses contracts instead of hires.
+ * - assignDeveloper(talentIds, contractId) is used (keeps existing API shape).
+ * - Robust id handling and optimistic UI update retained.
  */
 
 export default function AssignmentPage() {
-  const [hires, setHires] = useState([]);
+  const [contracts, setContracts] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // UI state
   const [activeTab, setActiveTab] = useState("pending"); // pending | assigned | completed
-  const [selectedHire, setSelectedHire] = useState(null); // for view modal
-  const [assigningHire, setAssigningHire] = useState(null); // contract being assigned (opens assign modal)
+  const [selectedContract, setSelectedContract] = useState(null); // for view modal
+  const [assigningContract, setAssigningContract] = useState(null); // contract being assigned (opens assign modal)
   const [selectedTalentId, setSelectedTalentId] = useState(null); // chosen talent id in modal (string)
   const [assigning, setAssigning] = useState(false);
   const [notice, setNotice] = useState(null); // { type, text }
   const [searchDev, setSearchDev] = useState("");
 
-  // Load hires + devs
+  // Load contracts + devs
   useEffect(() => {
     loadAll();
   }, []);
@@ -37,8 +38,8 @@ export default function AssignmentPage() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
-        setSelectedHire(null);
-        setAssigningHire(null);
+        setSelectedContract(null);
+        setAssigningContract(null);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -48,7 +49,7 @@ export default function AssignmentPage() {
   async function loadAll() {
     setLoading(true);
     try {
-      const [hiresRes, devsRes] = await Promise.all([listHires(), listDevelopers()]);
+      const [contractsRes, devsRes] = await Promise.all([listContracts(), listDevelopers()]);
 
       const norm = (r) => {
         if (Array.isArray(r)) return r;
@@ -57,50 +58,32 @@ export default function AssignmentPage() {
         return [];
       };
 
-      setHires(norm(hiresRes));
+      setContracts(norm(contractsRes));
       setDevelopers(norm(devsRes));
     } catch (err) {
       console.error("Error loading assignment data:", err);
-      setHires([]);
+      setContracts([]);
       setDevelopers([]);
     } finally {
       setLoading(false);
     }
   }
 
-  // support different backend keys for assigned ids
-  const getAssignedTalentIds = (item) => {
-    if (!item) return [];
-    const ids =
-      item.talentAssignedId ||
-      item.talentIds ||
-      item.assignedTalent ||
-      item.assignedDev ||
-      item.developerId ||
-      item.assignedDeveloper ||
-      null;
-    if (!ids) return [];
-    if (Array.isArray(ids)) return ids.map(String);
-    if (typeof ids === "string") return [ids];
-    return [];
-  };
+// Partition contracts using shared helper for completed detection
+const pendingContracts = contracts.filter((c) => {
+  const ids = getAssignedTalentIds(c);
+  const completed = isContractCompleted(c);
+  return ids.length === 0 && !completed;
+});
 
-  // Partition hires
-  const pendingHires = hires.filter((h) => {
-    const ids = getAssignedTalentIds(h);
-    const completed = !!h.isCompleted || String(h.progress || "").toLowerCase() === "completed";
-    return ids.length === 0 && !completed;
-  });
+const assignedContracts = contracts.filter((c) => {
+  const ids = getAssignedTalentIds(c);
+  const completed = isContractCompleted(c);
+  return ids.length > 0 && !completed;
+});
 
-  const assignedHires = hires.filter((h) => {
-    const ids = getAssignedTalentIds(h);
-    const completed = !!h.isCompleted || String(h.progress || "").toLowerCase() === "completed";
-    return ids.length > 0 && !completed;
-  });
+const completedContracts = contracts.filter((c) => isContractCompleted(c));
 
-  const completedHires = hires.filter((h) => {
-    return !!h.isCompleted || String(h.progress || "").toLowerCase() === "completed" || String(h.progress || "").toLowerCase() === "signed";
-  });
 
   // talent lookup (map by all id variants)
   const talentMap = useMemo(() => {
@@ -113,16 +96,16 @@ export default function AssignmentPage() {
     return m;
   }, [developers]);
 
-  // Build a set of all assigned ids (strings) across hires so availability checks are fast & accurate
+  // Build a set of all assigned ids (strings) across contracts so availability checks are fast & accurate
   const allAssignedIdsSet = useMemo(() => {
     const s = new Set();
-    hires.forEach((h) => {
-      getAssignedTalentIds(h).forEach((id) => {
+    contracts.forEach((c) => {
+      getAssignedTalentIds(c).forEach((id) => {
         if (id != null) s.add(String(id));
       });
     });
     return s;
-  }, [hires]);
+  }, [contracts]);
 
   // Get representative id variants for a developer object
   const getDeveloperIdVariants = (d) => {
@@ -144,11 +127,11 @@ export default function AssignmentPage() {
     return ids.some((id) => allAssignedIdsSet.has(id));
   };
 
-  // Available developers (not assigned according to the hires' assigned ids)
+  // Available developers (not assigned according to the contracts' assigned ids)
   const availableDevelopers = developers.filter((d) => !isTalentAssigned(d));
 
-  const getAssignedDevelopersForHire = (hire) => {
-    const ids = getAssignedTalentIds(hire);
+  const getAssignedDevelopersForContract = (contract) => {
+    const ids = getAssignedTalentIds(contract);
     return ids.map((id) => talentMap.get(String(id)) || { _id: id, name: id });
   };
 
@@ -170,10 +153,10 @@ export default function AssignmentPage() {
     [d?.firstName, d?.lastName].filter(Boolean).join(" ") || d?.name || d?.email || "Unknown";
 
   // Simple fit-scoring to highlight best matches (role/title & experience)
-  const scoreDeveloperForHire = (dev = {}, hire = {}) => {
+  const scoreDeveloperForContract = (dev = {}, contract = {}) => {
     let score = 0;
     const devText = `${dev.roleTitle || ""} ${dev.experienceLevel || ""} ${dev.skills ? dev.skills.join(" ") : ""}`.toLowerCase();
-    const hireText = `${hire.roleTitle || hire.YourTitle || ""} ${hire.scopeOfWork || hire.explanationOfScopeOfWork || ""} ${hire.wantTalentAs || ""}`.toLowerCase();
+    const hireText = `${contract.roleTitle || contract.YourTitle || ""} ${contract.scopeOfWork || contract.explanationOfScopeOfWork || ""} ${contract.wantTalentAs || ""}`.toLowerCase();
 
     const hireWords = Array.from(new Set(hireText.split(/\W+/).filter(Boolean).slice(0, 30)));
     hireWords.forEach((w) => {
@@ -181,7 +164,7 @@ export default function AssignmentPage() {
     });
 
     const devExp = (dev.experienceLevel || "").toLowerCase();
-    const hireSen = (hire.seniorityLevel || "").toLowerCase();
+    const hireSen = (contract.seniorityLevel || "").toLowerCase();
     if (devExp && hireSen && devExp === hireSen) score += 3;
     if (devExp.includes("senior") && (hireSen.includes("mid") || hireSen.includes("junior"))) score += 1;
 
@@ -191,27 +174,27 @@ export default function AssignmentPage() {
   // sorted available devs when assigning
   const sortedAvailableForAssign = useMemo(() => {
     const base = availableDevelopers.slice();
-    if (!assigningHire) return base;
+    if (!assigningContract) return base;
     return base
-      .map((d) => ({ ...d, __score: scoreDeveloperForHire(d, assigningHire) }))
+      .map((d) => ({ ...d, __score: scoreDeveloperForContract(d, assigningContract) }))
       .sort((a, b) => (b.__score || 0) - (a.__score || 0));
-  }, [availableDevelopers, assigningHire]);
+  }, [availableDevelopers, assigningContract]);
 
   // assignment flow
-  const openAssignModal = (hire) => {
-    setAssigningHire(hire);
+  const openAssignModal = (contract) => {
+    setAssigningContract(contract);
     setSelectedTalentId(null);
     setSearchDev("");
   };
 
   const closeAssignModal = () => {
-    setAssigningHire(null);
+    setAssigningContract(null);
     setSelectedTalentId(null);
     setSearchDev("");
   };
 
   const performAssignment = async () => {
-    if (!assigningHire) return setNotice({ type: "error", text: "No hire selected" });
+    if (!assigningContract) return setNotice({ type: "error", text: "No contract selected" });
     if (!selectedTalentId) return setNotice({ type: "error", text: "Select a developer first" });
 
     setAssigning(true);
@@ -219,10 +202,10 @@ export default function AssignmentPage() {
 
     try {
       const talentIds = Array.isArray(selectedTalentId) ? selectedTalentId : [selectedTalentId];
-      const hireId = assigningHire._id || assigningHire.hireId || assigningHire.id;
+      const contractId = assigningContract._id || assigningContract.contractId || assigningContract.id;
 
       // send to backend
-      const res = await assignDeveloper(talentIds, hireId);
+      const res = await assignDeveloper(talentIds, contractId);
 
       // consider several "success" shapes
       const success = res?.ok || res?.status === "success" || (res?.data && !res.data.error);
@@ -232,18 +215,18 @@ export default function AssignmentPage() {
         return;
       }
 
-      // Optimistically update local hires so UI updates immediately:
-      setHires((prev) =>
-        prev.map((h) => {
-          const id = h._id || h.hireId || h.id;
-          if (!id) return h;
-          if (String(id) === String(hireId)) {
-            const existing = getAssignedTalentIds(h);
+      // Optimistically update local contracts so UI updates immediately:
+      setContracts((prev) =>
+        prev.map((c) => {
+          const id = c._id || c.contractId || c.id;
+          if (!id) return c;
+          if (String(id) === String(contractId)) {
+            const existing = getAssignedTalentIds(c);
             const combined = Array.from(new Set([...existing.map(String), ...talentIds.map(String)]));
             // prefer to set talentAssignedId if that key exists, otherwise set talentIds
-            return { ...h, talentAssignedId: combined };
+            return { ...c, talentAssignedId: combined, talentIds: combined };
           }
-          return h;
+          return c;
         })
       );
 
@@ -261,8 +244,8 @@ export default function AssignmentPage() {
     }
   };
 
-  // Derived visible hires
-  const visibleHires = activeTab === "pending" ? pendingHires : activeTab === "assigned" ? assignedHires : completedHires;
+  // Derived visible contracts
+  const visibleContracts = activeTab === "pending" ? pendingContracts : activeTab === "assigned" ? assignedContracts : completedContracts;
 
   if (loading) {
     return (
@@ -283,9 +266,9 @@ export default function AssignmentPage() {
       {/* Tabs */}
       <div className="flex items-center gap-3 mb-6">
         {[
-          { key: "pending", label: "Pending", count: pendingHires.length },
-          { key: "assigned", label: "Assigned", count: assignedHires.length },
-          { key: "completed", label: "Completed", count: completedHires.length },
+          { key: "pending", label: "Pending", count: pendingContracts.length },
+          { key: "assigned", label: "Assigned", count: assignedContracts.length },
+          { key: "completed", label: "Completed", count: completedContracts.length },
         ].map((t) => (
           <button
             key={t.key}
@@ -296,43 +279,43 @@ export default function AssignmentPage() {
           </button>
         ))}
 
-        <div className="ml-auto text-sm text-gray-600">Total Hires: {hires.length} · Developers: {developers.length}</div>
+        <div className="ml-auto text-sm text-gray-600">Total Contracts: {contracts.length} · Developers: {developers.length}</div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT: Hires */}
+        {/* LEFT: Contracts */}
         <div className="lg:col-span-2 space-y-4">
-          {visibleHires.length === 0 ? (
+          {visibleContracts.length === 0 ? (
             <div className="bg-white p-6 rounded-lg border border-gray-200 text-center text-gray-500">
-              {activeTab === "pending" ? "No pending hires." : activeTab === "assigned" ? "No assigned hires." : "No completed hires."}
+              {activeTab === "pending" ? "No pending contracts." : activeTab === "assigned" ? "No assigned contracts." : "No completed contracts."}
             </div>
           ) : (
-            visibleHires.map((hire) => {
-              const assignedList = getAssignedDevelopersForHire(hire);
+            visibleContracts.map((contract) => {
+              const assignedList = getAssignedDevelopersForContract(contract);
               return (
-                <div key={hire._id || hire.id} className="bg-white p-4 rounded-lg border border-gray-200">
+                <div key={contract._id || contract.id} className="bg-white p-4 rounded-lg border border-gray-200">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="text-lg font-semibold text-black">
-                        {hire.YourTitle || hire.roleTitle || (hire.contractName || "Hire / Project")}
+                        {contract.YourTitle || contract.roleTitle || contract.contractName || "Contract / Project"}
                       </div>
                       <div className="text-sm text-gray-500 mt-1">
-                        Client: {hire.name || hire.clientName || "Unknown"} · {hire.whereYouLive || hire.state || hire.country || ""}
+                        Client: {contract.name || contract.clientName || "Unknown"} · {contract.whereYouLive || contract.state || contract.country || ""}
                       </div>
                       <div className="mt-2 text-xs text-gray-500">
-                        {hire.paymentPattern ? `${hire.paymentPattern} · ${formatCurrency(hire.minimumToPayToTalent || hire.minimum_to_pay_to_talent || hire.paymentRate)}` : `Budget: ${formatCurrency(hire.minimumToPayToTalent || hire.paymentRate)}`}
+                        {contract.paymentPattern ? `${contract.paymentPattern} · ${formatCurrency(contract.minimumToPayToTalent || contract.minimum_to_pay_to_talent || contract.paymentRate)}` : `Budget: ${formatCurrency(contract.minimumToPayToTalent || contract.paymentRate)}`}
                       </div>
                     </div>
 
                     <div className="flex flex-col items-end gap-2">
-                      <div className="text-sm text-gray-500">{formatDate(hire.createdAt)}</div>
+                      <div className="text-sm text-gray-500">{formatDate(contract.createdAt)}</div>
                       <div className="flex gap-2">
-                        <button title="View details" onClick={() => setSelectedHire(hire)} className="px-2 py-1 rounded border border-gray-200 hover:bg-gray-50">
+                        <button title="View details" onClick={() => setSelectedContract(contract)} className="px-2 py-1 rounded border border-gray-200 hover:bg-gray-50">
                           <Eye className="h-4 w-4" />
                         </button>
 
                         {activeTab === "pending" && (
-                          <button onClick={() => openAssignModal(hire)} className="px-3 py-1 rounded bg-black text-white hover:bg-gray-900">
+                          <button onClick={() => openAssignModal(contract)} className="px-3 py-1 rounded bg-black text-white hover:bg-gray-900">
                             Assign
                           </button>
                         )}
@@ -393,15 +376,15 @@ export default function AssignmentPage() {
             <div className="text-sm text-gray-600">Summary</div>
             <div className="mt-3 flex gap-6">
               <div>
-                <div className="text-2xl font-bold text-black">{pendingHires.length}</div>
+                <div className="text-2xl font-bold text-black">{pendingContracts.length}</div>
                 <div className="text-xs text-gray-500">Pending</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-black">{assignedHires.length}</div>
+                <div className="text-2xl font-bold text-black">{assignedContracts.length}</div>
                 <div className="text-xs text-gray-500">Assigned</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-black">{completedHires.length}</div>
+                <div className="text-2xl font-bold text-black">{completedContracts.length}</div>
                 <div className="text-xs text-gray-500">Completed</div>
               </div>
             </div>
@@ -409,17 +392,17 @@ export default function AssignmentPage() {
         </div>
       </div>
 
-      {/* VIEW HIRE modal */}
-      {selectedHire && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedHire(null)}>
+      {/* VIEW CONTRACT modal */}
+      {selectedContract && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedContract(null)}>
           <div className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[85vh] overflow-y-auto relative p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-xl font-bold">{selectedHire.YourTitle || selectedHire.roleTitle || "Hire Details"}</h2>
-                <p className="text-sm text-gray-500">{selectedHire.name || selectedHire.clientName || ""}</p>
+                <h2 className="text-xl font-bold">{selectedContract.YourTitle || selectedContract.roleTitle || "Contract Details"}</h2>
+                <p className="text-sm text-gray-500">{selectedContract.name || selectedContract.clientName || ""}</p>
               </div>
               <div>
-                <button onClick={() => setSelectedHire(null)} className="p-2 rounded hover:bg-gray-100"><X /></button>
+                <button onClick={() => setSelectedContract(null)} className="p-2 rounded hover:bg-gray-100"><X /></button>
               </div>
             </div>
 
@@ -429,38 +412,38 @@ export default function AssignmentPage() {
               <div className="space-y-3">
                 <div>
                   <div className="text-xs text-gray-500">Contact</div>
-                  <div className="font-medium">{selectedHire.email || "Not provided"}</div>
+                  <div className="font-medium">{selectedContract.email || "Not provided"}</div>
                 </div>
 
                 <div>
                   <div className="text-xs text-gray-500">Location</div>
-                  <div className="font-medium">{selectedHire.whereYouLive || selectedHire.city || selectedHire.state || selectedHire.country || "Not provided"}</div>
+                  <div className="font-medium">{selectedContract.whereYouLive || selectedContract.city || selectedContract.state || selectedContract.country || "Not provided"}</div>
                 </div>
 
                 <div>
                   <div className="text-xs text-gray-500">Payment</div>
-                  <div className="font-medium">{selectedHire.paymentPattern || formatCurrency(selectedHire.minimumToPayToTalent || selectedHire.paymentRate) }</div>
+                  <div className="font-medium">{selectedContract.paymentPattern || formatCurrency(selectedContract.minimumToPayToTalent || selectedContract.paymentRate) }</div>
                 </div>
 
                 <div>
                   <div className="text-xs text-gray-500">Dates</div>
-                  <div className="font-medium">{formatDate(selectedHire.createdAt)} {selectedHire.workStartDate ? `· Start: ${selectedHire.workStartDate}` : ""}</div>
+                  <div className="font-medium">{formatDate(selectedContract.createdAt)} {selectedContract.workStartDate ? `· Start: ${selectedContract.workStartDate}` : ""}</div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <div>
                   <div className="text-xs text-gray-500">Description / Scope</div>
-                  <div className="font-medium whitespace-pre-wrap">{selectedHire.scopeOfWork || selectedHire.explanationOfScopeOfWork || "Not provided"}</div>
+                  <div className="font-medium whitespace-pre-wrap">{selectedContract.scopeOfWork || selectedContract.explanationOfScopeOfWork || "Not provided"}</div>
                 </div>
 
                 <div>
                   <div className="text-xs text-gray-500">Assigned Developers</div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {getAssignedDevelopersForHire(selectedHire).length === 0 ? (
+                    {getAssignedDevelopersForContract(selectedContract).length === 0 ? (
                       <span className="text-xs text-gray-500">None</span>
                     ) : (
-                      getAssignedDevelopersForHire(selectedHire).map((t) => (
+                      getAssignedDevelopersForContract(selectedContract).map((t) => (
                         <span key={t._id || t.id} className="px-2 py-1 bg-gray-100 rounded text-xs">
                           {getDevDisplayName(t)}
                         </span>
@@ -472,9 +455,9 @@ export default function AssignmentPage() {
             </div>
 
             <div className="mt-6 flex justify-end gap-2">
-              <button onClick={() => setSelectedHire(null)} className="px-4 py-2 rounded border">Close</button>
-              {!getAssignedTalentIds(selectedHire).length && (
-                <button onClick={() => { setSelectedHire(null); openAssignModal(selectedHire); }} className="px-4 py-2 rounded bg-black text-white">Assign</button>
+              <button onClick={() => setSelectedContract(null)} className="px-4 py-2 rounded border">Close</button>
+              {!getAssignedTalentIds(selectedContract).length && (
+                <button onClick={() => { setSelectedContract(null); openAssignModal(selectedContract); }} className="px-4 py-2 rounded bg-black text-white">Assign</button>
               )}
             </div>
           </div>
@@ -482,13 +465,13 @@ export default function AssignmentPage() {
       )}
 
       {/* ASSIGN modal */}
-      {assigningHire && (
+      {assigningContract && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => closeAssignModal()}>
           <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto relative p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-bold">{assigningHire.YourTitle || assigningHire.roleTitle || "Assign Developer"}</h3>
-                <div className="text-xs text-gray-500">Client: {assigningHire.name || assigningHire.clientName || "Unknown"}</div>
+                <h3 className="text-lg font-bold">{assigningContract.YourTitle || assigningContract.roleTitle || "Assign Developer"}</h3>
+                <div className="text-xs text-gray-500">Client: {assigningContract.name || assigningContract.clientName || "Unknown"}</div>
               </div>
               <button onClick={() => closeAssignModal()} className="p-2 rounded hover:bg-gray-100"><X /></button>
             </div>

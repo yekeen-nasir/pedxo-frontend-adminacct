@@ -84,18 +84,31 @@ export const listDevelopers = async () => {
 };
 
 // ---------- ASSIGNMENT ----------
-export const assignDeveloper = async (talentIds, hireId) => {
+// src/utility/adminApi.js
+export const assignDeveloper = async (talentIds, contractId) => {
   try {
-    const res = await http.patch("/admin/asign-tallet", {
-      talentIds: Array.isArray(talentIds) ? talentIds : [talentIds],
-      hierId: hireId,
-    });
-    return { ok: true, data: res.data };
+    // Basic validation / normalization
+    if (!talentIds || (Array.isArray(talentIds) && talentIds.length === 0)) {
+      return { ok: false, error: "No talentIds provided" };
+    }
+    const tIds = Array.isArray(talentIds) ? talentIds.map(String) : [String(talentIds)];
+    const payload = { talentIds: tIds, contractId: String(contractId) };
+
+    const res = await http.patch("/admin/assign-talent", payload);
+
+    // treat 2xx as success
+    if (res && res.status >= 200 && res.status < 300) {
+      return { ok: true, data: res.data };
+    }
+
+    // fallback normalization
+    return { ok: false, error: res?.data?.message || "Assignment failed" };
   } catch (err) {
-    console.error("Error assigning developer:", err.message);
+    console.error("Error assigning developer:", err);
     return { ok: false, error: normalizeError(err) };
   }
 };
+
 
 
 export const listHires = async () => {
