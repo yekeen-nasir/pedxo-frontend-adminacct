@@ -56,7 +56,13 @@ export default function AssignmentPage() {
         return [];
       };
 
-      setContracts(norm(contractsRes));
+    const sortedContracts = norm(contractsRes).sort((a, b) => {
+    const dateA = new Date(a.createdAt || 0).getTime();
+    const dateB = new Date(b.createdAt || 0).getTime();
+    return dateB - dateA; // newest first
+    });
+
+      setContracts(sortedContracts);
       setDevelopers(norm(devsRes));
     } catch (err) {
       console.error("Error loading assignment data:", err);
