@@ -72,21 +72,30 @@ export default function AssignmentPage() {
       setLoading(false);
     }
   }
+  const isContractIncomplete = (c) => {
+  return !(
+    c.YourTitle &&
+    (c.scopeOfWork || c.explanationOfScopeOfWork) &&
+    (c.minimumToPayToTalent || c.paymentRate)
+    );
+  };
 
   // Partition contracts using shared helper for completed detection
   const pendingContracts = contracts.filter((c) => {
-    const ids = getAssignedTalentIds(c);
-    const completed = isContractCompleted(c);
-    return ids.length === 0 && !completed;
-  });
+  const isAssigned = getAssignedTalentIds(c).length > 0;
+  const isCompleted = isContractCompleted(c);
+  const isIncomplete = isContractIncomplete(c);
 
-  const assignedContracts = contracts.filter((c) => {
-    const ids = getAssignedTalentIds(c);
-    const completed = isContractCompleted(c);
-    return ids.length > 0 && !completed;
-  });
+  return !isAssigned && !isCompleted && isIncomplete;
+});
 
-  const completedContracts = contracts.filter((c) => isContractCompleted(c));
+const assignedContracts = contracts.filter((c) => {
+  return getAssignedTalentIds(c).length > 0 && !isContractCompleted(c);
+});
+
+const completedContracts = contracts.filter((c) => {
+  return isContractCompleted(c);
+});
 
   // talent lookup (map by all id variants)
   const talentMap = useMemo(() => {
@@ -154,7 +163,7 @@ export default function AssignmentPage() {
   };
 
   // Available developers (not assigned according to the contracts' assigned ids)
-  const availableDevelopers = developers.filter((d) => getAssignedCountForDeveloper(d) === 0);
+  const availableDevelopers = developers;
 
   const getAssignedDevelopersForContract = (contract) => {
     const ids = getAssignedTalentIds(contract);
@@ -356,18 +365,17 @@ export default function AssignmentPage() {
                           <Eye className="h-4 w-4" />
                         </button>
 
-                        {activeTab === "pending" && (
-                          <button onClick={() => openAssignModal(contract)} className="px-3 py-1 rounded bg-black text-white hover:bg-gray-900">
-                            Assign
-                          </button>
-                        )}
+                        <button onClick={() => openAssignModal(contract)} 
+                          className="px-3 py-1 rounded bg-black text-white hover:bg-gray-900">
+                          Assign
+                        </button>
                       </div>
                     </div>
                   </div>
 
                   {assignedList.length > 0 && (
                     <div className="mt-3 text-sm">
-                      <div className="text-xs text-gray-500">Assigned Developers:</div>
+                      <div className="text-xs text-gray-500">Assigned Developers ({assignedList.length})</div>
                       <div className="mt-1 flex flex-wrap gap-2">
                         {assignedList.map((t) => (
                           <span key={t._id || t.id || t.name} className="px-2 py-1 bg-gray-100 rounded text-xs">
@@ -499,7 +507,7 @@ export default function AssignmentPage() {
 
             <div className="mt-6 flex justify-end gap-2">
               <button onClick={() => setSelectedContract(null)} className="px-4 py-2 rounded border">Close</button>
-              {!getAssignedTalentIds(selectedContract).length && (
+              {!isContractCompleted(selectedContract) && (
                 <button onClick={() => { setSelectedContract(null); openAssignModal(selectedContract); }} className="px-4 py-2 rounded bg-black text-white">Assign</button>
               )}
             </div>
@@ -593,7 +601,7 @@ export default function AssignmentPage() {
                   {assigning ? "Assigning..." : (selectedTalentId && (() => {
                     const dev = developers.find(d => getDeveloperIdVariants(d).includes(String(selectedTalentId)));
                     const assignedCount = dev ? getAssignedCountForDeveloper(dev) : 0;
-                    return assignedCount > 0 ? `Assign (developer busy)` : "Assign Developer";
+                    return `${assignedCount} active assignment(s)`
                   })()) || "Assign Developer"}
                 </button>
               </div>
